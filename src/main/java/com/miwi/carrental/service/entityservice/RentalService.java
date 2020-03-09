@@ -27,7 +27,7 @@ public class RentalService implements IGenericService<Rental> {
     this.userService = userService;
   }
 
-  public void updateStatus(Long id){
+  public void updateStatus(Long id) {
     rentalDao.updateStatusById(id);
   }
 
@@ -56,11 +56,11 @@ public class RentalService implements IGenericService<Rental> {
 
   }
 
-  public void createRental(Long carId, String email) {
+  public Rental createRental(Long carId, String email) {
     Rental rental = new Rental();
     rental.setCar(carService.findById(carId).get());
     rental.setUser(userService.findByEmail(email).get());
     rental.setRentalDetails(rentalDetailService.save(new RentalDetails()));
-    save(rental);
+    return save(rental);
   }
 }
