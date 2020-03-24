@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Data;
 
@@ -21,23 +22,19 @@ public class CarParameter {
   @Column(name = "PK_car_parameter")
   private Long id;
 
-  @Column(name = "current_mileage")
-  private Integer currentMileage;
-
-  @Column(name = "engine_size")
-  private Integer engineSize;
-
-  @Column(name = "power")
-  private Integer power;
-
   @Column(name = "year_of_prod")
   private Integer yearOfProd;
 
-  @Column(name = "fuel_consumption")
-  private Double averageFuelConsumption;
-
   @Column(name = "daily_rate")
   private Integer dailyRate;
+
+  @OneToOne
+  @Column(name = "FK_engine")
+  private Engine engine;
+
+  @OneToOne
+  @Column(name = "FK_drive_train")
+  private DriveTrain driveTrain;
 
   @ManyToOne
   @JoinColumn(name = "FK_car_status")
@@ -53,22 +50,6 @@ public class CarParameter {
 
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public Integer getEngineSize() {
-    return engineSize;
-  }
-
-  public void setEngineSize(Integer engineSize) {
-    this.engineSize = engineSize;
-  }
-
-  public Integer getPower() {
-    return power;
-  }
-
-  public void setPower(Integer power) {
-    this.power = power;
   }
 
   public Integer getYearOfProd() {
@@ -87,22 +68,6 @@ public class CarParameter {
     this.dailyRate = dailyRate;
   }
 
-  public Double getAverageFuelConsumption() {
-    return averageFuelConsumption;
-  }
-
-  public void setAverageFuelConsumption(Double averageFuelConsumption) {
-    this.averageFuelConsumption = averageFuelConsumption;
-  }
-
-  public Integer getCurrentMileage() {
-    return currentMileage;
-  }
-
-  public void setCurrentMileage(Integer currentMileage) {
-    this.currentMileage = currentMileage;
-  }
-
   public CarStatus getCarStatus() {
     return carStatus;
   }
@@ -117,5 +82,21 @@ public class CarParameter {
 
   public void setBodyType(BodyType bodyType) {
     this.bodyType = bodyType;
+  }
+
+  public Engine getEngine() {
+    return engine;
+  }
+
+  public void setEngine(Engine engine) {
+    this.engine = engine;
+  }
+
+  public DriveTrain getDriveTrain() {
+    return driveTrain;
+  }
+
+  public void setDriveTrain(DriveTrain driveTrain) {
+    this.driveTrain = driveTrain;
   }
 }
