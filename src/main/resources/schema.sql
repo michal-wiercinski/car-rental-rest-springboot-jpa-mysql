@@ -34,7 +34,7 @@ CREATE TABLE address
 CREATE TABLE body_type
 (
     PK_body_type BIGINT AUTO_INCREMENT PRIMARY KEY,
-    type_name    VARCHAR(15) NOT NULL
+    type_name    VARCHAR(15) NOT NULL,
 ) ^;
 
 CREATE TABLE brand

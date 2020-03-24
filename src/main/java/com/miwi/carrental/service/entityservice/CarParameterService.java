@@ -40,4 +40,34 @@ public class CarParameterService {
     carParameter.setPower(carDto.getPower());
     return carParameter;
   }
+
+  public CarParameter editCarParameter(CarDto carDto) {
+    CarParameter carParameter = new CarParameter();
+
+    if (carDto.getDailyRate() != null) {
+      carParameter.setDailyRate(carDto.getDailyRate());
+    }
+    if (carDto.getCarStatus() != null) {
+      carParameter.setCarStatus(carStatusService.findById(carDto.getCarStatus()).get());
+    }
+    if (carDto.getBodyTypeDtoId() != null) {
+      carParameter.setBodyType(bodyTypeService.findById(carDto.getBodyTypeDtoId()).get());
+    }
+    if (carDto.getYearOfProd() != null) {
+      carParameter.setYearOfProd(carDto.getYearOfProd());
+    }
+    if (carDto.getAverageFuelConsumption() != null) {
+      carParameter.setAverageFuelConsumption(carDto.getAverageFuelConsumption());
+    }
+    if (carDto.getCurrentMileage() != null) {
+      carParameter.setCurrentMileage(carDto.getCurrentMileage());
+    }
+    if (carDto.getEngineSize() != null) {
+      carParameter.setEngineSize(carDto.getEngineSize());
+    }
+    if (carDto.getPower() != null) {
+      carParameter.setPower(carDto.getPower());
+    }
+    return carParameter;
+  }
 }
