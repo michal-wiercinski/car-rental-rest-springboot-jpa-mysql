@@ -13,24 +13,20 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.function.EntityResponse;
 
 @RestController
-@RequestMapping("/rent-car")
+@RequestMapping(value = "/rent-car", produces = MediaType.APPLICATION_JSON_VALUE)
+@CrossOrigin(origins = "*")
 public class RentalController {
 
   private final CarViewUserService carViewUserService;
@@ -56,7 +52,7 @@ public class RentalController {
   public ResponseEntity<List<RentalView>> getMyRent(
       @PathVariable(name = "sort", required = false) Optional<String> sortParam,
       @PathVariable(name = "direction", required = false) Optional<String> directionParam,
-      HttpServletRequest httpServletRequest, Model model) {
+      HttpServletRequest httpServletRequest) {
     List<RentalView> rentals;
     Principal principal = httpServletRequest.getUserPrincipal();
     if (principal != null) {
@@ -93,7 +89,7 @@ public class RentalController {
     return new ResponseEntity<>(rentals, HttpStatus.OK);
   }
 
-  @PostMapping(path = "create/{id}", consumes = "application/json")
+  @PostMapping(path = "create/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Rental> rentFormById(@PathVariable("id") Long carId,
       HttpServletRequest servletRequest) {
     if (carId == null || carId < 0) {
@@ -105,7 +101,7 @@ public class RentalController {
     return new ResponseEntity<>(rental, HttpStatus.CREATED);
   }
 
-  @PatchMapping(path = "/cancel/{id}", consumes = "application/json")
+  @PatchMapping(path = "/cancel/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Rental> cancelRent(@PathVariable("id") Long rentalId) {
     if (rentalId == null || rentalId < 0) {
       return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -118,6 +114,6 @@ public class RentalController {
       rentalDetailService.updateDate(rentalDetails.getId());
       rentalService.updateStatus(rentalId);
     }
-    return new ResponseEntity<>(rental,HttpStatus.OK);
+    return new ResponseEntity<>(rental, HttpStatus.OK);
   }
 }
