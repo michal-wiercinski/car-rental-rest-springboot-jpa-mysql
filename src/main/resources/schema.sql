@@ -9,6 +9,8 @@ DROP TABLE IF EXISTS car ^;
 DROP TABLE IF EXISTS car_model ^;
 DROP TABLE IF EXISTS car_parameter ^;
 DROP TABLE IF EXISTS car_status ^;
+DROP TABLE IF EXISTS drive_train ^;
+DROP TABLE IF EXISTS engine ^;
 DROP TABLE IF EXISTS location ^;
 DROP TABLE IF EXISTS brand ^;
 DROP TABLE IF EXISTS rental ^;
@@ -33,20 +35,20 @@ CREATE TABLE address
 
 CREATE TABLE body_type
 (
-    PK_body_type BIGINT AUTO_INCREMENT PRIMARY KEY,
-    type_name    VARCHAR(15) NOT NULL,
+    PK_body_type          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    type_name             VARCHAR(15) NOT NULL,
+    number_of_seats       INT         NOT NULL,
+    number_of_doors       INT         NOT NULL,
+    fuel_tank_volume      INT         NOT NULL,
+    min_volume_of_luggage INT         NOT NULL,
+    max_volume_of_luggage INT         NOT NULL
+
 ) ^;
 
 CREATE TABLE brand
 (
     PK_brand   BIGINT AUTO_INCREMENT PRIMARY KEY,
     brand_name VARCHAR(30) NOT NULL
-) ^;
-
-CREATE TABLE rental_status
-(
-    PK_status   BIGINT AUTO_INCREMENT PRIMARY KEY,
-    status_desc VARCHAR(15) NOT NULL
 ) ^;
 
 CREATE TABLE car_model
@@ -63,25 +65,52 @@ CREATE TABLE car_status
     status_description VARCHAR(15) NOT NULL
 ) ^;
 
+CREATE TABLE drive_train
+(
+    PK_drive_train  BIGINT AUTO_INCREMENT PRIMARY KEY,
+    wheel_drive     ENUM ('2x2', '4x4')          NOT NULL,
+    gearbox_type    ENUM ('Manual', 'Automatic') NOT NULL,
+    number_of_gears INT                          NOT NULL
+) ^;
+
+CREATE TABLE engine
+(
+    PK_engine        BIGINT AUTO_INCREMENT PRIMARY KEY,
+    power            INT                                        NOT NULL,
+    capacity         INT                                        NOT NULL,
+    current_mileage  INT                                        NOT NULL,
+    fuel_type        ENUM ('Diesel', 'Hybrid', 'Petrol', 'CNG') NOT NULL,
+    fuel_consumption DOUBLE                                     NOT NULL
+
+) ^;
+
+CREATE TABLE rental_status
+(
+    PK_status   BIGINT AUTO_INCREMENT PRIMARY KEY,
+    status_desc VARCHAR(15) NOT NULL
+) ^;
+
 CREATE TABLE car_parameter
 (
     PK_car_parameter BIGINT AUTO_INCREMENT PRIMARY KEY,
-    current_mileage  INT        NOT NULL,
-    engine_size      INT        NOT NULL,
-    power            INT        NOT NULL,
     year_of_prod     INT        NOT NULL,
-    fuel_consumption DOUBLE     NOT NULL,
     daily_rate       DOUBLE     NOT NULL,
     FK_body_type     BIGINT     NOT NULL,
     FK_car_status    VARCHAR(3) NOT NULL,
+    FK_drive_train   BIGINT     NOT NULL,
+    FK_engine        BIGINT     NOT NULL,
     FOREIGN KEY (FK_body_type) REFERENCES body_type (PK_body_type),
-    FOREIGN KEY (FK_car_status) REFERENCES car_status (PK_status_code)
+    FOREIGN KEY (FK_car_status) REFERENCES car_status (PK_status_code),
+    FOREIGN KEY (FK_drive_train) REFERENCES drive_train (PK_drive_train),
+    FOREIGN KEY (FK_engine) REFERENCES engine (PK_engine)
+
 ) ^;
 
 CREATE TABLE location
 (
     PK_location   BIGINT AUTO_INCREMENT PRIMARY KEY,
     location_name VARCHAR(255) NOT NULL,
+
     FK_address    BIGINT,
     FOREIGN KEY (FK_address) REFERENCES address (PK_address)
 
@@ -178,7 +207,7 @@ FROM car AS c
          LEFT JOIN location AS l ON l.PK_location = c.FK_location
          LEFT JOIN brand AS br ON cm.FK_brand = br.PK_brand ^;
 
-CREATE VIEW details_fleet_for_admin
+/*CREATE VIEW details_fleet_for_admin
 AS
 SELECT c.PK_car                         AS 'car_id',
        c.registration_number            AS 'registration_number',
@@ -228,3 +257,4 @@ FROM rental AS r
          JOIN car_parameter cp on c.FK_car_parameter = cp.PK_car_parameter
          JOIN rental_details rd on r.FK_rental_details = rd.PK_rental_details
          JOIN user u on r.FK_user = u.PK_user ^;
+*/

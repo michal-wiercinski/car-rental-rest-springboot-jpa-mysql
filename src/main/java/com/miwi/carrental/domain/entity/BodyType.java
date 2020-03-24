@@ -26,6 +26,21 @@ public class BodyType implements Serializable {
   @Column(name = "type_name")
   private String typeName;
 
+  @Column(name = "number_of_seats")
+  private Integer numberOfSeats;
+
+  @Column(name = "number_of_doors")
+  private Integer numberOfDoors;
+
+  @Column(name = "fuel_tank_volume")
+  private Integer fuelTankVolume;
+
+  @Column(name = "min_volume_of_luggage")
+  private Integer minVolumeOfLuggage;
+
+  @Column(name = "max_volume_of_luggage")
+  private Integer maxVolumeOfLuggage;
+
   @OneToMany(mappedBy = "bodyType",
       cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
   private List<CarParameter> carParameters;
@@ -46,7 +61,6 @@ public class BodyType implements Serializable {
     this.typeName = typeName;
   }
 
-
   public List<CarParameter> getCarParameters() {
     return carParameters;
   }
@@ -54,5 +68,45 @@ public class BodyType implements Serializable {
   public void setCarParameters(
       List<CarParameter> carParameters) {
     this.carParameters = carParameters;
+  }
+
+  public Integer getNumberOfSeats() {
+    return numberOfSeats;
+  }
+
+  public void setNumberOfSeats(Integer numberOfSeats) {
+    this.numberOfSeats = numberOfSeats;
+  }
+
+  public Integer getNumberOfDoors() {
+    return numberOfDoors;
+  }
+
+  public void setNumberOfDoors(Integer numberOfDoors) {
+    this.numberOfDoors = numberOfDoors;
+  }
+
+  public Integer getFuelTankVolume() {
+    return fuelTankVolume;
+  }
+
+  public void setFuelTankVolume(Integer fuelTankVolume) {
+    this.fuelTankVolume = fuelTankVolume;
+  }
+
+  public Integer getMinVolumeOfLuggage() {
+    return minVolumeOfLuggage;
+  }
+
+  public void setMinVolumeOfLuggage(Integer minVolumeOfLuggage) {
+    this.minVolumeOfLuggage = minVolumeOfLuggage;
+  }
+
+  public Integer getMaxVolumeOfLuggage() {
+    return maxVolumeOfLuggage;
+  }
+
+  public void setMaxVolumeOfLuggage(Integer maxVolumeOfLuggage) {
+    this.maxVolumeOfLuggage = maxVolumeOfLuggage;
   }
 }
