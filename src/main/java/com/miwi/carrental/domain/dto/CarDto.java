@@ -1,5 +1,6 @@
 package com.miwi.carrental.domain.dto;
 
+import com.miwi.carrental.domain.enums.CarStatusType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -10,6 +11,9 @@ public class CarDto {
   @NotNull(message = "The registration number can't be null")
   @Size(min = 4, max = 7, message = "The registration number must have a minimum of 3 and a maximum of 7 letters")
   private String registrationNumber;
+
+  @NotNull(message = "The car status can't be null")
+  private CarStatusType carStatus;
 
   private LocationDto locationDto;
 
@@ -31,6 +35,14 @@ public class CarDto {
 
   public void setRegistrationNumber(String registrationNumber) {
     this.registrationNumber = registrationNumber;
+  }
+
+  public CarStatusType getCarStatus() {
+    return carStatus;
+  }
+
+  public void setCarStatus(CarStatusType carStatus) {
+    this.carStatus = carStatus;
   }
 
   public CarModelDto getCarModelDto() {

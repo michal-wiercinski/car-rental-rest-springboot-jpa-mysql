@@ -61,9 +61,6 @@ public class CarParameterDto {
   @Range(min = 1950, max = 2100, message = "The year of production must be a minimum of 1950 and a maximum of 2100")
   private Integer yearOfProd;
 
-  @NotNull(message = "The car status can't be null")
-  private CarStatusType carStatus;
-
   @NotNull(message = "You must choose the color")
   private Color color;
 
@@ -186,14 +183,6 @@ public class CarParameterDto {
 
   public void setYearOfProd(Integer yearOfProd) {
     this.yearOfProd = yearOfProd;
-  }
-
-  public CarStatusType getCarStatus() {
-    return carStatus;
-  }
-
-  public void setCarStatus(CarStatusType carStatus) {
-    this.carStatus = carStatus;
   }
 
   public Color getColor() {

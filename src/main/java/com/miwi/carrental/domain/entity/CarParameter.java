@@ -46,10 +46,6 @@ public class CarParameter {
   private DriveTrain driveTrain;
 
   @ManyToOne
-  @JoinColumn(name = "FK_car_status")
-  private CarStatus carStatus;
-
-  @ManyToOne
   @JoinColumn(name = "FK_body_type")
   private BodyType bodyType;
 
@@ -91,14 +87,6 @@ public class CarParameter {
 
   public void setCurrentMileage(Integer currentMileage) {
     this.currentMileage = currentMileage;
-  }
-
-  public CarStatus getCarStatus() {
-    return carStatus;
-  }
-
-  public void setCarStatus(CarStatus carStatus) {
-    this.carStatus = carStatus;
   }
 
   public BodyType getBodyType() {
