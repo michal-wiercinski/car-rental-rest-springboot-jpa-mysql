@@ -36,12 +36,12 @@ CREATE TABLE address
 CREATE TABLE body_type
 (
     PK_body_type          BIGINT AUTO_INCREMENT PRIMARY KEY,
-    type_name             VARCHAR(15) NOT NULL,
-    number_of_seats       INT         NOT NULL,
-    number_of_doors       INT         NOT NULL,
-    fuel_tank_volume      INT         NOT NULL,
-    min_volume_of_luggage INT         NOT NULL,
-    max_volume_of_luggage INT         NOT NULL
+    type_name             ENUM ('Hatchback', 'Sedan', 'SUV', 'Coupe','Wagon','VAN', 'Jeep') NOT NULL,
+    number_of_seats       INT                                                               NOT NULL,
+    number_of_doors       INT                                                               NOT NULL,
+    fuel_tank_volume      INT                                                               NOT NULL,
+    min_volume_of_luggage INT                                                               NOT NULL,
+    max_volume_of_luggage INT                                                               NOT NULL
 
 ) ^;
 
@@ -61,16 +61,16 @@ CREATE TABLE car_model
 
 CREATE TABLE car_status
 (
-    PK_status_code     VARCHAR(3)  NOT NULL PRIMARY KEY,
-    status_description VARCHAR(15) NOT NULL
+    PK_status_code     VARCHAR(3)                        NOT NULL PRIMARY KEY,
+    status_description ENUM ('Available', 'Unavailable') NOT NULL
 ) ^;
 
 CREATE TABLE drive_train
 (
     PK_drive_train  BIGINT AUTO_INCREMENT PRIMARY KEY,
-    wheel_drive     ENUM ('2x2', '4x4')          NOT NULL,
-    gearbox_type    ENUM ('Manual', 'Automatic') NOT NULL,
-    number_of_gears INT                          NOT NULL
+    wheel_drive     ENUM ('Front-wheel drive', 'Rear-wheel drive', '4x4') NOT NULL,
+    gearbox_type    ENUM ('Manual', 'Automatic')                          NOT NULL,
+    number_of_gears INT                                                   NOT NULL
 ) ^;
 
 CREATE TABLE engine
@@ -87,18 +87,19 @@ CREATE TABLE engine
 CREATE TABLE rental_status
 (
     PK_status   BIGINT AUTO_INCREMENT PRIMARY KEY,
-    status_desc VARCHAR(15) NOT NULL
+    status_desc ENUM ('Canceled' , 'Rented') NOT NULL
 ) ^;
 
 CREATE TABLE car_parameter
 (
     PK_car_parameter BIGINT AUTO_INCREMENT PRIMARY KEY,
-    year_of_prod     INT        NOT NULL,
-    daily_rate       DOUBLE     NOT NULL,
-    FK_body_type     BIGINT     NOT NULL,
-    FK_car_status    VARCHAR(3) NOT NULL,
-    FK_drive_train   BIGINT     NOT NULL,
-    FK_engine        BIGINT     NOT NULL,
+    year_of_prod     INT         NOT NULL,
+    daily_rate       DOUBLE      NOT NULL,
+    color            VARCHAR(20) NOT NULL,
+    FK_body_type     BIGINT      NOT NULL,
+    FK_car_status    VARCHAR(3)  NOT NULL,
+    FK_drive_train   BIGINT      NOT NULL,
+    FK_engine        BIGINT      NOT NULL,
     FOREIGN KEY (FK_body_type) REFERENCES body_type (PK_body_type),
     FOREIGN KEY (FK_car_status) REFERENCES car_status (PK_status_code),
     FOREIGN KEY (FK_drive_train) REFERENCES drive_train (PK_drive_train),
@@ -110,7 +111,8 @@ CREATE TABLE location
 (
     PK_location   BIGINT AUTO_INCREMENT PRIMARY KEY,
     location_name VARCHAR(255) NOT NULL,
-
+    longitude     DOUBLE,
+    latitude      DOUBLE,
     FK_address    BIGINT,
     FOREIGN KEY (FK_address) REFERENCES address (PK_address)
 
@@ -184,7 +186,7 @@ CREATE TABLE user_roles
     FOREIGN KEY (FK_role) REFERENCES role (PK_role),
     UNIQUE (FK_user, FK_role)
 ) ^;
-
+/*
 CREATE VIEW details_fleet_for_user
 AS
 SELECT c.PK_car              AS 'car_id',
@@ -205,7 +207,7 @@ FROM car AS c
          LEFT JOIN car_status cs ON cp.FK_car_status = cs.PK_status_code
          LEFT JOIN body_type AS bt ON cp.FK_body_type = bt.PK_body_type
          LEFT JOIN location AS l ON l.PK_location = c.FK_location
-         LEFT JOIN brand AS br ON cm.FK_brand = br.PK_brand ^;
+         LEFT JOIN brand AS br ON cm.FK_brand = br.PK_brand ^;*/
 
 /*CREATE VIEW details_fleet_for_admin
 AS

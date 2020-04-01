@@ -1,6 +1,9 @@
 package com.miwi.carrental.service.entityservice;
 
+import com.miwi.carrental.domain.dto.CarParameterDto;
+import com.miwi.carrental.domain.entity.CarParameter;
 import com.miwi.carrental.domain.entity.CarStatus;
+import com.miwi.carrental.domain.enums.CarStatusType;
 import com.miwi.carrental.repository.dao.CarStatusDao;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,17 @@ public class CarStatusService {
 
   public CarStatusService(final CarStatusDao carStatusDao) {
     this.carStatusDao = carStatusDao;
+  }
+
+
+  public CarStatus getCarStatusFromCarParamDto(CarParameterDto carParameterDto) {
+    Optional<CarStatus> carStatus = findByCarStatusName(carParameterDto.getCarStatus());
+
+    return carStatus.orElseGet(() -> findByCarStatusName(CarStatusType.UNAVAILABLE).get());
+  }
+
+  public Optional<CarStatus> findByCarStatusName(CarStatusType carStatusType) {
+    return carStatusDao.findByCarStatusName(carStatusType);
   }
 
   public Optional<CarStatus> findById(String id) {

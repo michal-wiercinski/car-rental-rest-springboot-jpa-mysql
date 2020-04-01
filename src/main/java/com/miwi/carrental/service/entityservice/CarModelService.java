@@ -16,6 +16,12 @@ public class CarModelService implements IGenericService<CarModel> {
     this.carModelDao = carModelDao;
   }
 
+  public CarModel findByName(String carModelName) {
+    Optional<CarModel> carModel = carModelDao.findByName(carModelName);
+
+    return carModel.orElse(new CarModel());
+  }
+
   @Override
   public List<CarModel> findAll() {
     return carModelDao.findAll();

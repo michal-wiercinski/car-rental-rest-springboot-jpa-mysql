@@ -5,7 +5,7 @@ public enum WheelDrive {
 
   private final String type;
 
-  WheelDrive(String type) {
+  private WheelDrive(String type) {
     this.type = type;
   }
 

@@ -1,0 +1,14 @@
+package com.miwi.carrental.repository.dao;
+
+import com.miwi.carrental.domain.entity.Engine;
+import com.miwi.carrental.domain.enums.FuelType;
+import java.util.Optional;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface EngineDao extends GenericDao<Engine> {
+
+  Optional<Engine> findByPowerAndCapacityAndFuelTypeAndFuelConsumption(Integer power,
+      Integer capacity, FuelType fuelType, Double fuelConsumption);
+
+}

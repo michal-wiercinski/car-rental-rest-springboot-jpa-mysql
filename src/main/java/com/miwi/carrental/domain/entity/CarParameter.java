@@ -1,7 +1,10 @@
 package com.miwi.carrental.domain.entity;
 
+import java.awt.Color;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,12 +31,18 @@ public class CarParameter {
   @Column(name = "daily_rate")
   private Integer dailyRate;
 
-  @OneToOne
-  @Column(name = "FK_engine")
+  @Column(name = "color")
+  private Color color;
+
+  @Column(name = "current_mileage")
+  private Integer currentMileage;
+
+  @ManyToOne
+  @JoinColumn(name = "FK_engine")
   private Engine engine;
 
-  @OneToOne
-  @Column(name = "FK_drive_train")
+  @ManyToOne
+  @JoinColumn(name = "FK_drive_train")
   private DriveTrain driveTrain;
 
   @ManyToOne
@@ -66,6 +75,22 @@ public class CarParameter {
 
   public void setDailyRate(Integer dailyRate) {
     this.dailyRate = dailyRate;
+  }
+
+  public Color getColor() {
+    return color;
+  }
+
+  public void setColor(Color color) {
+    this.color = color;
+  }
+
+  public Integer getCurrentMileage() {
+    return currentMileage;
+  }
+
+  public void setCurrentMileage(Integer currentMileage) {
+    this.currentMileage = currentMileage;
   }
 
   public CarStatus getCarStatus() {

@@ -1,4 +1,4 @@
-package mira.dbproject.carrental.domain.dto;
+package com.miwi.carrental.domain.dto;
 
 public class RoleDto {
 
