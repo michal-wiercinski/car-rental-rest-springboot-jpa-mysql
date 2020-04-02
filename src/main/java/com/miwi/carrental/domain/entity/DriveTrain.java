@@ -30,7 +30,7 @@ public class DriveTrain {
   @Column(name = "gearbox_type")
   private GearboxType gearboxType;
 
-  @OneToMany(mappedBy = "drive_train")
+  @OneToMany(mappedBy = "driveTrain")
   private Collection<CarParameter> carParameters;
 
   public Long getId() {

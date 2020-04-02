@@ -27,8 +27,8 @@ public class CarStatus {
   @Column(name = "status_description")
   private CarStatusType carStatusName;
 
-  @OneToMany(mappedBy = "car_status")
-  private List<CarParameter> carParameters;
+  @OneToMany(mappedBy = "carStatus")
+  private List<Car> cars;
 
   public String getStatusCode() {
     return statusCode;

@@ -62,7 +62,7 @@ public class CarParameterDto {
   private Integer yearOfProd;
 
   @NotNull(message = "You must choose the color")
-  private Color color;
+  private String color;
 
   public Long getId() {
     return id;
@@ -185,11 +185,11 @@ public class CarParameterDto {
     this.yearOfProd = yearOfProd;
   }
 
-  public Color getColor() {
+  public String getColor() {
     return color;
   }
 
-  public void setColor(Color color) {
+  public void setColor(String color) {
     this.color = color;
   }
 }

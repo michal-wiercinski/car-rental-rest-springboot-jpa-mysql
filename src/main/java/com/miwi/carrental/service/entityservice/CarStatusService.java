@@ -1,5 +1,6 @@
 package com.miwi.carrental.service.entityservice;
 
+import com.miwi.carrental.domain.dto.CarDto;
 import com.miwi.carrental.domain.dto.CarParameterDto;
 import com.miwi.carrental.domain.entity.CarParameter;
 import com.miwi.carrental.domain.entity.CarStatus;
@@ -20,8 +21,8 @@ public class CarStatusService {
   }
 
 
-  public CarStatus getCarStatusFromCarParamDto(CarParameterDto carParameterDto) {
-    Optional<CarStatus> carStatus = findByCarStatusName(carParameterDto.getCarStatus());
+  public CarStatus getCarStatusFromCarParamDto(CarDto carDto) {
+    Optional<CarStatus> carStatus = findByCarStatusName(carDto.getCarStatus());
 
     return carStatus.orElseGet(() -> findByCarStatusName(CarStatusType.UNAVAILABLE).get());
   }

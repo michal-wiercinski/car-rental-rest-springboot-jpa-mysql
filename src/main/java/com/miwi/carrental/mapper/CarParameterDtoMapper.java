@@ -42,7 +42,6 @@ public class CarParameterDtoMapper {
     carParameter.setCurrentMileage(carParameterDto.getCurrentMileage());
     carParameter.setColor(carParameterDto.getColor());
     carParameter.setYearOfProd(carParameterDto.getYearOfProd());
-    carParameter.setCarStatus(carStatusService.getCarStatusFromCarParamDto(carParameterDto));
     carParameter.setBodyType(bodyTypeService.getBodyTypeFromNewCarParam(carParameterDto));
     carParameter.setDriveTrain(driveTrainService.getDriveTrainFromNewCarParam(carParameterDto));
     carParameter.setEngine(engineService.getEngineFromNewCarParam(carParameterDto));
@@ -57,7 +56,6 @@ public class CarParameterDtoMapper {
     carParameterDto.setId(carParameter.getId());
     carParameterDto.setColor(carParameter.getColor());
     carParameterDto.setYearOfProd(carParameter.getYearOfProd());
-    carParameterDto.setCarStatus(carParameter.getCarStatus().getCarStatusName());
     carParameterDto.setGearboxType(carParameter.getDriveTrain().getGearboxType());
     carParameterDto.setWheelDrive(carParameter.getDriveTrain().getWheelDrive());
     carParameterDto.setEnginePower(carParameter.getEngine().getPower());

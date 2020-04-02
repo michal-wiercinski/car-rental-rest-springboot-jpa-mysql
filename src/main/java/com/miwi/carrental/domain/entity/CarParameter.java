@@ -32,7 +32,7 @@ public class CarParameter {
   private Integer dailyRate;
 
   @Column(name = "color")
-  private Color color;
+  private String color;
 
   @Column(name = "current_mileage")
   private Integer currentMileage;
@@ -73,11 +73,11 @@ public class CarParameter {
     this.dailyRate = dailyRate;
   }
 
-  public Color getColor() {
+  public String getColor() {
     return color;
   }
 
-  public void setColor(Color color) {
+  public void setColor(String color) {
     this.color = color;
   }
 

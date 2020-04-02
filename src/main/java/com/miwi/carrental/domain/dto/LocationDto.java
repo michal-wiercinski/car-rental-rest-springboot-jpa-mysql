@@ -4,8 +4,7 @@ public class LocationDto {
 
   private Long id;
   private String name;
-  private Double longitude;
-  private Double latitude;
+  /*;*/
   private Long addressId;
   private String city;
   private String street;
@@ -29,28 +28,12 @@ public class LocationDto {
     this.name = name;
   }
 
-  public Double getLongitude() {
-    return longitude;
-  }
-
-  public void setLongitude(Double longitude) {
-    this.longitude = longitude;
-  }
-
-  public Double getLatitude() {
-    return latitude;
-  }
-
-  public void setLatitude(Double latitude) {
-    this.latitude = latitude;
+  public void setAddressId(Long addressId) {
+    this.addressId = addressId;
   }
 
   public Long getAddressId() {
     return addressId;
-  }
-
-  public void setAddressId(Long addressId) {
-    this.addressId = addressId;
   }
 
   public String getCity() {
@@ -84,4 +67,24 @@ public class LocationDto {
   public void setZipCode(String zipCode) {
     this.zipCode = zipCode;
   }
+/*
+private Double longitude;
+  private Double latitude;
+
+public Double getLongitude() {
+    return longitude;
+  }
+
+  public void setLongitude(Double longitude) {
+    this.longitude = longitude;
+  }
+
+  public Double getLatitude() {
+    return latitude;
+  }
+
+  public void setLatitude(Double latitude) {
+    this.latitude = latitude;
+  }*/
 }
+

@@ -20,9 +20,11 @@ public class LocationDtoMapper {
     Location location = new Location();
 
     location.setName(locationDto.getName());
+    location.setAddress(addressService.getAddressFromCarParam(locationDto));
+   /*
     location.setLatitude(locationDto.getLatitude());
     location.setLongitude(locationDto.getLongitude());
-    location.setAddress(addressService.getAddressFromCarParam(locationDto));
+   */
 
     return location;
   }
@@ -33,14 +35,15 @@ public class LocationDtoMapper {
 
     locationDto.setId(location.getId());
     locationDto.setName(location.getName());
-    locationDto.setLatitude(location.getLatitude());
-    locationDto.setLongitude(location.getLongitude());
     locationDto.setAddressId(location.getAddress().getId());
     locationDto.setCity(location.getAddress().getCity());
     locationDto.setStreet(location.getAddress().getStreet());
     locationDto.setHouseNumber(location.getAddress().getHouseNumber());
     locationDto.setZipCode(location.getAddress().getZipCode());
-
+  /*
+    locationDto.setLatitude(location.getLatitude());
+    locationDto.setLongitude(location.getLongitude());
+  */
     return locationDto;
   }
 }

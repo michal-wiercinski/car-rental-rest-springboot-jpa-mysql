@@ -2,18 +2,19 @@ package com.miwi.carrental.security.service;
 
 import com.miwi.carrental.domain.dto.UserDto;
 import com.miwi.carrental.domain.entity.User;
+import com.miwi.carrental.domain.enums.RoleName;
 import com.miwi.carrental.security.repository.UserDao;
 import com.miwi.carrental.security.validation.EmailExistsException;
 import com.miwi.carrental.service.entityservice.IGenericService;
 import com.miwi.carrental.service.entityservice.RoleService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserService implements IGenericService<User> {
@@ -60,7 +61,7 @@ public class UserService implements IGenericService<User> {
     user.setLastName(userDto.getLastName());
     user.setEmail(userDto.getEmail());
     user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-    user.setRoles(Arrays.asList(roleService.findById(3L)));
+    user.setRoles(Set.of(roleService.findByRoleName(RoleName.USER).get()));
     return user;
   }
 
@@ -85,7 +86,6 @@ public class UserService implements IGenericService<User> {
 
   @Override
   public void delete(User entity) {
-
   }
 
   @Override
@@ -101,8 +101,8 @@ public class UserService implements IGenericService<User> {
         "proba", "Wrocław", "Warszawska", "33", "71-000");
 
     User user = registrationNewUser(adminUserDto);
-    user.setRoles(Arrays.asList(roleService.findById(2L), roleService.findById(3L)));
-
+    user.setRoles(Set.of(roleService.findByRoleName(RoleName.ADMIN).get(),
+        roleService.findByRoleName(RoleName.USER).get()));
     save(registrationNewUser(normalUserDto));
     save(user);
   }

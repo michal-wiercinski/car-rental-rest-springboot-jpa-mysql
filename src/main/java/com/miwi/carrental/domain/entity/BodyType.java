@@ -26,7 +26,7 @@ public class BodyType implements Serializable {
   @Column(name = "PK_body_type")
   private Long id;
 
-  @Enumerated(EnumType.STRING)
+  @Enumerated(EnumType.ORDINAL)
   @Column(name = "type_name")
   private BodyTypeName typeName;
 

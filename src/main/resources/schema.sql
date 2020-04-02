@@ -35,14 +35,12 @@ CREATE TABLE address
 
 CREATE TABLE body_type
 (
-    PK_body_type          BIGINT AUTO_INCREMENT PRIMARY KEY,
-    type_name             ENUM ('Hatchback', 'Sedan', 'SUV', 'Coupe','Wagon','VAN', 'Jeep') NOT NULL,
-    number_of_seats       INT                                                               NOT NULL,
-    number_of_doors       INT                                                               NOT NULL,
-    fuel_tank_volume      INT                                                               NOT NULL,
-    min_volume_of_luggage INT                                                               NOT NULL,
-    max_volume_of_luggage INT                                                               NOT NULL
-
+    PK_body_type      BIGINT AUTO_INCREMENT PRIMARY KEY,
+    type_name         ENUM ('Hatchback', 'Sedan', 'SUV', 'Coupe','Wagon','VAN', 'Jeep') NOT NULL,
+    number_of_seats   INT                                                               NOT NULL,
+    number_of_doors   INT                                                               NOT NULL,
+    fuel_tank_volume  INT                                                               NOT NULL,
+    volume_of_luggage INT                                                               NOT NULL
 ) ^;
 
 CREATE TABLE brand
@@ -78,7 +76,6 @@ CREATE TABLE engine
     PK_engine        BIGINT AUTO_INCREMENT PRIMARY KEY,
     power            INT                                        NOT NULL,
     capacity         INT                                        NOT NULL,
-    current_mileage  INT                                        NOT NULL,
     fuel_type        ENUM ('Diesel', 'Hybrid', 'Petrol', 'CNG') NOT NULL,
     fuel_consumption DOUBLE                                     NOT NULL
 
@@ -93,15 +90,14 @@ CREATE TABLE rental_status
 CREATE TABLE car_parameter
 (
     PK_car_parameter BIGINT AUTO_INCREMENT PRIMARY KEY,
-    year_of_prod     INT         NOT NULL,
-    daily_rate       DOUBLE      NOT NULL,
-    color            VARCHAR(20) NOT NULL,
-    FK_body_type     BIGINT      NOT NULL,
-    FK_car_status    VARCHAR(3)  NOT NULL,
-    FK_drive_train   BIGINT      NOT NULL,
-    FK_engine        BIGINT      NOT NULL,
+    year_of_prod     INT                 NOT NULL,
+    daily_rate       DOUBLE              NOT NULL,
+    color            VARCHAR(20) /*NOT*/ NULL,
+    current_mileage  INT                 NOT NULL,
+    FK_body_type     BIGINT              NOT NULL,
+    FK_drive_train   BIGINT /*NOT*/      NULL,
+    FK_engine        BIGINT /*NOT*/      NULL,
     FOREIGN KEY (FK_body_type) REFERENCES body_type (PK_body_type),
-    FOREIGN KEY (FK_car_status) REFERENCES car_status (PK_status_code),
     FOREIGN KEY (FK_drive_train) REFERENCES drive_train (PK_drive_train),
     FOREIGN KEY (FK_engine) REFERENCES engine (PK_engine)
 
@@ -111,8 +107,8 @@ CREATE TABLE location
 (
     PK_location   BIGINT AUTO_INCREMENT PRIMARY KEY,
     location_name VARCHAR(255) NOT NULL,
-    longitude     DOUBLE,
-    latitude      DOUBLE,
+    -- longitude     DOUBLE,
+    -- latitude      DOUBLE,
     FK_address    BIGINT,
     FOREIGN KEY (FK_address) REFERENCES address (PK_address)
 
@@ -125,15 +121,17 @@ CREATE TABLE car
     FK_location         BIGINT        NOT NULL,
     FK_car_parameter    BIGINT UNIQUE NOT NULL,
     FK_car_model        BIGINT        NOT NULL,
+    FK_car_status       VARCHAR(3)    NOT NULL,
     FOREIGN KEY (FK_car_model) REFERENCES car_model (PK_car_model),
     FOREIGN KEY (FK_car_parameter) REFERENCES car_parameter (PK_car_parameter),
-    FOREIGN KEY (FK_location) REFERENCES location (PK_location)
+    FOREIGN KEY (FK_location) REFERENCES location (PK_location),
+    FOREIGN KEY (FK_car_status) REFERENCES car_status (PK_status_code)
 ) ^;
 
 CREATE TABLE role
 (
     PK_role   BIGINT AUTO_INCREMENT PRIMARY KEY,
-    role_name VARCHAR(15) NOT NULL
+    role_name ENUM ('ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER') NOT NULL
 ) ^;
 
 CREATE TABLE user_details

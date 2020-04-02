@@ -3,6 +3,7 @@ package com.miwi.carrental.domain.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -49,7 +50,7 @@ public class User implements Serializable {
   @JoinTable(name = "user_roles",
       joinColumns = @JoinColumn(name = "FK_user", referencedColumnName = "PK_user"),
       inverseJoinColumns = @JoinColumn(name = "FK_role", referencedColumnName = "PK_role"))
-  private Collection<Role> roles;
+  private Set<Role> roles;
 
   public Long getId() {
     return id;
@@ -91,11 +92,11 @@ public class User implements Serializable {
     this.email = email;
   }
 
-  public Collection<Role> getRoles() {
+  public Set<Role> getRoles() {
     return roles;
   }
 
-  public void setRoles(Collection<Role> roles) {
+  public void setRoles(Set<Role> roles) {
     this.roles = roles;
   }
 
