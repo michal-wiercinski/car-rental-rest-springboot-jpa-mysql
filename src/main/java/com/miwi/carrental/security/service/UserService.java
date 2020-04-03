@@ -7,7 +7,6 @@ import com.miwi.carrental.security.repository.UserDao;
 import com.miwi.carrental.security.validation.EmailExistsException;
 import com.miwi.carrental.service.entityservice.IGenericService;
 import com.miwi.carrental.service.entityservice.RoleService;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -61,7 +60,7 @@ public class UserService implements IGenericService<User> {
     user.setLastName(userDto.getLastName());
     user.setEmail(userDto.getEmail());
     user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-    user.setRoles(Set.of(roleService.findByRoleName(RoleName.USER).get()));
+    user.setRoles(Set.of(roleService.findByRoleName(RoleName.USER)));
     return user;
   }
 
@@ -101,8 +100,8 @@ public class UserService implements IGenericService<User> {
         "proba", "Wrocław", "Warszawska", "33", "71-000");
 
     User user = registrationNewUser(adminUserDto);
-    user.setRoles(Set.of(roleService.findByRoleName(RoleName.ADMIN).get(),
-        roleService.findByRoleName(RoleName.USER).get()));
+    user.setRoles(Set.of(roleService.findByRoleName(RoleName.ADMIN),
+        roleService.findByRoleName(RoleName.USER)));
     save(registrationNewUser(normalUserDto));
     save(user);
   }

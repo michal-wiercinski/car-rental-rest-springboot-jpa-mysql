@@ -20,7 +20,17 @@ public class RoleService {
   }
 
   public Role findByRoleName(RoleName roleName) {
-    System.out.println(roleDao.findByRoleName(roleName));
-    return roleDao.findByRoleName(roleName);
+
+    return roleDao.findByName(roleName).orElseGet(this::getNewRoleWithUserType);
+  }
+
+  public Role save(Role role) {
+    return roleDao.save(role);
+  }
+
+  private Role getNewRoleWithUserType() {
+    Role role = new Role();
+    role.setName(RoleName.USER);
+    return save(role);
   }
 }

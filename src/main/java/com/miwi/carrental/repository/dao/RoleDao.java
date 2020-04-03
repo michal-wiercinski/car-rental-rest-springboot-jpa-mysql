@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RoleDao extends GenericDao<Role> {
 
-  //Optional<Role> findByName();
+  Optional<Role> findByName(RoleName roleName);
 
-  @Query("SELECT r FROM Role r WHERE LOWER(r.name) = LOWER(:#{#role_name})")
-  public Role findByRoleName(@Param("role_name") RoleName roleName);
+/*  @Query("SELECT r FROM Role r WHERE LOWER(r.name) = LOWER(:#{#role_name})")
+  public Role findByRoleName(@Param("role_name") RoleName roleName);*/
 
 }

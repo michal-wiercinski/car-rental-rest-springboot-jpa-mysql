@@ -2,7 +2,6 @@ package com.miwi.carrental.service.viewservice;
 
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.domain.Sort;
 
 public interface IViewService<T> {
 

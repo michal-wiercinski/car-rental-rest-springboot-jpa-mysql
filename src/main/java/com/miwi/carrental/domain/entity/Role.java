@@ -1,9 +1,11 @@
 package com.miwi.carrental.domain.entity;
 
+import com.miwi.carrental.converter.RoleNameConverter;
 import com.miwi.carrental.domain.enums.RoleName;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -15,7 +17,6 @@ import javax.persistence.Table;
 import lombok.Data;
 
 
-@Data
 @Table(name = "role")
 @Entity
 public class Role implements Serializable {
@@ -25,7 +26,7 @@ public class Role implements Serializable {
   @Column(name = "PK_role")
   private Long id;
 
-  @Enumerated(EnumType.STRING)
+  @Convert(converter = RoleNameConverter.class)
   @Column(name = "role_name")
   private RoleName name;
 
