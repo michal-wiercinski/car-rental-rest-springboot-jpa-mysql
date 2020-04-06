@@ -2,7 +2,6 @@ package com.miwi.carrental.service.entityservice;
 
 import com.miwi.carrental.domain.dto.CarParameterDto;
 import com.miwi.carrental.domain.entity.BodyType;
-import com.miwi.carrental.domain.entity.CarParameter;
 import com.miwi.carrental.domain.enums.BodyTypeName;
 import com.miwi.carrental.repository.dao.BodyTypeDao;
 import java.util.List;
@@ -45,6 +44,33 @@ public class BodyTypeService implements IGenericService<BodyType> {
     return newBodyType;
   }
 
+  public BodyType editBodyTypeByDto(CarParameterDto carParameterDto) {
+    BodyType bodyType = new BodyType();
+    Optional<BodyType> optBodyType = findByAllParameters(carParameterDto.getBodyTypeName(),
+        carParameterDto.getNumberOfSeats(), carParameterDto.getNumberOfDoors(),
+        carParameterDto.getFuelTankVolume(), carParameterDto.getVolumeOfLuggage());
+
+    if (optBodyType.isEmpty()) {
+      if (carParameterDto.getBodyTypeName() != null) {
+        bodyType.setTypeName(carParameterDto.getBodyTypeName());
+      }
+      if (carParameterDto.getNumberOfSeats() != null) {
+        bodyType.setNumberOfSeats(carParameterDto.getNumberOfSeats());
+      }
+      if (carParameterDto.getNumberOfDoors() != null) {
+        bodyType.setNumberOfDoors(carParameterDto.getNumberOfDoors());
+      }
+      if (carParameterDto.getFuelTankVolume() != null) {
+        bodyType.setFuelTankVolume(carParameterDto.getFuelTankVolume());
+      }
+      if (carParameterDto.getVolumeOfLuggage() != null) {
+        bodyType.setVolumeOfLuggage(carParameterDto.getVolumeOfLuggage());
+      }
+      return bodyType;
+    }
+
+    return optBodyType.get();
+  }
 
   @Override
   public List<BodyType> findAll() {

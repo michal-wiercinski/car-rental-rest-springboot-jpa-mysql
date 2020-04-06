@@ -6,15 +6,12 @@ import com.miwi.carrental.domain.entity.CarParameter;
 import com.miwi.carrental.domain.entity.CarStatus;
 import com.miwi.carrental.mapper.CarDtoMapper;
 import com.miwi.carrental.repository.dao.CarDao;
+import com.miwi.carrental.setter.SortSetter;
 import java.util.List;
 import java.util.Optional;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,14 +24,20 @@ public class CarService implements IGenericService<Car> {
   private final CarDtoMapper carMapper;
   private final CarParameterService carParameterService;
   private final CarStatusService carStatusService;
+  private final CarModelService carModelService;
+  private final LocationService locationService;
 
   public CarService(final CarDao carDao, final CarDtoMapper carMapper,
       final CarParameterService carParameterService,
-      final CarStatusService carStatusService) {
+      final CarStatusService carStatusService,
+      CarModelService carModelService,
+      LocationService locationService) {
     this.carDao = carDao;
     this.carMapper = carMapper;
     this.carParameterService = carParameterService;
     this.carStatusService = carStatusService;
+    this.carModelService = carModelService;
+    this.locationService = locationService;
   }
 
   public void changeToAvailable(Long carId, String carStatus) {
@@ -43,26 +46,17 @@ public class CarService implements IGenericService<Car> {
 
   public List<CarDto> findAndSortAll(Optional<String> direction,
       Optional<String> sortingAttribute) {
-    Sort sort = setSort(sortingAttribute, direction);
+    Sort sort = SortSetter.setSort(sortingAttribute, direction);
 
     return carMapper.mapEntityListToListDto(carDao.findAll(sort));
   }
 
   public List<CarDto> findByAvailabilityAndSort(Optional<String> sortingAttribute,
       Optional<String> direction, Optional<String> availabilityParameter) {
-    Sort sort = setSort(sortingAttribute, direction);
+    Sort sort = SortSetter.setSort(sortingAttribute, direction);
     CarStatus carStatus = carStatusService.getCarStatusFromParam(availabilityParameter);
 
     return carMapper.mapEntityListToListDto(carDao.findAllByCarStatusLike(sort, carStatus));
-  }
-
-  private Sort setSort(Optional<String> sortingAttribute, Optional<String> direction) {
-    if (sortingAttribute.isPresent()) {
-      if (direction.isPresent() && direction.get().equals(Direction.DESC)) {
-        return Sort.by(sortingAttribute.get()).descending();
-      }
-    }
-    return Sort.by(sortingAttribute.get()).ascending();
   }
 
   public Car createNewCar(CarDto carDto) {
@@ -73,6 +67,27 @@ public class CarService implements IGenericService<Car> {
     save(car);
     logger.info("New car for id {} has been created ", car.getId());
     return car;
+  }
+
+  public Car editCar(CarDto carDto) {
+    Car car = new Car();
+
+    car.setId(carDto.getId());
+    if (carDto.getRegistrationNumber() != null) {
+      car.setRegistrationNumber(carDto.getRegistrationNumber());
+    }
+    if (carDto.getCarModelDto().getId() != null) {
+      car.setCarModel(carModelService.findById(carDto.getCarModelDto().getId()).get());
+    }
+    if (carDto.getCarStatus() != null) {
+      car.setCarStatus(carStatusService.findByCarStatusName(carDto.getCarStatus()).get());
+    }
+    if (carDto.getLocationDto().getId() != null) {
+      car.setLocation(locationService.findById(carDto.getLocationDto().getId()).get());
+    }
+    carParameterService.editCarParameterByCarDto(carDto.getCarParameterDto());
+
+    return save(car);
   }
 
   @Override

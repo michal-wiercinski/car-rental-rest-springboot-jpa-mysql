@@ -1,67 +1,64 @@
 package com.miwi.carrental.domain.dto;
 
 import com.miwi.carrental.domain.enums.BodyTypeName;
-import com.miwi.carrental.domain.enums.CarStatusType;
 import com.miwi.carrental.domain.enums.FuelType;
 import com.miwi.carrental.domain.enums.GearboxType;
 import com.miwi.carrental.domain.enums.WheelDrive;
-import java.awt.Color;
+import com.miwi.carrental.validation.OnUpdate;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Range;
+
 
 public class CarParameterDto {
 
   private Long id;
 
-  @NotNull(message = "The daily rate can't be null")
+  @NotNull(message = "The daily rate can't be null", groups = OnUpdate.class)
   private Integer dailyRate;
 
-  @NotNull(message = "The name of the body type cannot be empty")
+  @NotNull(message = "The name of the body type cannot be empty", groups = OnUpdate.class)
   private BodyTypeName bodyTypeName;
 
-  @NotNull(message = "The number of seats cannot be empty")
+  @NotNull(message = "The number of seats cannot be empty", groups = OnUpdate.class)
   private Integer numberOfSeats;
 
-  @NotNull(message = "The number of doors cannot be empty")
+  @NotNull(message = "The number of doors cannot be empty", groups = OnUpdate.class)
   private Integer numberOfDoors;
 
-  @NotNull(message = "The daily rate cannot be empty")
+  @NotNull(message = "The daily rate cannot be empty", groups = OnUpdate.class)
   private Integer fuelTankVolume;
 
-  @NotNull(message = "You must enter the volume of luggage")
+  @NotNull(message = "You must enter the volume of luggage", groups = OnUpdate.class)
   private Integer volumeOfLuggage;
 
-  @NotNull(message = "You must choose the location")
-  private Long LocationDtoId;
-
-  @NotNull(message = "The engine size can't be null")
+  @NotNull(message = "The engine size can't be null", groups = OnUpdate.class)
   @Range(min = 1000, max = 10000, message = "The engine size must have a minimum of 1000 and a maximum of 10000 cm3")
   private Integer engineCapacity;
 
-  @NotNull
+  @NotNull(message = "The engine size can't be null", groups = OnUpdate.class)
   @Range(min = 50, max = 400, message = "The engine power must have a minimum of 50 and a maximum of 400 HP")
   private Integer enginePower;
 
-  @NotNull(message = "You must enter the current mileage")
+  @NotNull(message = "You must enter the current mileage", groups = OnUpdate.class)
   private Integer currentMileage;
 
-  @NotNull(message = "You must choose the fuel type")
+  @NotNull(message = "You must choose the fuel type", groups = OnUpdate.class)
   private FuelType fuelType;
 
-  @NotNull(message = "You must enter the average fuel consumption")
+  @NotNull(message = "You must enter the average fuel consumption", groups = OnUpdate.class)
   private Double averageFuelConsumption;
 
-  @NotNull(message = "You must choose the wheel drive")
+  @NotNull(message = "You must choose the wheel drive", groups = OnUpdate.class)
   private WheelDrive wheelDrive;
 
-  @NotNull(message = "You must choose the gearbox type")
+  @NotNull(message = "You must choose the gearbox type", groups = OnUpdate.class)
   private GearboxType gearboxType;
 
-  @NotNull(message = "The year of production can't be null")
+  @NotNull(message = "The year of production can't be null", groups = OnUpdate.class)
   @Range(min = 1950, max = 2100, message = "The year of production must be a minimum of 1950 and a maximum of 2100")
   private Integer yearOfProd;
 
-  @NotNull(message = "You must choose the color")
+  @NotNull(message = "You must choose the color", groups = OnUpdate.class)
   private String color;
 
   public Long getId() {

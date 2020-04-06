@@ -1,15 +1,16 @@
 package com.miwi.carrental.domain.dto;
 
+import com.miwi.carrental.validation.OnUpdate;
 import javax.validation.constraints.NotNull;
 
 public class CarModelDto {
 
   private Long id;
 
-  @NotNull(message = "You must enter the name of car model")
+  @NotNull(message = "You must enter the name of car model", groups = OnUpdate.class)
   private String carModelName;
 
-  @NotNull(message = "You must enter the name of brand name")
+  @NotNull(message = "You must enter the name of brand name", groups = OnUpdate.class)
   private String brandName;
 
   public Long getId() {

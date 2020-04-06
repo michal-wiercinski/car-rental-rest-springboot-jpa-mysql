@@ -31,47 +31,12 @@ public class ManageController {
 
   private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-  private final BodyTypeService bodyTypeService;
-  private final CarModelService carModelService;
-  private final LocationService locationService;
   private final CarService carService;
-  private final CarStatusService carStatusService;
-  private final CarViewAdminService carViewAdminService;
 
   public ManageController(
-      final BodyTypeService bodyTypeService,
-      final CarModelService carModelService,
-      final LocationService locationService,
-      final CarService carService,
-      final CarStatusService carStatusService,
-      final CarViewAdminService carViewAdminService) {
-    this.bodyTypeService = bodyTypeService;
-    this.carModelService = carModelService;
-    this.locationService = locationService;
+      final CarService carService) {
     this.carService = carService;
-    this.carStatusService = carStatusService;
-    this.carViewAdminService = carViewAdminService;
   }
-
-  /*@ModelAttribute
-  public void getLists(final Model model) {
-    List<BodyType> bodyTypes = bodyTypeService.findAll();
-    List<CarModel> carModels = carModelService.findAll();
-    List<Location> locations = locationService.findAll();
-    List<CarStatus> carStatuses = carStatusService.findAll();
-
-    model.addAttribute("bodyTypes", bodyTypes);
-    model.addAttribute("carModels", carModels);
-    model.addAttribute("locations", locations);
-    model.addAttribute("carStatuses", carStatuses);
-  }*/
-
-  /*@GetMapping("/new-car")
-  public String newCarForm(Model model) {
-    CarDto newCar = new CarDto();
-    model.addAttribute("car", newCar);
-    return "carForm";
-  }*/
 
   @PostMapping(path = "/add-car", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Car> createCar(@Valid @RequestBody CarDto car,
@@ -105,7 +70,7 @@ public class ManageController {
       });
       return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
-    Car car = carService.createNewCar(carDto);
+    Car car = carService.editCar(carDto);
     return new ResponseEntity<>(car, HttpStatus.OK);
   }
 
@@ -121,7 +86,7 @@ public class ManageController {
   @PatchMapping(path = "/make-availability/{carId}/{status}", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Car> makeAvailability(@PathVariable("carId") Long carId,
       @PathVariable("status") String carStatus) {
-    if (!carService.findById(carId).isPresent() || carStatus.isEmpty()) {
+    if (carService.findById(carId).isEmpty() || carStatus.isEmpty()) {
       return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
     Car car = carService.findById(carId).get();

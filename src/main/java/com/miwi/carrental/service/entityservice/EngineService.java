@@ -4,6 +4,7 @@ import com.miwi.carrental.domain.dto.CarParameterDto;
 import com.miwi.carrental.domain.entity.Engine;
 import com.miwi.carrental.domain.enums.FuelType;
 import com.miwi.carrental.repository.dao.EngineDao;
+import java.lang.reflect.Field;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
@@ -39,5 +40,31 @@ public class EngineService {
       Integer capacity, FuelType fuelType, Double fuelConsumption) {
     return engineDao.findByPowerAndCapacityAndFuelTypeAndFuelConsumption(power, capacity, fuelType,
         fuelConsumption);
+  }
+
+  public Engine editEngineByDto(CarParameterDto carParameterDto) {
+    Engine engine = new Engine();
+    Optional<Engine> optEngine;
+    optEngine = findByAllParameters(carParameterDto.getEnginePower(),
+        carParameterDto.getEngineCapacity(), carParameterDto.getFuelType(),
+        carParameterDto.getAverageFuelConsumption());
+
+    if (optEngine.isEmpty()) {
+      if (carParameterDto.getEnginePower() != null) {
+        engine.setPower(carParameterDto.getEnginePower());
+      }
+      if (carParameterDto.getEngineCapacity() != null) {
+        engine.setCapacity(carParameterDto.getEngineCapacity());
+      }
+      if (carParameterDto.getFuelType() != null) {
+        engine.setFuelType(carParameterDto.getFuelType());
+      }
+      if (carParameterDto.getAverageFuelConsumption() != null) {
+        engine.setFuelConsumption(carParameterDto.getAverageFuelConsumption());
+      }
+      return engine;
+    }
+
+    return optEngine.get();
   }
 }
