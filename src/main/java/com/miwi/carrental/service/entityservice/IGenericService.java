@@ -3,6 +3,8 @@ package com.miwi.carrental.service.entityservice;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface IGenericService<T> {
 

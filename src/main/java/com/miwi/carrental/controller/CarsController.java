@@ -1,9 +1,7 @@
 package com.miwi.carrental.controller;
 
-import com.miwi.carrental.domain.view.CarViewAdmin;
-import com.miwi.carrental.domain.view.CarViewUser;
-import com.miwi.carrental.service.viewservice.CarViewAdminService;
-import com.miwi.carrental.service.viewservice.CarViewUserService;
+import com.miwi.carrental.domain.dto.CarDto;
+import com.miwi.carrental.service.entityservice.CarService;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
@@ -20,61 +18,33 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*")
 public class CarsController {
 
-  private final CarViewAdminService carViewAdminService;
-  private final CarViewUserService carViewUserService;
+  private final CarService carService;
 
   public CarsController(
-      final CarViewAdminService carViewAdminService,
-      final CarViewUserService carViewUserService) {
-    this.carViewAdminService = carViewAdminService;
-    this.carViewUserService = carViewUserService;
+      final CarService carService) {
+    this.carService = carService;
   }
 
   @GetMapping(path = {"/our-fleet", "/our-fleet/{sort},{direction}"})
-  public ResponseEntity<List<CarViewAdmin>> getAllCars(
+  public ResponseEntity<List<CarDto>> getAllCarsForAdmin(
       @PathVariable(name = "sort", required = false) Optional<String> sortParam,
       @PathVariable(name = "direction", required = false) Optional<String> directionParam) {
-    List<CarViewAdmin> detailsFleet;
-    if (sortParam.isPresent() && directionParam.isPresent()) {
-      detailsFleet = carViewAdminService
-          .findAllAndSortByParam(sortParam.get(), directionParam.get());
-    } else {
-      detailsFleet = carViewAdminService.findAll();
-    }
-    if (detailsFleet.isEmpty()) {
+    List<CarDto> carDtos = carService
+        .findAndSortAll(sortParam, directionParam);
+    if (carDtos.isEmpty()) {
       return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
-    return new ResponseEntity<>(detailsFleet, HttpStatus.OK);
-  }
 
-  @GetMapping(path = {"/all", "/{sort},{direction}"})
-  private ResponseEntity<List<CarViewUser>> getAllCarsForUser(
-      @PathVariable(name = "sort", required = false) Optional<String> sortParam,
-      @PathVariable(name = "direction", required = false) Optional<String> directionParam) {
-    List<CarViewUser> carsForUser;
-    if (sortParam.isPresent() && directionParam.isPresent()) {
-      carsForUser = carViewUserService
-          .findAllAndSortByParam(sortParam.get(), directionParam.get());
-    } else {
-      carsForUser = carViewUserService.findAll();
-    }
-   /* if (carsForUser.isEmpty()) {
-      return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-    }*/
-    return new ResponseEntity<>(carsForUser, HttpStatus.OK);
+    return new ResponseEntity<>(carDtos, HttpStatus.OK);
   }
 
   @GetMapping(path = {"/available", "available/sorting/{sort},{direction}"})
-  private ResponseEntity<List<CarViewUser>> getAllAvailableCars(
+  private ResponseEntity<List<CarDto>> getAllAvailableCars(
       @PathVariable("sort") Optional<String> sortParam,
-      @PathVariable("direction") Optional<String> directionParam) {
-    List<CarViewUser> availableCars;
-    if (sortParam.isPresent() && directionParam.isPresent()) {
-      availableCars = carViewUserService
-          .findAllAvailable(sortParam.get(), directionParam.get());
-    } else {
-      availableCars = carViewUserService.findAllAvailable();
-    }
+      @PathVariable("direction") Optional<String> directionParam,
+      @PathVariable("availability") Optional<String> availabilityParam) {
+    List<CarDto> availableCars = carService
+        .findByAvailabilityAndSort(sortParam, directionParam, availabilityParam);
     if (availableCars.isEmpty()) {
       return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
