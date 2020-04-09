@@ -1,7 +1,7 @@
 package com.miwi.carrental.controller;
 
 import com.miwi.carrental.domain.dto.CarDto;
-import com.miwi.carrental.service.entityservice.CarService;
+import com.miwi.carrental.service.CarService;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;

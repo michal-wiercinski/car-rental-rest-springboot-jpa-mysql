@@ -2,9 +2,10 @@ package com.miwi.carrental.mapper;
 
 import com.miwi.carrental.domain.dto.CarDto;
 import com.miwi.carrental.domain.entity.Car;
-import com.miwi.carrental.service.entityservice.CarModelService;
-import com.miwi.carrental.service.entityservice.CarStatusService;
-import com.miwi.carrental.service.entityservice.LocationService;
+import com.miwi.carrental.mapper.generic.GenericMapper;
+import com.miwi.carrental.service.CarModelService;
+import com.miwi.carrental.service.CarStatusService;
+import com.miwi.carrental.service.LocationService;
 import java.util.List;
 import org.springframework.stereotype.Component;
 

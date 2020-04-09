@@ -2,12 +2,7 @@ package com.miwi.carrental.controller;
 
 import com.miwi.carrental.domain.dto.CarDto;
 import com.miwi.carrental.domain.entity.Car;
-import com.miwi.carrental.service.entityservice.BodyTypeService;
-import com.miwi.carrental.service.entityservice.CarModelService;
-import com.miwi.carrental.service.entityservice.CarService;
-import com.miwi.carrental.service.entityservice.CarStatusService;
-import com.miwi.carrental.service.entityservice.LocationService;
-import com.miwi.carrental.service.viewservice.CarViewAdminService;
+import com.miwi.carrental.service.CarService;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

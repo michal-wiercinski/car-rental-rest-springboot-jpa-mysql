@@ -2,7 +2,7 @@ package com.miwi.carrental.security.service;
 
 import com.miwi.carrental.domain.entity.User;
 import com.miwi.carrental.security.MyUserPrincipal;
-import com.miwi.carrental.service.entityservice.RoleService;
+import com.miwi.carrental.service.RoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;

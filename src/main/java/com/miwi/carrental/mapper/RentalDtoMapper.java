@@ -2,6 +2,7 @@ package com.miwi.carrental.mapper;
 
 import com.miwi.carrental.domain.dto.RentalDto;
 import com.miwi.carrental.domain.entity.Rental;
+import com.miwi.carrental.mapper.generic.GenericMapper;
 import com.miwi.carrental.security.mapper.UserDtoMapper;
 import org.springframework.stereotype.Component;
 

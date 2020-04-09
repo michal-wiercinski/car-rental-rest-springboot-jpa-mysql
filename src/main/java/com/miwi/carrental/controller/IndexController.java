@@ -1,9 +1,7 @@
 package com.miwi.carrental.controller;
 
 import com.miwi.carrental.domain.entity.Car;
-import com.miwi.carrental.domain.view.CarViewUser;
-import com.miwi.carrental.service.entityservice.CarService;
-import com.miwi.carrental.service.viewservice.CarViewUserService;
+import com.miwi.carrental.service.CarService;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

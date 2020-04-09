@@ -2,7 +2,7 @@ package com.miwi.carrental.security.mapper;
 
 import com.miwi.carrental.domain.dto.UserDto;
 import com.miwi.carrental.domain.entity.User;
-import com.miwi.carrental.mapper.GenericMapper;
+import com.miwi.carrental.mapper.generic.GenericMapper;
 import org.springframework.stereotype.Component;
 
 @Component

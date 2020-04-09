@@ -2,7 +2,7 @@ package com.miwi.carrental.mapper;
 
 import com.miwi.carrental.domain.dto.LocationDto;
 import com.miwi.carrental.domain.entity.Location;
-import com.miwi.carrental.service.entityservice.AddressService;
+import com.miwi.carrental.service.AddressService;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
