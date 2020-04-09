@@ -11,6 +11,8 @@ import javax.validation.constraints.Size;
 @PasswordMatches(message = "Password and confirm password is not match")
 public class UserDto {
 
+  private Long id;
+
   @NotNull(message = "The first name can't be null")
   @NotEmpty(message = "The first name can't be empty")
   @Size(min = 5, max = 20, message = "The first name must have a minimum of 5 and a maximum of 15 letters")
@@ -73,6 +75,14 @@ public class UserDto {
     this.street = street;
     this.houseNumber = houseNumber;
     this.zipCode = zipCode;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public String getFirstName() {

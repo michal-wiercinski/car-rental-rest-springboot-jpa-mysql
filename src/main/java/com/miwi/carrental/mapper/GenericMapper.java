@@ -2,6 +2,7 @@ package com.miwi.carrental.mapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
 
 public class GenericMapper<T, S> implements IGenericMapper<T, S> {
 
@@ -18,5 +19,10 @@ public class GenericMapper<T, S> implements IGenericMapper<T, S> {
   @Override
   public List<S> mapEntityListToListDto(List<T> entityList) {
     return entityList.stream().map(this::mapEntityToDto).collect(Collectors.toList());
+  }
+
+  @Override
+  public Page<S> mapEntityPageToPageDto(Page<T> entityPage) {
+    return entityPage.map(this::mapEntityToDto);
   }
 }

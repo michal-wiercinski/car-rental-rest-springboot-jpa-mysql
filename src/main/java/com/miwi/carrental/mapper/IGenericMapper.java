@@ -3,6 +3,7 @@ package com.miwi.carrental.mapper;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
+import org.springframework.data.domain.Page;
 
 public interface IGenericMapper<T, S> {
 
@@ -14,5 +15,8 @@ public interface IGenericMapper<T, S> {
 
   @Transactional
   List<S> mapEntityListToListDto(List<T> entityList);
+
+  @Transactional
+  Page<S> mapEntityPageToPageDto(Page<T> entityPage);
 
 }

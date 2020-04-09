@@ -1,5 +1,6 @@
 package com.miwi.carrental.service.entityservice;
 
+import com.miwi.carrental.domain.dto.RentalDto;
 import com.miwi.carrental.domain.entity.RentalDetails;
 import com.miwi.carrental.repository.dao.RentalDetailsDao;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class RentalDetailService implements IGenericService<RentalDetails> {
   public void updateDate(Long id) {
     rentalDetailsDao.updateEndDateById(id);
   }
+
 
   @Override
   public List<RentalDetails> findAll() {
