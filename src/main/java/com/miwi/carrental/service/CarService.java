@@ -7,12 +7,12 @@ import com.miwi.carrental.domain.entity.CarStatus;
 import com.miwi.carrental.mapper.CarDtoMapper;
 import com.miwi.carrental.repository.CarDao;
 import com.miwi.carrental.service.generic.GenericService;
-import com.miwi.carrental.setter.SortSetter;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -45,19 +45,23 @@ public class CarService extends GenericService<Car> {
     carDao.changeToAvailable(carId, carStatus);
   }
 
-  public List<CarDto> findAndSortAll(Optional<String> direction,
-      Optional<String> sortingAttribute) {
-    Sort sort = SortSetter.setSort(sortingAttribute, direction);
+  public Page<CarDto> getAllDtos(Pageable pageable) {
 
-    return carMapper.mapEntityListToListDto(carDao.findAll(sort));
+    return carMapper.mapEntityPageToPageDto(carDao.findAll(pageable));
   }
 
-  public List<CarDto> findByAvailabilityAndSort(Optional<String> sortingAttribute,
-      Optional<String> direction, Optional<String> availabilityParameter) {
-    Sort sort = SortSetter.setSort(sortingAttribute, direction);
-    CarStatus carStatus = carStatusService.getCarStatusFromParam(availabilityParameter);
-
-    return carMapper.mapEntityListToListDto(carDao.findAllByCarStatusLike(sort, carStatus));
+  public Page<CarDto> findByAvailability(Optional<String> availabilityParameter,
+      Pageable pageable) {
+    if (availabilityParameter.isEmpty()) {
+      return carMapper.mapEntityPageToPageDto(carDao.findAll(pageable));
+    }
+    Optional<CarStatus> carStatus = carStatusService
+        .getCarStatusFromParam(availabilityParameter.get());
+    if (carStatus.isEmpty()) {
+      return carMapper.mapEntityPageToPageDto(carDao.findAll(pageable));
+    }
+    return carMapper
+        .mapEntityPageToPageDto(carDao.findAllByCarStatusLike(carStatus.get(), pageable));
   }
 
   public Car createNewCar(CarDto carDto) {

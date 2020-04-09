@@ -25,10 +25,8 @@ public class CarStatusService {
     return carStatus.orElseGet(() -> findByCarStatusName(CarStatusType.UNAVAILABLE).get());
   }
 
-  public CarStatus getCarStatusFromParam(Optional<String> availabilityParam) {
-    Optional<CarStatus> carStatus;
-    return availabilityParam.map(s -> findByCarStatusName(CarStatusType.valueOf(s)).get())
-        .orElseGet(() -> findByCarStatusName(CarStatusType.AVAILABLE).get());
+  public Optional<CarStatus> getCarStatusFromParam(String availabilityParam) {
+    return carStatusDao.findByCarStatusName(CarStatusType.valueOf(availabilityParam));
   }
 
 
