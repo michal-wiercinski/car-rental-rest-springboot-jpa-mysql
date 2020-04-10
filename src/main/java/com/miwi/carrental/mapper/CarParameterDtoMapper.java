@@ -49,14 +49,14 @@ public class CarParameterDtoMapper {
     carParameterDto.setId(carParameter.getId());
     carParameterDto.setColor(carParameter.getColor());
     carParameterDto.setYearOfProd(carParameter.getYearOfProd());
-    carParameterDto.setGearboxType(carParameter.getDriveTrain().getGearboxType());
-    carParameterDto.setWheelDrive(carParameter.getDriveTrain().getWheelDrive());
+    carParameterDto.setGearboxType(carParameter.getDriveTrain().getGearboxType().getType());
+    carParameterDto.setWheelDrive(carParameter.getDriveTrain().getWheelDrive().getType());
     carParameterDto.setEnginePower(carParameter.getEngine().getPower());
     carParameterDto.setEngineCapacity(carParameter.getEngine().getCapacity());
     carParameterDto.setCurrentMileage(carParameter.getCurrentMileage());
     carParameterDto.setFuelType(carParameter.getEngine().getFuelType());
     carParameterDto.setAverageFuelConsumption(carParameter.getEngine().getFuelConsumption());
-    carParameterDto.setBodyTypeName(carParameter.getBodyType().getTypeName());
+    carParameterDto.setBodyTypeName(carParameter.getBodyType().getTypeName().getType());
     carParameterDto.setFuelTankVolume(carParameter.getBodyType().getFuelTankVolume());
     carParameterDto.setNumberOfDoors(carParameter.getBodyType().getNumberOfDoors());
     carParameterDto.setNumberOfSeats(carParameter.getBodyType().getNumberOfSeats());

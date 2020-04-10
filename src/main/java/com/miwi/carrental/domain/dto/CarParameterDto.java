@@ -17,7 +17,7 @@ public class CarParameterDto {
   private Integer dailyRate;
 
   @NotNull(message = "The name of the body type cannot be empty", groups = OnUpdate.class)
-  private BodyTypeName bodyTypeName;
+  private String bodyTypeName;
 
   @NotNull(message = "The number of seats cannot be empty", groups = OnUpdate.class)
   private Integer numberOfSeats;
@@ -49,10 +49,10 @@ public class CarParameterDto {
   private Double averageFuelConsumption;
 
   @NotNull(message = "You must choose the wheel drive", groups = OnUpdate.class)
-  private WheelDrive wheelDrive;
+  private String wheelDrive;
 
   @NotNull(message = "You must choose the gearbox type", groups = OnUpdate.class)
-  private GearboxType gearboxType;
+  private String gearboxType;
 
   @NotNull(message = "The year of production can't be null", groups = OnUpdate.class)
   @Range(min = 1950, max = 2100, message = "The year of production must be a minimum of 1950 and a maximum of 2100")
@@ -77,11 +77,11 @@ public class CarParameterDto {
     this.dailyRate = dailyRate;
   }
 
-  public BodyTypeName getBodyTypeName() {
+  public String getBodyTypeName() {
     return bodyTypeName;
   }
 
-  public void setBodyTypeName(BodyTypeName bodyTypeName) {
+  public void setBodyTypeName(String bodyTypeName) {
     this.bodyTypeName = bodyTypeName;
   }
 
@@ -158,19 +158,19 @@ public class CarParameterDto {
     this.averageFuelConsumption = averageFuelConsumption;
   }
 
-  public WheelDrive getWheelDrive() {
+  public String getWheelDrive() {
     return wheelDrive;
   }
 
-  public void setWheelDrive(WheelDrive wheelDrive) {
+  public void setWheelDrive(String wheelDrive) {
     this.wheelDrive = wheelDrive;
   }
 
-  public GearboxType getGearboxType() {
+  public String getGearboxType() {
     return gearboxType;
   }
 
-  public void setGearboxType(GearboxType gearboxType) {
+  public void setGearboxType(String gearboxType) {
     this.gearboxType = gearboxType;
   }
 

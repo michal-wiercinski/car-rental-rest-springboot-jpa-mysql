@@ -20,7 +20,8 @@ public class CarStatusService {
 
 
   public CarStatus getCarStatusFromCarParamDto(CarDto carDto) {
-    Optional<CarStatus> carStatus = findByCarStatusName(carDto.getCarStatus());
+    Optional<CarStatus> carStatus = findByCarStatusName(
+        CarStatusType.valueOf(carDto.getCarStatus()));
 
     return carStatus.orElseGet(() -> findByCarStatusName(CarStatusType.UNAVAILABLE).get());
   }

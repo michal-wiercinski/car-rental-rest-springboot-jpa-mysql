@@ -4,6 +4,7 @@ import com.miwi.carrental.domain.dto.CarDto;
 import com.miwi.carrental.domain.entity.Car;
 import com.miwi.carrental.domain.entity.CarParameter;
 import com.miwi.carrental.domain.entity.CarStatus;
+import com.miwi.carrental.domain.enums.CarStatusType;
 import com.miwi.carrental.mapper.CarDtoMapper;
 import com.miwi.carrental.repository.CarDao;
 import com.miwi.carrental.service.generic.GenericService;
@@ -66,16 +67,16 @@ public class CarService extends GenericService<Car> {
 
   public Car createNewCar(CarDto carDto) {
     Car car = carMapper.mapDtoToEntity(carDto);
-    CarParameter carParameter = carParameterService.createNewParameter(carDto);
-    car.setCarParameter(carParameter);
+    //CarParameter carParameter = carParameterService.createNewParameter(carDto);
+    //car.setCarParameter(carParameter);
     logger.debug("carDto has been mapped to entity");
     save(car);
     logger.info("New car for id {} has been created ", car.getId());
     return car;
   }
 
-  public Car editCar(CarDto carDto) {
-    Car car = new Car();
+  public Car editCar(Long id, CarDto carDto) {
+    Car car = carDao.findById(id).orElseGet(Car::new);
 
     car.setId(carDto.getId());
     if (carDto.getRegistrationNumber() != null) {
@@ -85,7 +86,8 @@ public class CarService extends GenericService<Car> {
       car.setCarModel(carModelService.findById(carDto.getCarModelDto().getId()).get());
     }
     if (carDto.getCarStatus() != null) {
-      car.setCarStatus(carStatusService.findByCarStatusName(carDto.getCarStatus()).get());
+      car.setCarStatus(
+          carStatusService.findByCarStatusName(CarStatusType.valueOf(carDto.getCarStatus())).get());
     }
     if (carDto.getLocationDto().getId() != null) {
       car.setLocation(locationService.findById(carDto.getLocationDto().getId()).get());

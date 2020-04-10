@@ -29,7 +29,7 @@ public class CarsController {
     this.carService = carService;
   }
 
-  @GetMapping(path = {"/our-fleet", "/our-fleet/{sort},{direction}"}, params = {"page", "size"})
+  @GetMapping(path = {"/all", "/{sort},{direction}"}, params = {"page", "size"})
   public ResponseEntity<Page<CarDto>> getAllCarsForAdmin(
       @RequestParam(value = "page", defaultValue = "0") int page,
       @RequestParam(value = "size", defaultValue = "10") int size,
@@ -38,6 +38,7 @@ public class CarsController {
     Sort sort = SortSetter.setSort(sortParam, directionParam);
     Page<CarDto> carDtos = carService
         .getAllDtos(PageRequest.of(page, size, sort));
+    System.out.println(carDtos.getTotalElements());
     if (carDtos.isEmpty()) {
       return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }

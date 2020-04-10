@@ -26,7 +26,7 @@ public class BodyTypeService extends GenericService<BodyType> {
   }
 
   public BodyType getBodyTypeFromNewCarParam(CarParameterDto carParameterDto) {
-    Optional<BodyType> bodyType = findByAllParameters(carParameterDto.getBodyTypeName(),
+    Optional<BodyType> bodyType = findByAllParameters(BodyTypeName.valueOf(carParameterDto.getBodyTypeName()),
         carParameterDto.getNumberOfSeats(),
         carParameterDto.getNumberOfDoors(), carParameterDto.getFuelTankVolume(),
         carParameterDto.getVolumeOfLuggage());
@@ -36,7 +36,7 @@ public class BodyTypeService extends GenericService<BodyType> {
     }
 
     BodyType newBodyType = new BodyType();
-    newBodyType.setTypeName(carParameterDto.getBodyTypeName());
+    newBodyType.setTypeName(BodyTypeName.valueOf(carParameterDto.getBodyTypeName()));
     newBodyType.setFuelTankVolume(carParameterDto.getFuelTankVolume());
     newBodyType.setNumberOfDoors(carParameterDto.getNumberOfDoors());
     newBodyType.setNumberOfSeats(carParameterDto.getNumberOfSeats());
@@ -47,13 +47,13 @@ public class BodyTypeService extends GenericService<BodyType> {
 
   public BodyType editBodyTypeByDto(CarParameterDto carParameterDto) {
     BodyType bodyType = new BodyType();
-    Optional<BodyType> optBodyType = findByAllParameters(carParameterDto.getBodyTypeName(),
+    Optional<BodyType> optBodyType = findByAllParameters(BodyTypeName.valueOf(carParameterDto.getBodyTypeName()),
         carParameterDto.getNumberOfSeats(), carParameterDto.getNumberOfDoors(),
         carParameterDto.getFuelTankVolume(), carParameterDto.getVolumeOfLuggage());
 
     if (optBodyType.isEmpty()) {
       if (carParameterDto.getBodyTypeName() != null) {
-        bodyType.setTypeName(carParameterDto.getBodyTypeName());
+        bodyType.setTypeName(BodyTypeName.valueOf(carParameterDto.getBodyTypeName()));
       }
       if (carParameterDto.getNumberOfSeats() != null) {
         bodyType.setNumberOfSeats(carParameterDto.getNumberOfSeats());

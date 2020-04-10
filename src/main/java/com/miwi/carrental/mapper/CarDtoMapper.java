@@ -53,7 +53,7 @@ public class CarDtoMapper extends GenericMapper<Car, CarDto> {
     carDto.setCarModelDto(carModelDtoMapper.mapEntityToDto(entity.getCarModel()));
     carDto.setCarParameterDto(carParameterMapper.mapEntityToDto(entity.getCarParameter()));
     carDto.setLocationDto(locationDtoMapper.mapEntityToDto(entity.getLocation()));
-    carDto.setCarStatus(entity.getCarStatus().getCarStatusName());
+    carDto.setCarStatus(entity.getCarStatus().getCarStatusName().getType());
 
     return carDto;
   }

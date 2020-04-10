@@ -19,15 +19,16 @@ public class DriveTrainService extends GenericService<DriveTrain> {
   }
 
   public DriveTrain getDriveTrainFromNewCarParam(CarParameterDto carParameterDto) {
-    Optional<DriveTrain> driveTrain = findByWheelDriveAndGearbox(carParameterDto.getWheelDrive(),
-        carParameterDto.getGearboxType());
+    Optional<DriveTrain> driveTrain = findByWheelDriveAndGearbox(
+        WheelDrive.valueOf(carParameterDto.getWheelDrive()),
+        GearboxType.valueOf(carParameterDto.getGearboxType()));
 
     if (driveTrain.isPresent()) {
       return driveTrain.get();
     }
     DriveTrain newDriveTrain = new DriveTrain();
-    newDriveTrain.setWheelDrive(carParameterDto.getWheelDrive());
-    newDriveTrain.setGearboxType(carParameterDto.getGearboxType());
+    newDriveTrain.setWheelDrive(WheelDrive.valueOf(carParameterDto.getWheelDrive()));
+    newDriveTrain.setGearboxType(GearboxType.valueOf(carParameterDto.getGearboxType()));
 
     return newDriveTrain;
   }
@@ -39,14 +40,14 @@ public class DriveTrainService extends GenericService<DriveTrain> {
 
   public DriveTrain editDriveTrainByDto(CarParameterDto carParameterDto) {
     DriveTrain driveTrain = new DriveTrain();
-    Optional<DriveTrain> optDriveTrain = findByWheelDriveAndGearbox(carParameterDto.getWheelDrive(),
-        carParameterDto.getGearboxType());
+    Optional<DriveTrain> optDriveTrain = findByWheelDriveAndGearbox(WheelDrive.valueOf(carParameterDto.getWheelDrive()),
+        GearboxType.valueOf(carParameterDto.getGearboxType()));
     if (optDriveTrain.isEmpty()) {
       if (carParameterDto.getWheelDrive() != null) {
-        driveTrain.setWheelDrive(carParameterDto.getWheelDrive());
+        driveTrain.setWheelDrive(WheelDrive.valueOf(carParameterDto.getWheelDrive()));
       }
       if (carParameterDto.getGearboxType() != null) {
-        driveTrain.setWheelDrive(carParameterDto.getWheelDrive());
+        driveTrain.setGearboxType(GearboxType.valueOf(carParameterDto.getGearboxType()));
       }
       return driveTrain;
     }

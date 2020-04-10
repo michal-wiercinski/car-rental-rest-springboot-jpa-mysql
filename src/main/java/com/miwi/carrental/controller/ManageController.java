@@ -53,7 +53,7 @@ public class ManageController {
   }
 
   @PatchMapping(path = "/edit-car/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Car> editCar(@Valid @RequestBody CarDto carDto,
+  public ResponseEntity<Car> editCar(@Valid @RequestBody CarDto carDto, @PathVariable("id") Long id,
       BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
       System.out.println("there were errors");
@@ -65,7 +65,7 @@ public class ManageController {
       });
       return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
-    Car car = carService.editCar(carDto);
+    Car car = carService.editCar(id,carDto);
     return new ResponseEntity<>(car, HttpStatus.OK);
   }
 

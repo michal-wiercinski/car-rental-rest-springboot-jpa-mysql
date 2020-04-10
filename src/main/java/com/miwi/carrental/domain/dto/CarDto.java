@@ -14,7 +14,7 @@ public class CarDto {
   private String registrationNumber;
 
   @NotNull(message = "The car status can't be null", groups = OnUpdate.class)
-  private CarStatusType carStatus;
+  private String carStatus;
 
   private LocationDto locationDto;
 
@@ -38,11 +38,11 @@ public class CarDto {
     this.registrationNumber = registrationNumber;
   }
 
-  public CarStatusType getCarStatus() {
+  public String getCarStatus() {
     return carStatus;
   }
 
-  public void setCarStatus(CarStatusType carStatus) {
+  public void setCarStatus(String carStatus) {
     this.carStatus = carStatus;
   }
 

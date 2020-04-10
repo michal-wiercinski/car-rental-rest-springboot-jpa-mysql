@@ -12,6 +12,6 @@ public class SortSetter {
         return Sort.by(sortingAttribute.get()).descending();
       }
     }
-    return Sort.by(sortingAttribute.get()).ascending();
+    return Sort.unsorted();
   }
 }
