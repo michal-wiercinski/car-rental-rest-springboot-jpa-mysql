@@ -36,7 +36,7 @@ CREATE TABLE address
 CREATE TABLE body_type
 (
     PK_body_type      BIGINT AUTO_INCREMENT PRIMARY KEY,
-    type_name         ENUM ('Hatchback', 'Sedan', 'SUV', 'Coupe','Wagon','VAN', 'Jeep') NOT NULL,
+    type_name         ENUM ('HATCHBACK', 'SEDAN', 'SUV', 'COUPE','WAGON','VAN', 'JEEP') NOT NULL,
     number_of_seats   INT                                                               NOT NULL,
     number_of_doors   INT                                                               NOT NULL,
     fuel_tank_volume  INT                                                               NOT NULL,
@@ -60,15 +60,15 @@ CREATE TABLE car_model
 CREATE TABLE car_status
 (
     PK_status_code     VARCHAR(3)                        NOT NULL PRIMARY KEY,
-    status_description ENUM ('Available', 'Unavailable') NOT NULL
+    status_description ENUM ('AVAILABLE', 'UNAVAILABLE') NOT NULL
 ) ^;
 
 CREATE TABLE drive_train
 (
     PK_drive_train  BIGINT AUTO_INCREMENT PRIMARY KEY,
-    wheel_drive     ENUM ('Front-wheel drive', 'Rear-wheel drive', '4x4') NOT NULL,
-    gearbox_type    ENUM ('Manual', 'Automatic')                          NOT NULL,
-    number_of_gears INT                                                   NOT NULL
+    wheel_drive     ENUM ('FRONT_WHEEL_DRIVE', 'REAR_WHEEL_DRIVE', 'FOUR_WHEEL_DRIVE' ) NOT NULL,
+    gearbox_type    ENUM ('MANUAL', 'AUTOMATIC')                                        NOT NULL,
+    number_of_gears INT                                                                 NOT NULL
 ) ^;
 
 CREATE TABLE engine
@@ -76,7 +76,7 @@ CREATE TABLE engine
     PK_engine        BIGINT AUTO_INCREMENT PRIMARY KEY,
     power            INT                                        NOT NULL,
     capacity         INT                                        NOT NULL,
-    fuel_type        ENUM ('Diesel', 'Hybrid', 'Petrol', 'CNG') NOT NULL,
+    fuel_type        ENUM ('DIESEL', 'HYBRID', 'PETROL', 'CNG') NOT NULL,
     fuel_consumption DOUBLE                                     NOT NULL
 
 ) ^;
@@ -84,7 +84,7 @@ CREATE TABLE engine
 CREATE TABLE rental_status
 (
     PK_status   BIGINT AUTO_INCREMENT PRIMARY KEY,
-    status_desc ENUM ('Canceled' , 'Rented') NOT NULL
+    status_desc ENUM ('CANCELED' , 'RENTED') NOT NULL
 ) ^;
 
 CREATE TABLE car_parameter

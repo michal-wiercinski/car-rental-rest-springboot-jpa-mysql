@@ -6,9 +6,22 @@ VALUES ('Hatchback', 5, 5, 70, 250),
        ('SUV', 5, 5, 90, 390),
        ('Coupe', 2, 2, 65, 200) ^;
 
+INSERT INTO drive_train(PK_drive_train, wheel_drive, gearbox_type, number_of_gears)
+VALUES (1, 'FRONT_WHEEL_DRIVE', 'MANUAL', 6),
+       (2, 'FRONT_WHEEL_DRIVE', 'AUTOMATIC', 6),
+       (3, 'REAR_WHEEL_DRIVE', 'MANUAL', 6),
+       (4, 'FOUR_WHEEL_DRIVE', 'AUTOMATIC', 6),
+       (5, 'FRONT_WHEEL_DRIVE', 'AUTOMATIC', 6) ^;
 
+INSERT INTO engine(PK_engine, power, capacity, fuel_type, fuel_consumption)
+VALUES (1, 200, 2500, 'PETROL', 7.5),
+       (2, 250, 3000, 'PETROL', 9.5),
+       (3, 150, 2000, 'DIESEL', 6.5),
+       (4, 150, 2000, 'HYBRID', 6.0),
+       (5, 300, 4000, 'PETROL', 10.0) ^;
 
-INSERT INTO location (location_name)
+INSERT
+INTO location (location_name)
 VALUES ('Warsaw Chopin Airport '),
        ('John Paul II International Airport Kraków–Balice '),
        ('Gdańsk Lech Wałęsa Airport '),
@@ -1813,13 +1826,13 @@ VALUES (3, 'Cobra', 1),
        (2735, 'Haise', 242),
        (2903, 'Air Concept', 245) ^;
 
-INSERT INTO car_parameter(FK_body_type, current_mileage, year_of_prod,
+INSERT INTO car_parameter(FK_body_type, FK_drive_train, FK_engine, current_mileage, year_of_prod,
                           daily_rate)
-VALUES (3, 160, 2019, 8),
-       (3, 200, 2019, 9),
-       (2, 560, 2018, 10),
-       (2, 280, 2018, 15),
-       (5, 520, 2018, 20) ^;
+VALUES (3, 2, 3, 160, 2019, 8),
+       (3, 1, 1, 200, 2019, 9),
+       (2, 3, 2, 560, 2018, 10),
+       (2, 5, 4, 280, 2018, 15),
+       (5, 4, 5, 520, 2018, 20) ^;
 
 
 INSERT INTO car (registration_number, FK_car_model, FK_location,
