@@ -22,7 +22,8 @@ public class EngineService extends GenericService<Engine> {
   public Engine getEngineFromNewCarParam(CarParameterDto carParameterDto) {
     Optional<Engine> engine = findByAllParameters(carParameterDto.getEnginePower(),
         carParameterDto.getEngineCapacity(),
-        carParameterDto.getFuelType(), carParameterDto.getAverageFuelConsumption());
+        FuelType.valueOf(carParameterDto.getFuelType()),
+        carParameterDto.getAverageFuelConsumption());
 
     if (engine.isPresent()) {
       return engine.get();
@@ -30,7 +31,7 @@ public class EngineService extends GenericService<Engine> {
     Engine newEngine = new Engine();
     newEngine.setPower(carParameterDto.getEnginePower());
     newEngine.setCapacity(carParameterDto.getEngineCapacity());
-    newEngine.setFuelType(carParameterDto.getFuelType());
+    newEngine.setFuelType(FuelType.valueOf(carParameterDto.getFuelType()));
     newEngine.setFuelConsumption(carParameterDto.getAverageFuelConsumption());
 
     return newEngine;
@@ -46,7 +47,7 @@ public class EngineService extends GenericService<Engine> {
     Engine engine = new Engine();
     Optional<Engine> optEngine;
     optEngine = findByAllParameters(carParameterDto.getEnginePower(),
-        carParameterDto.getEngineCapacity(), carParameterDto.getFuelType(),
+        carParameterDto.getEngineCapacity(), FuelType.valueOf(carParameterDto.getFuelType()),
         carParameterDto.getAverageFuelConsumption());
 
     if (optEngine.isEmpty()) {
@@ -57,7 +58,7 @@ public class EngineService extends GenericService<Engine> {
         engine.setCapacity(carParameterDto.getEngineCapacity());
       }
       if (carParameterDto.getFuelType() != null) {
-        engine.setFuelType(carParameterDto.getFuelType());
+        engine.setFuelType(FuelType.valueOf(carParameterDto.getFuelType()));
       }
       if (carParameterDto.getAverageFuelConsumption() != null) {
         engine.setFuelConsumption(carParameterDto.getAverageFuelConsumption());
