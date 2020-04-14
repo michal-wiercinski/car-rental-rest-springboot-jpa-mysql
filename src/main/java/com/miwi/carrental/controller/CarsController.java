@@ -7,7 +7,6 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,7 +29,7 @@ public class CarsController {
   }
 
   @GetMapping(path = {"/all", "/{sort},{direction}"}, params = {"page", "size"})
-  public ResponseEntity<Page<CarDto>> getAllCarsForAdmin(
+  public ResponseEntity<Page<CarDto>> getAllCars(
       @RequestParam(value = "page", defaultValue = "0") int page,
       @RequestParam(value = "size", defaultValue = "10") int size,
       @PathVariable(name = "sort", required = false) Optional<String> sortParam,
@@ -40,10 +39,19 @@ public class CarsController {
         .getAllDtos(PageRequest.of(page, size, sort));
     System.out.println(carDtos.getTotalElements());
     if (carDtos.isEmpty()) {
-      return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+      return ResponseEntity.notFound().build();
     }
 
-    return new ResponseEntity<>(carDtos, HttpStatus.OK);
+    return ResponseEntity.ok().header("cache-control", "max-age" + "=3600").body(carDtos);
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<CarDto> getCarById(@PathVariable("id") Long id){
+    Optional<CarDto> carDto = carService.getCarDtoByCarId(id);
+    if(carDto.isEmpty()){
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok().body(carDto.get());
   }
 
   @GetMapping(path = {"/available", "available/sorting/{sort},{direction}"}, params = {"page",
@@ -59,8 +67,8 @@ public class CarsController {
     Page<CarDto> carDtos = carService
         .findByAvailability(availabilityParam, PageRequest.of(page, size, sort));
     if (carDtos.isEmpty()) {
-      return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+      return ResponseEntity.notFound().build();
     }
-    return new ResponseEntity<>(carDtos, HttpStatus.OK);
+    return ResponseEntity.ok().body(carDtos);
   }
 }

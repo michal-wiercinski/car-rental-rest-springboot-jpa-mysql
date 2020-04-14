@@ -43,7 +43,7 @@ public class CarParameterDto {
   private Integer currentMileage;
 
   @NotNull(message = "You must choose the fuel type", groups = OnUpdate.class)
-  private FuelType fuelType;
+  private String fuelType;
 
   @NotNull(message = "You must enter the average fuel consumption", groups = OnUpdate.class)
   private Double averageFuelConsumption;
@@ -142,11 +142,11 @@ public class CarParameterDto {
     this.currentMileage = currentMileage;
   }
 
-  public FuelType getFuelType() {
+  public String getFuelType() {
     return fuelType;
   }
 
-  public void setFuelType(FuelType fuelType) {
+  public void setFuelType(String fuelType) {
     this.fuelType = fuelType;
   }
 

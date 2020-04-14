@@ -54,7 +54,7 @@ public class CarParameterDtoMapper {
     carParameterDto.setEnginePower(carParameter.getEngine().getPower());
     carParameterDto.setEngineCapacity(carParameter.getEngine().getCapacity());
     carParameterDto.setCurrentMileage(carParameter.getCurrentMileage());
-    carParameterDto.setFuelType(carParameter.getEngine().getFuelType());
+    carParameterDto.setFuelType(carParameter.getEngine().getFuelType().getType());
     carParameterDto.setAverageFuelConsumption(carParameter.getEngine().getFuelConsumption());
     carParameterDto.setBodyTypeName(carParameter.getBodyType().getTypeName().getType());
     carParameterDto.setFuelTankVolume(carParameter.getBodyType().getFuelTankVolume());

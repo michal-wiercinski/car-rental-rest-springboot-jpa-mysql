@@ -24,6 +24,6 @@ public class IndexController {
 
   @GetMapping("/")
   public ResponseEntity<List<Car>> getWelcomePage() {
-    return new ResponseEntity<>(carService.findAll(), HttpStatus.OK);
+    return ResponseEntity.ok().body(carService.findAll());
   }
 }

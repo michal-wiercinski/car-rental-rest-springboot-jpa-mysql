@@ -4,9 +4,12 @@ package com.miwi.carrental.controller;
 import com.miwi.carrental.domain.dto.RentalDto;
 import com.miwi.carrental.domain.entity.Rental;
 import com.miwi.carrental.domain.entity.RentalDetails;
+import com.miwi.carrental.domain.entity.User;
+import com.miwi.carrental.security.service.UserService;
 import com.miwi.carrental.service.RentalDetailService;
 import com.miwi.carrental.service.RentalService;
 import com.miwi.carrental.setter.SortSetter;
+import java.net.URI;
 import java.security.Principal;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
@@ -33,12 +36,15 @@ public class RentalController {
 
   private final RentalService rentalService;
   private final RentalDetailService rentalDetailService;
+  private final UserService userService;
 
   public RentalController(
       final RentalService rentalService,
-      final RentalDetailService rentalDetailService) {
+      final RentalDetailService rentalDetailService,
+      final UserService userService) {
     this.rentalService = rentalService;
     this.rentalDetailService = rentalDetailService;
+    this.userService = userService;
   }
 
   @GetMapping(value = {"/my-rent", "/my-rent/{sort},{direction}"})
@@ -55,11 +61,11 @@ public class RentalController {
       rentals = rentalService
           .getAllDtoByUserEmail(principal.getName(), PageRequest.of(page, size, sort));
       if (rentals.isEmpty()) {
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return ResponseEntity.notFound().build();
       }
-      return new ResponseEntity<>(rentals, HttpStatus.OK);
+      return ResponseEntity.ok().body(rentals);
     }
-    return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
   }
 
 
@@ -68,15 +74,23 @@ public class RentalController {
       @RequestParam(value = "page", defaultValue = "0") int page,
       @RequestParam(value = "size", defaultValue = "10") int size,
       @PathVariable(name = "sort", required = false) Optional<String> sortParam,
-      @PathVariable(name = "direction", required = false) Optional<String> directionParam) {
-    Sort sort = SortSetter.setSort(sortParam, directionParam);
-    Page<RentalDto> rentals = rentalService.getAllDtos(PageRequest.of(page, size, sort));
-
-    if (rentals.isEmpty()) {
-      return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+      @PathVariable(name = "direction", required = false) Optional<String> directionParam,
+      HttpServletRequest httpServletRequest) {
+    Principal principal = httpServletRequest.getUserPrincipal();
+    if (principal != null) {
+      User user = userService.findByEmail(principal.getName()).get();
+      if (user.getRoles().stream().anyMatch(
+          role -> role.getName().getRoleName().equals("ROLE_AMDIN") || role.getName().getRoleName()
+              .equals("ROLE_SUPER_ADMIN"))) {
+        Sort sort = SortSetter.setSort(sortParam, directionParam);
+        Page<RentalDto> rentals = rentalService.getAllDtos(PageRequest.of(page, size, sort));
+        if (rentals.isEmpty()) {
+          return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(rentals);
+      }
     }
-
-    return new ResponseEntity<>(rentals, HttpStatus.OK);
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
   }
 
   @PostMapping(path = "create/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -85,18 +99,18 @@ public class RentalController {
       HttpServletRequest servletRequest) {
 
     if (carId == null || carId < 0) {
-      return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+      return ResponseEntity.badRequest().build();
     }
     Principal principal = servletRequest.getUserPrincipal();
     rentalService.createRental(rental, carId, principal.getName());
 
-    return new ResponseEntity<>(rental, HttpStatus.CREATED);
+    return ResponseEntity.created(URI.create("/my-rent/")).build();
   }
 
   @PatchMapping(path = "/cancel/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Rental> cancelRent(@PathVariable("id") Long rentalId) {
     if (rentalId == null || rentalId < 0) {
-      return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+      return ResponseEntity.badRequest().build();
     }
     Rental rental = null;
     if (rentalService.findById(rentalId).isPresent()) {
@@ -106,6 +120,6 @@ public class RentalController {
       rentalDetailService.updateDate(rentalDetails.getId());
       rentalService.updateStatus(rentalId);
     }
-    return new ResponseEntity<>(rental, HttpStatus.OK);
+    return ResponseEntity.of(Optional.ofNullable(rental));
   }
 }

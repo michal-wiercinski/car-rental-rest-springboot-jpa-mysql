@@ -51,6 +51,10 @@ public class CarService extends GenericService<Car> {
     return carMapper.mapEntityPageToPageDto(carDao.findAll(pageable));
   }
 
+  public Optional<CarDto> getCarDtoByCarId(Long id) {
+    return Optional.ofNullable(carMapper.mapEntityToDto(findById(id).get()));
+  }
+
   public Page<CarDto> findByAvailability(Optional<String> availabilityParameter,
       Pageable pageable) {
     if (availabilityParameter.isEmpty()) {
