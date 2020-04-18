@@ -1,7 +1,9 @@
 package com.miwi.carrental.domain.dto;
 
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
+@Relation(value = "location", collectionRelation = "locations")
 public class LocationDto extends RepresentationModel<LocationDto> {
 
   private Long id;

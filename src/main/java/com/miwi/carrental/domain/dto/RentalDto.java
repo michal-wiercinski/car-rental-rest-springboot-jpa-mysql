@@ -4,7 +4,9 @@ import com.miwi.carrental.domain.enums.RentalStatusType;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
+@Relation(value = "rental", collectionRelation = "rentals")
 public class RentalDto extends RepresentationModel<RentalDto> {
 
   private CarDto carDto;

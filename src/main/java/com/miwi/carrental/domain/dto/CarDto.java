@@ -1,5 +1,6 @@
 package com.miwi.carrental.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.miwi.carrental.validation.OnUpdate;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -18,10 +19,13 @@ public class CarDto extends RepresentationModel<CarDto> {
   @NotNull(message = "The car status can't be null", groups = OnUpdate.class)
   private String carStatus;
 
+  @JsonProperty(value = "location")
   private LocationDto locationDto;
 
+  @JsonProperty(value = "carModel")
   private CarModelDto carModelDto;
 
+  @JsonProperty(value = "carParameter")
   private CarParameterDto carParameterDto;
 
   public Long getId() {

@@ -4,8 +4,9 @@ import com.miwi.carrental.validation.OnUpdate;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
-
+@Relation(value = "carParameter", collectionRelation = "carParameters")
 public class CarParameterDto extends RepresentationModel<CarParameterDto> {
 
   private Long id;

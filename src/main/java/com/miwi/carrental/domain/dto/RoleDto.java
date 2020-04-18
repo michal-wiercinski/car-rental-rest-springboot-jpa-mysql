@@ -1,5 +1,8 @@
 package com.miwi.carrental.domain.dto;
 
+import org.springframework.hateoas.server.core.Relation;
+
+@Relation(value = "role", collectionRelation = "roles")
 public class RoleDto  {
 
   private Long id;

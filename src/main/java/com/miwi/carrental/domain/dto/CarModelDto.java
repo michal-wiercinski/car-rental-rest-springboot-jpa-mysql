@@ -3,7 +3,9 @@ package com.miwi.carrental.domain.dto;
 import com.miwi.carrental.validation.OnUpdate;
 import javax.validation.constraints.NotNull;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
+@Relation(value = "carModel", collectionRelation = "carsModel")
 public class CarModelDto extends RepresentationModel<CarModelDto> {
 
   private Long id;
