@@ -1,15 +1,12 @@
 package com.miwi.carrental.domain.dto;
 
-import com.miwi.carrental.domain.enums.BodyTypeName;
-import com.miwi.carrental.domain.enums.FuelType;
-import com.miwi.carrental.domain.enums.GearboxType;
-import com.miwi.carrental.domain.enums.WheelDrive;
 import com.miwi.carrental.validation.OnUpdate;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.hateoas.RepresentationModel;
 
 
-public class CarParameterDto {
+public class CarParameterDto extends RepresentationModel<CarParameterDto> {
 
   private Long id;
 

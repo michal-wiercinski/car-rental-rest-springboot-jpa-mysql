@@ -1,6 +1,6 @@
 package com.miwi.carrental.domain.dto;
 
-public class RoleDto {
+public class RoleDto  {
 
   private Long id;
   private String name;

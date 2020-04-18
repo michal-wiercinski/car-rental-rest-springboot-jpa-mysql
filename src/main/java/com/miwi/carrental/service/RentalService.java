@@ -3,7 +3,7 @@ package com.miwi.carrental.service;
 import com.miwi.carrental.domain.dto.RentalDto;
 import com.miwi.carrental.domain.entity.Rental;
 import com.miwi.carrental.domain.entity.RentalDetails;
-import com.miwi.carrental.mapper.RentalDtoMapper;
+import com.miwi.carrental.mapper.dto.RentalDtoMapper;
 import com.miwi.carrental.repository.RentalDao;
 import com.miwi.carrental.security.service.UserService;
 import com.miwi.carrental.service.generic.GenericService;

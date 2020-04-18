@@ -1,4 +1,4 @@
-package com.miwi.carrental.mapper;
+package com.miwi.carrental.mapper.dto;
 
 import com.miwi.carrental.domain.dto.LocationDto;
 import com.miwi.carrental.domain.entity.Location;

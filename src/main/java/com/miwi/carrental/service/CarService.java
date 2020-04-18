@@ -2,10 +2,9 @@ package com.miwi.carrental.service;
 
 import com.miwi.carrental.domain.dto.CarDto;
 import com.miwi.carrental.domain.entity.Car;
-import com.miwi.carrental.domain.entity.CarParameter;
 import com.miwi.carrental.domain.entity.CarStatus;
 import com.miwi.carrental.domain.enums.CarStatusType;
-import com.miwi.carrental.mapper.CarDtoMapper;
+import com.miwi.carrental.mapper.dto.CarDtoMapper;
 import com.miwi.carrental.repository.CarDao;
 import com.miwi.carrental.service.generic.GenericService;
 import java.util.List;
@@ -49,6 +48,10 @@ public class CarService extends GenericService<Car> {
   public Page<CarDto> getAllDtos(Pageable pageable) {
 
     return carMapper.mapEntityPageToPageDto(carDao.findAll(pageable));
+  }
+
+  public List<CarDto> getAllDtos() {
+    return carMapper.mapEntityListToListDto(findAll());
   }
 
   public Optional<CarDto> getCarDtoByCarId(Long id) {

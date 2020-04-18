@@ -1,4 +1,4 @@
-package com.miwi.carrental.mapper;
+package com.miwi.carrental.mapper.dto;
 
 import com.miwi.carrental.domain.dto.CarParameterDto;
 import com.miwi.carrental.domain.entity.CarParameter;

@@ -1,6 +1,8 @@
 package com.miwi.carrental.domain.dto;
 
-public class LocationDto {
+import org.springframework.hateoas.RepresentationModel;
+
+public class LocationDto extends RepresentationModel<LocationDto> {
 
   private Long id;
   private String name;

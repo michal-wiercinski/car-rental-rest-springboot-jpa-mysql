@@ -3,7 +3,7 @@ package com.miwi.carrental.service;
 import com.miwi.carrental.domain.dto.CarDto;
 import com.miwi.carrental.domain.dto.CarParameterDto;
 import com.miwi.carrental.domain.entity.CarParameter;
-import com.miwi.carrental.mapper.CarParameterDtoMapper;
+import com.miwi.carrental.mapper.dto.CarParameterDtoMapper;
 import com.miwi.carrental.repository.CarParameterDao;
 import com.miwi.carrental.service.generic.GenericService;
 import org.springframework.stereotype.Service;

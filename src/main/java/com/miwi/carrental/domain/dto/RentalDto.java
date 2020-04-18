@@ -3,8 +3,9 @@ package com.miwi.carrental.domain.dto;
 import com.miwi.carrental.domain.enums.RentalStatusType;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import org.springframework.hateoas.RepresentationModel;
 
-public class RentalDto {
+public class RentalDto extends RepresentationModel<RentalDto> {
 
   private CarDto carDto;
   private UserDto userDto;

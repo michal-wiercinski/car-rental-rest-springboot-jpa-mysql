@@ -2,8 +2,9 @@ package com.miwi.carrental.domain.dto;
 
 import com.miwi.carrental.validation.OnUpdate;
 import javax.validation.constraints.NotNull;
+import org.springframework.hateoas.RepresentationModel;
 
-public class CarModelDto {
+public class CarModelDto extends RepresentationModel<CarModelDto> {
 
   private Long id;
 
