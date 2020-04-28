@@ -14,7 +14,7 @@ public interface IGenericService<T> {
   T save(T entity);
 
   @Transactional
-  Optional<T> findById(Long id);
+  T findById(Long id);
 
   @Transactional
   void delete(T entity);

@@ -1,5 +1,6 @@
 package com.miwi.carrental.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.miwi.carrental.domain.enums.RentalStatusType;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -9,14 +10,27 @@ import org.springframework.hateoas.server.core.Relation;
 @Relation(value = "rental", collectionRelation = "rentals")
 public class RentalDto extends RepresentationModel<RentalDto> {
 
+  private Long id;
+
+  @JsonProperty(value = "car")
   private CarDto carDto;
+
+  @JsonProperty(value = "user")
   private UserDto userDto;
+
   private RentalStatusType rentalStatusType;
   private Timestamp startDate;
   private Timestamp endDate;
   private BigDecimal rentalCost;
   private Integer distance;
 
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
 
   public CarDto getCarDto() {
     return carDto;

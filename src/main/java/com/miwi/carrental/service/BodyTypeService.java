@@ -3,14 +3,21 @@ package com.miwi.carrental.service;
 import com.miwi.carrental.domain.dto.CarParameterDto;
 import com.miwi.carrental.domain.entity.BodyType;
 import com.miwi.carrental.domain.enums.BodyTypeName;
+import com.miwi.carrental.exception.MyResourceNotFoundException;
+import com.miwi.carrental.exception.RestPreconditions;
 import com.miwi.carrental.repository.BodyTypeDao;
 import com.miwi.carrental.service.generic.GenericService;
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class BodyTypeService extends GenericService<BodyType> {
+  private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
   private final BodyTypeDao bodyTypeDao;
 
@@ -79,7 +86,15 @@ public class BodyTypeService extends GenericService<BodyType> {
   }
 
   @Override
-  public Optional<BodyType> findById(Long id) {
-    return bodyTypeDao.findById(id);
+  public BodyType findById(Long id) {
+    try {
+      return checkFound(bodyTypeDao.findById(id));
+    } catch (MyResourceNotFoundException ex) {
+      logger.warn("The body type with id: {} was not found ", id);
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+          "The body type with id: " + id + " was not found",
+          ex);
+    }
   }
-}
+  }
+

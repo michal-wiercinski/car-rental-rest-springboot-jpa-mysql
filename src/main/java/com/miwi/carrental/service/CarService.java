@@ -2,26 +2,30 @@ package com.miwi.carrental.service;
 
 import com.miwi.carrental.domain.dto.CarDto;
 import com.miwi.carrental.domain.entity.Car;
-import com.miwi.carrental.domain.entity.CarStatus;
+import com.miwi.carrental.domain.entity.CarParameter;
 import com.miwi.carrental.domain.enums.CarStatusType;
+import com.miwi.carrental.exception.MyResourceNotFoundException;
+import com.miwi.carrental.exception.RestPreconditions;
 import com.miwi.carrental.mapper.dto.CarDtoMapper;
 import com.miwi.carrental.repository.CarDao;
 import com.miwi.carrental.service.generic.GenericService;
 import java.util.List;
-import java.util.Optional;
+import javax.persistence.NoResultException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class CarService extends GenericService<Car> {
 
   private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-
   private final CarDao carDao;
+
   private final CarDtoMapper carMapper;
   private final CarParameterService carParameterService;
   private final CarStatusService carStatusService;
@@ -45,37 +49,35 @@ public class CarService extends GenericService<Car> {
     carDao.changeToAvailable(carId, carStatus);
   }
 
-  public Page<CarDto> getAllDtos(Pageable pageable) {
-
-    return carMapper.mapEntityPageToPageDto(carDao.findAll(pageable));
+  public Page<Car> findAll(Pageable pageable) {
+    try {
+      return carDao.findAll(pageable);
+    } catch (NoResultException ex) {
+      logger.warn("Cars page is empty");
+      return Page.empty();
+    }
   }
 
-  public List<CarDto> getAllDtos() {
-    return carMapper.mapEntityListToListDto(findAll());
-  }
-
-  public Optional<CarDto> getCarDtoByCarId(Long id) {
-    return Optional.ofNullable(carMapper.mapEntityToDto(findById(id).get()));
-  }
-
-  public Page<CarDto> findByAvailability(Optional<String> availabilityParameter,
+  public Page<Car> findByAvailability(String availabilityParameter,
       Pageable pageable) {
-    if (availabilityParameter.isEmpty()) {
-      return carMapper.mapEntityPageToPageDto(carDao.findAll(pageable));
+    if (validCarStatusParam(availabilityParameter)) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad availability parameter");
     }
-    Optional<CarStatus> carStatus = carStatusService
-        .getCarStatusFromParam(availabilityParameter.get());
-    if (carStatus.isEmpty()) {
-      return carMapper.mapEntityPageToPageDto(carDao.findAll(pageable));
+    try {
+      return carDao.findAllByCarStatusLike(
+          carStatusService.findByCarStatusName(CarStatusType.valueOf(availabilityParameter)),
+          pageable);
+    } catch (
+        NoResultException ex) {
+      logger.warn("No results found for the parameter: {}", availabilityParameter);
+      return Page.empty();
     }
-    return carMapper
-        .mapEntityPageToPageDto(carDao.findAllByCarStatusLike(carStatus.get(), pageable));
+
   }
 
   public Car createNewCar(CarDto carDto) {
     Car car = carMapper.mapDtoToEntity(carDto);
-    //CarParameter carParameter = carParameterService.createNewParameter(carDto);
-    //car.setCarParameter(carParameter);
+    CarParameter carParameter = carParameterService.createNewParameter(carDto);
     logger.debug("carDto has been mapped to entity");
     save(car);
     logger.info("New car for id {} has been created ", car.getId());
@@ -83,25 +85,39 @@ public class CarService extends GenericService<Car> {
   }
 
   public Car editCar(Long id, CarDto carDto) {
-    Car car = carDao.findById(id).orElseGet(Car::new);
+    try {
+      Car car = carDao.findById(id).orElseGet(Car::new);
 
-    car.setId(carDto.getId());
-    if (carDto.getRegistrationNumber() != null) {
-      car.setRegistrationNumber(carDto.getRegistrationNumber());
+      car.setId(carDto.getId());
+      if (carDto.getRegistrationNumber() != null) {
+        car.setRegistrationNumber(carDto.getRegistrationNumber());
+      }
+      if (carDto.getCarModelDto().getId() != null) {
+        car.setCarModel(carModelService.findById((carDto.getCarModelDto().getId())));
+      }
+      if (carDto.getCarStatus() != null) {
+        car.setCarStatus(carStatusService
+            .findByCarStatusName(CarStatusType.valueOf(carDto.getCarStatus())));
+      }
+      if (carDto.getLocationDto().getId() != null) {
+        car.setLocation(locationService.findById(carDto.getLocationDto().getId()));
+      }
+      carParameterService.editCarParameterByCarDto(carDto.getCarParameterDto());
+      return save(car);
+    } catch (IllegalArgumentException iae) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad argument", iae);
     }
-    if (carDto.getCarModelDto().getId() != null) {
-      car.setCarModel(carModelService.findById(carDto.getCarModelDto().getId()).get());
-    }
-    if (carDto.getCarStatus() != null) {
-      car.setCarStatus(
-          carStatusService.findByCarStatusName(CarStatusType.valueOf(carDto.getCarStatus())).get());
-    }
-    if (carDto.getLocationDto().getId() != null) {
-      car.setLocation(locationService.findById(carDto.getLocationDto().getId()).get());
-    }
-    carParameterService.editCarParameterByCarDto(carDto.getCarParameterDto());
+  }
 
-    return save(car);
+  @Override
+  public Car findById(Long id) {
+    try {
+      return checkFound(carDao.findById(id));
+    } catch (MyResourceNotFoundException ex) {
+      // logger.warn("The car with id: {} was not found ", id);
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+          "The car with id: " + id + " was not found");
+    }
   }
 
   @Override
@@ -115,17 +131,15 @@ public class CarService extends GenericService<Car> {
   }
 
   @Override
-  public Optional<Car> findById(Long id) {
-    return carDao.findById(id);
-  }
-
-  @Override
-  public void delete(Car entity) {
-    carDao.delete(entity);
-  }
-
-  @Override
   public void deleteById(Long id) {
-    carDao.deleteById(id);
+    carDao.delete(findById(id));
+  }
+
+  private boolean validCarStatusParam(String param) {
+    if (param.isEmpty()) {
+      return false;
+    }
+    return param.equals(CarStatusType.AVAILABLE.getType()) ||
+        param.equals(CarStatusType.UNAVAILABLE.getType());
   }
 }

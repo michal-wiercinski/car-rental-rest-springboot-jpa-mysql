@@ -4,9 +4,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import com.miwi.carrental.domain.dto.CarDto;
+import com.miwi.carrental.domain.entity.Car;
+import com.miwi.carrental.exception.MyResourceNotFoundException;
+import com.miwi.carrental.exception.RestPreconditions;
+import com.miwi.carrental.mapper.dto.CarDtoMapper;
 import com.miwi.carrental.service.CarService;
-import com.miwi.carrental.setter.SortSetter;
-import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -28,12 +31,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class CarsController {
 
   private final CarService carService;
+  private final CarDtoMapper carDtoMapper;
+
   private PagedResourcesAssembler<CarDto> pagedDtoAssembler;
 
   public CarsController(
       final CarService carService,
+      CarDtoMapper carDtoMapper,
       PagedResourcesAssembler<CarDto> pagedDtoAssembler) {
     this.carService = carService;
+    this.carDtoMapper = carDtoMapper;
     this.pagedDtoAssembler = pagedDtoAssembler;
   }
 
@@ -48,43 +55,55 @@ public class CarsController {
 
   @GetMapping
   public ResponseEntity<PagedModel<EntityModel<CarDto>>> getAllCars(Pageable pageable, Sort sort) {
-    Page<CarDto> carsDto = carService
-        .getAllDtos(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort));
-    if (carsDto.isEmpty()) {
+    Page<Car> carPage = carService
+        .findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort));
+    if (carPage == null) {
       return ResponseEntity.notFound().build();
     }
+    Page<CarDto> carsDto = carDtoMapper.mapEntityPageToPageDto(carPage);
 
+    PagedModel<EntityModel<CarDto>> carsPagedModel = getPagedModelByDto(carsDto);
+  /*  PagedModel<EntityModel<CarDto>> carsPagedModel = pagedDtoAssembler
+        .toModel(carsDto);
+
+    carsPagedModel.getContent()
+        .forEach(carDtoEntityModel -> carDtoEntityModel.add(linkTo(methodOn(CarsController.class)
+            .getCarById(carDtoEntityModel.getContent().getId())).withRel("car")));
+*/
     return ResponseEntity.ok().header("cache-control", "max-age" + "=120")
-        .body(getPagedModelByDto(carsDto));
+        .body(carsPagedModel);
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<CarDto> getCarById(@PathVariable("id") Long id) {
-    Optional<CarDto> optCarDto = carService.getCarDtoByCarId(id);
-    if (optCarDto.isEmpty()) {
-      return ResponseEntity.notFound().build();
+   /* if (car.isEmpty()) {
+    //  throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Not found");
+      *//*return ResponseEntity.notFound().build();*//*
     }
-    CarDto carDto = optCarDto.get();
+   */
+    Car car = carService.findById(id);
+    CarDto carDto = carDtoMapper.mapEntityToDto(car);
     carDto.add(
-        linkTo(methodOn(CarsController.class).getAllCars(Pageable.unpaged(), Sort.unsorted()))
+        linkTo(methodOn(CarsController.class)
+            .getAllCars(null, null))
             .withRel("carsList"));
 
     return ResponseEntity.ok().body(carDto);
   }
 
-  @GetMapping("/lookForAvailability/{status}")
-  private ResponseEntity<PagedModel<EntityModel<CarDto>>> getAllAvailableCars(
+  @GetMapping(value = "/availability", params = "status")
+  private ResponseEntity<PagedModel<EntityModel<CarDto>>> getByAvailability(
       Pageable pageable, Sort sort,
-      @PathVariable("status") Optional<String> availabilityParam) {
-    Page<CarDto> carsDto = carService
-        .findByAvailability(availabilityParam,
-            PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort));
-    if (carsDto.isEmpty()) {
-      return ResponseEntity.notFound().build();
-    }
+      @RequestParam(value = "status") String availabilityParam) throws MyResourceNotFoundException {
 
-    return ResponseEntity.ok().body(getPagedModelByDto(carsDto));
+    Page<Car> cars = RestPreconditions.checkFound(carService
+        .findByAvailability(availabilityParam,
+            PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)));
+    PagedModel<EntityModel<CarDto>> carsDto = getPagedModelByDto(
+        carDtoMapper.mapEntityPageToPageDto(cars));
+    return ResponseEntity.ok().body(carsDto);
   }
+
 
   private PagedModel<EntityModel<CarDto>> getPagedModelByDto(Page<CarDto> carsDto) {
     PagedModel<EntityModel<CarDto>> carDtoPagedModel = pagedDtoAssembler
@@ -96,4 +115,13 @@ public class CarsController {
 
     return carDtoPagedModel;
   }
+
+/*
+  private void addFindCarLink(PagedModel<EntityModel<CarDto>> pagedModel, Pageable pageable,
+      Sort sort, String availabilityParameter, String rel) {
+    pagedModel.add(linkTo(methodOn(CarsController.class)
+        .getByAvailability(pageable, sort, availabilityParameter)).withRel(rel));
+  }
+*/
+
 }

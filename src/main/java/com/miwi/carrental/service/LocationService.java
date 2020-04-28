@@ -26,9 +26,4 @@ public class LocationService extends GenericService<Location> {
   public Location save(Location entity) {
     return locationDao.save(entity);
   }
-
-  @Override
-  public Optional<Location> findById(Long id) {
-    return locationDao.findById(id);
-  }
 }

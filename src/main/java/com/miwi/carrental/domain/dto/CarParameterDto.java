@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @Relation(value = "carParameter", collectionRelation = "carParameters")
 public class CarParameterDto extends RepresentationModel<CarParameterDto> {

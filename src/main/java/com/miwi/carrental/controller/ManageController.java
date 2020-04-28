@@ -64,12 +64,12 @@ public class ManageController {
 
   @DeleteMapping(path = "/delete/{id}")
   public ResponseEntity<Car> deleteCarById(@PathVariable("id") Long id) {
-    if (carService.findById(id).isPresent()) {
+    if (carService.findById(id) != null) {
       carService.deleteById(id);
       return ResponseEntity.ok().build();
     }
     return ResponseEntity.notFound().build();
-  }
+  }/*
 
   @PatchMapping(path = "/make-availability/{carId}/{status}", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Car> makeAvailability(@PathVariable("carId") Long carId,
@@ -81,7 +81,7 @@ public class ManageController {
     carService.changeToAvailable(carId, carStatus);
     return ResponseEntity.ok().body(car);
   }
-
+*/
   private boolean checkErrors(BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
       System.out.println("there were errors");
