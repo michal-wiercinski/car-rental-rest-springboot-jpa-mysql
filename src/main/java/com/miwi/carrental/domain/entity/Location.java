@@ -52,6 +52,14 @@ public class Location implements Serializable {
     this.name = name;
   }
 
+  public Address getAddress() {
+    return address;
+  }
+
+  public void setAddress(Address address) {
+    this.address = address;
+  }
+
   public List<Car> getVehicles() {
     return vehicles;
   }
@@ -59,4 +67,26 @@ public class Location implements Serializable {
   public void setVehicles(List<Car> vehicles) {
     this.vehicles = vehicles;
   }
+
+  /* @Column(name = "longitude")
+  private Double longitude;
+
+  @Column(name = "latitude")
+  private Double latitude;
+
+  public Double getLongitude() {
+    return longitude;
+  }
+
+  public void setLongitude(Double longitude) {
+    this.longitude = longitude;
+  }
+
+  public Double getLatitude() {
+    return latitude;
+  }
+
+  public void setLatitude(Double latitude) {
+    this.latitude = latitude;
+  }*/
 }

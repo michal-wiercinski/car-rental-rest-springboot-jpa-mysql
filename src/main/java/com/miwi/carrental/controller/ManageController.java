@@ -2,16 +2,11 @@ package com.miwi.carrental.controller;
 
 import com.miwi.carrental.domain.dto.CarDto;
 import com.miwi.carrental.domain.entity.Car;
-import com.miwi.carrental.service.entityservice.BodyTypeService;
-import com.miwi.carrental.service.entityservice.CarModelService;
-import com.miwi.carrental.service.entityservice.CarService;
-import com.miwi.carrental.service.entityservice.CarStatusService;
-import com.miwi.carrental.service.entityservice.LocationService;
-import com.miwi.carrental.service.viewservice.CarViewAdminService;
+import com.miwi.carrental.service.CarService;
+import java.net.URI;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -23,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping(path = "/manage", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -31,101 +27,72 @@ public class ManageController {
 
   private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-  private final BodyTypeService bodyTypeService;
-  private final CarModelService carModelService;
-  private final LocationService locationService;
   private final CarService carService;
-  private final CarStatusService carStatusService;
-  private final CarViewAdminService carViewAdminService;
 
   public ManageController(
-      final BodyTypeService bodyTypeService,
-      final CarModelService carModelService,
-      final LocationService locationService,
-      final CarService carService,
-      final CarStatusService carStatusService,
-      final CarViewAdminService carViewAdminService) {
-    this.bodyTypeService = bodyTypeService;
-    this.carModelService = carModelService;
-    this.locationService = locationService;
+      final CarService carService) {
     this.carService = carService;
-    this.carStatusService = carStatusService;
-    this.carViewAdminService = carViewAdminService;
   }
-
-  /*@ModelAttribute
-  public void getLists(final Model model) {
-    List<BodyType> bodyTypes = bodyTypeService.findAll();
-    List<CarModel> carModels = carModelService.findAll();
-    List<Location> locations = locationService.findAll();
-    List<CarStatus> carStatuses = carStatusService.findAll();
-
-    model.addAttribute("bodyTypes", bodyTypes);
-    model.addAttribute("carModels", carModels);
-    model.addAttribute("locations", locations);
-    model.addAttribute("carStatuses", carStatuses);
-  }*/
-
-  /*@GetMapping("/new-car")
-  public String newCarForm(Model model) {
-    CarDto newCar = new CarDto();
-    model.addAttribute("car", newCar);
-    return "carForm";
-  }*/
 
   @PostMapping(path = "/add-car", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Car> createCar(@Valid @RequestBody CarDto car,
       BindingResult bindingResult) {
-    if (bindingResult.hasErrors()) {
-
-      System.out.println("there were errors");
-      bindingResult.getAllErrors().forEach(error -> {
-        String errorObjectName = error.getObjectName();
-        logger.warn("Validation failed - Object '{}': {}",
-            errorObjectName.substring(0, 1).toUpperCase() + errorObjectName.substring(1),
-            error.getDefaultMessage());
-      });
-      return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    if (checkErrors(bindingResult)) {
+      return ResponseEntity.badRequest().build();
     }
     Car newCar = carService.createNewCar(car);
 
-    return new ResponseEntity<>(newCar, HttpStatus.CREATED);
+    URI location = ServletUriComponentsBuilder
+        .fromCurrentRequest()
+        .path("cars/{id}")
+        .buildAndExpand(newCar.getId())
+        .toUri();
+
+    return ResponseEntity.created(location).build();
   }
 
   @PatchMapping(path = "/edit-car/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Car> editCar(@Valid @RequestBody CarDto carDto,
+  public ResponseEntity<Car> editCar(@Valid @RequestBody CarDto carDto, @PathVariable("id") Long id,
       BindingResult bindingResult) {
-    if (bindingResult.hasErrors()) {
-      System.out.println("there were errors");
-      bindingResult.getAllErrors().forEach(error -> {
-        String errorObjectName = error.getObjectName();
-        logger.warn("Validation failed - Object '{}': {}",
-            errorObjectName.substring(0, 1).toUpperCase() + errorObjectName.substring(1),
-            error.getDefaultMessage());
-      });
-      return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    if (checkErrors(bindingResult)) {
+      return ResponseEntity.badRequest().build();
     }
-    Car car = carService.createNewCar(carDto);
-    return new ResponseEntity<>(car, HttpStatus.OK);
+    Car car = carService.editCar(id, carDto);
+    return ResponseEntity.ok().body(car);
   }
 
   @DeleteMapping(path = "/delete/{id}")
   public ResponseEntity<Car> deleteCarById(@PathVariable("id") Long id) {
-    if (!carService.findById(id).isPresent()) {
-      return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    if (carService.findById(id) != null) {
+      carService.deleteById(id);
+      return ResponseEntity.ok().build();
     }
-    carService.deleteById(id);
-    return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-  }
+    return ResponseEntity.notFound().build();
+  }/*
 
   @PatchMapping(path = "/make-availability/{carId}/{status}", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Car> makeAvailability(@PathVariable("carId") Long carId,
       @PathVariable("status") String carStatus) {
-    if (!carService.findById(carId).isPresent() || carStatus.isEmpty()) {
-      return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    if (carService.findById(carId).isEmpty() || carStatus.isEmpty()) {
+      return ResponseEntity.notFound().build();
     }
     Car car = carService.findById(carId).get();
     carService.changeToAvailable(carId, carStatus);
-    return new ResponseEntity<>(car, HttpStatus.OK);
+    return ResponseEntity.ok().body(car);
+  }
+*/
+
+  private boolean checkErrors(BindingResult bindingResult) {
+    if (bindingResult.hasErrors()) {
+      System.out.println("there were errors");
+      bindingResult.getAllErrors().forEach(error -> {
+        String errorObjectName = error.getObjectName();
+        logger.warn("Validation failed - Object '{}': {}",
+            errorObjectName.substring(0, 1).toUpperCase() + errorObjectName.substring(1),
+            error.getDefaultMessage());
+      });
+      return true;
+    }
+    return false;
   }
 }

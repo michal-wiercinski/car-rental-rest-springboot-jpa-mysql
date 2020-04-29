@@ -1,7 +1,10 @@
 package com.miwi.carrental.domain.entity;
 
+import java.awt.Color;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,17 +31,19 @@ public class CarParameter {
   @Column(name = "daily_rate")
   private Integer dailyRate;
 
-  @OneToOne
-  @Column(name = "FK_engine")
-  private Engine engine;
+  @Column(name = "color")
+  private String color;
 
-  @OneToOne
-  @Column(name = "FK_drive_train")
-  private DriveTrain driveTrain;
+  @Column(name = "current_mileage")
+  private Integer currentMileage;
 
   @ManyToOne
-  @JoinColumn(name = "FK_car_status")
-  private CarStatus carStatus;
+  @JoinColumn(name = "FK_engine")
+  private Engine engine;
+
+  @ManyToOne
+  @JoinColumn(name = "FK_drive_train")
+  private DriveTrain driveTrain;
 
   @ManyToOne
   @JoinColumn(name = "FK_body_type")
@@ -68,12 +73,20 @@ public class CarParameter {
     this.dailyRate = dailyRate;
   }
 
-  public CarStatus getCarStatus() {
-    return carStatus;
+  public String getColor() {
+    return color;
   }
 
-  public void setCarStatus(CarStatus carStatus) {
-    this.carStatus = carStatus;
+  public void setColor(String color) {
+    this.color = color;
+  }
+
+  public Integer getCurrentMileage() {
+    return currentMileage;
+  }
+
+  public void setCurrentMileage(Integer currentMileage) {
+    this.currentMileage = currentMileage;
   }
 
   public BodyType getBodyType() {

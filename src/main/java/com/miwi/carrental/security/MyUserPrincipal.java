@@ -28,7 +28,7 @@ public class MyUserPrincipal implements UserDetails {
     List<String> rolesName = new ArrayList<>();
 
     for (Role role : roles) {
-      rolesName.add(role.getName());
+      rolesName.add(role.getName().getRoleName());
     }
     return rolesName;
   }

@@ -1,22 +1,33 @@
 package com.miwi.carrental.security.service;
 
+import static com.miwi.carrental.service.generic.GenericService.checkFound;
+
 import com.miwi.carrental.domain.dto.UserDto;
 import com.miwi.carrental.domain.entity.User;
+import com.miwi.carrental.domain.enums.RoleName;
+import com.miwi.carrental.exception.MyResourceNotFoundException;
+import com.miwi.carrental.exception.RestPreconditions;
 import com.miwi.carrental.security.repository.UserDao;
 import com.miwi.carrental.security.validation.EmailExistsException;
-import com.miwi.carrental.service.entityservice.IGenericService;
-import com.miwi.carrental.service.entityservice.RoleService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
-import java.util.Arrays;
+import com.miwi.carrental.service.generic.GenericService;
+import com.miwi.carrental.service.generic.IGenericService;
+import com.miwi.carrental.service.RoleService;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class UserService implements IGenericService<User> {
+public class UserService extends GenericService<User> {
+
+  private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
   private final UserDao userDao;
   private final UserDetailService userDetailService;
@@ -33,8 +44,14 @@ public class UserService implements IGenericService<User> {
     this.roleService = roleService;
   }
 
-  public Optional<User> findByEmail(String email) {
-    return userDao.findByEmail(email);
+  public User findByEmail(String email) {
+    try {
+      return checkFound(userDao.findByEmail(email));
+    } catch (MyResourceNotFoundException ex) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+          "The user with email: " + email + " was not found",
+          ex);
+    }
   }
 
   @Transactional
@@ -60,12 +77,12 @@ public class UserService implements IGenericService<User> {
     user.setLastName(userDto.getLastName());
     user.setEmail(userDto.getEmail());
     user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-    user.setRoles(Arrays.asList(roleService.findById(3L)));
+    user.setRoles(Set.of(roleService.findByRoleName(RoleName.USER)));
     return user;
   }
 
   private boolean emailExist(String email) {
-    return findByEmail(email).isPresent();
+    return userDao.findByEmail(email).isPresent();
   }
 
   @Override
@@ -79,13 +96,18 @@ public class UserService implements IGenericService<User> {
   }
 
   @Override
-  public Optional<User> findById(Long id) {
-    return userDao.findById(id);
+  public User findById(Long id) {
+    try {
+      return RestPreconditions.checkFound(userDao.findById(id));
+    } catch (MyResourceNotFoundException ex) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+          "The user with id: " + id + " was not found",
+          ex);
+    }
   }
 
   @Override
   public void delete(User entity) {
-
   }
 
   @Override
@@ -101,8 +123,8 @@ public class UserService implements IGenericService<User> {
         "proba", "Wrocław", "Warszawska", "33", "71-000");
 
     User user = registrationNewUser(adminUserDto);
-    user.setRoles(Arrays.asList(roleService.findById(2L), roleService.findById(3L)));
-
+    user.setRoles(Set.of(roleService.findByRoleName(RoleName.ADMIN),
+        roleService.findByRoleName(RoleName.USER)));
     save(registrationNewUser(normalUserDto));
     save(user);
   }

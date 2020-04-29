@@ -1,11 +1,27 @@
-INSERT INTO body_type (type_name)
-VALUES ('Hatchback'),
-       ('Kombi'),
-       ('Sedan'),
-       ('SUV'),
-       ('Coupe') ^;
+INSERT INTO body_type (type_name, number_of_seats, number_of_doors, fuel_tank_volume,
+                       volume_of_luggage)
+VALUES ('Hatchback', 5, 5, 70, 250),
+       ('Wagon', 5, 5, 90, 400),
+       ('Sedan', 5, 4, 80, 300),
+       ('SUV', 5, 5, 90, 390),
+       ('Coupe', 2, 2, 65, 200) ^;
 
-INSERT INTO location (location_name)
+INSERT INTO drive_train(PK_drive_train, wheel_drive, gearbox_type, number_of_gears)
+VALUES (1, 'FRONT_WHEEL_DRIVE', 'MANUAL', 6),
+       (2, 'FRONT_WHEEL_DRIVE', 'AUTOMATIC', 6),
+       (3, 'REAR_WHEEL_DRIVE', 'MANUAL', 6),
+       (4, 'FOUR_WHEEL_DRIVE', 'AUTOMATIC', 6),
+       (5, 'FRONT_WHEEL_DRIVE', 'AUTOMATIC', 6) ^;
+
+INSERT INTO engine(PK_engine, power, capacity, fuel_type, fuel_consumption)
+VALUES (1, 200, 2500, 'PETROL', 7.5),
+       (2, 250, 3000, 'PETROL', 9.5),
+       (3, 150, 2000, 'DIESEL', 6.5),
+       (4, 150, 2000, 'HYBRID', 6.0),
+       (5, 300, 4000, 'PETROL', 10.0) ^;
+
+INSERT
+INTO location (location_name)
 VALUES ('Warsaw Chopin Airport '),
        ('John Paul II International Airport Kraków–Balice '),
        ('Gdańsk Lech Wałęsa Airport '),
@@ -23,7 +39,7 @@ VALUES ('Warsaw Chopin Airport '),
 
 
 INSERT INTO role (PK_role, role_name)
-VALUES (1, 'ROLE_SUPERADMIN'),
+VALUES (1, 'ROLE_SUPER_ADMIN'),
        (2, 'ROLE_ADMIN'),
        (3, 'ROLE_USER') ^;
 
@@ -41,13 +57,12 @@ VALUES ('Michał', 'Michałowski', 'hasełko', 'michalowski@michalowski.pl', 1),
 
 INSERT
 INTO rental_status (PK_status, status_desc)
-VALUES (1, 'canceled'),
-       (2, 'rented'),
-       (3, 'returned') ^;
+VALUES (1, 'Canceled'),
+       (2, 'Rented') ^;
 
 INSERT INTO car_status (PK_status_code, status_description)
-VALUES ('AVI', 'available'),
-       ('UAV', 'unavailable') ^;
+VALUES ('AVI', 'Available'),
+       ('UAV', 'Unavailable') ^;
 
 INSERT INTO brand (PK_brand, brand_name)
 VALUES (1, 'AC'),
@@ -1811,20 +1826,19 @@ VALUES (3, 'Cobra', 1),
        (2735, 'Haise', 242),
        (2903, 'Air Concept', 245) ^;
 
-INSERT INTO car_parameter(FK_body_type, current_mileage, engine_size,
-                          power, year_of_prod, fuel_consumption,
-                          daily_rate, FK_car_status)
-VALUES (3, 150, 2000, 160, 2019, 6, 8, 'AVI'),
-       (3, 100, 2500, 200, 2019, 9, 9, 'UAV'),
-       (2, 500, 3993, 560, 2018, 8, 10, 'UAV'),
-       (2, 250, 2993, 280, 2018, 7, 15, 'UAV'),
-       (5, 400, 2000, 520, 2018, 8, 20, 'UAV') ^;
+INSERT INTO car_parameter(FK_body_type, FK_drive_train, FK_engine, current_mileage, year_of_prod,
+                          daily_rate)
+VALUES (3, 2, 3, 160, 2019, 8),
+       (3, 1, 1, 200, 2019, 9),
+       (2, 3, 2, 560, 2018, 10),
+       (2, 5, 4, 280, 2018, 15),
+       (5, 4, 5, 520, 2018, 20) ^;
 
 
 INSERT INTO car (registration_number, FK_car_model, FK_location,
-                 FK_car_parameter)
-VALUES ('AAA000', 58, 3, 1),
-       ('BBB111', 61, 3, 2),
-       ('CCC222', 68, 3, 3),
-       ('DDD333', 96, 3, 4),
-       ('EEE444', 95, 3, 5) ^;
+                 FK_car_parameter, FK_car_status)
+VALUES ('AAA000', 58, 3, 1, 'AVI'),
+       ('BBB111', 61, 3, 2, 'AVI'),
+       ('CCC222', 68, 3, 3, 'UAV'),
+       ('DDD333', 96, 3, 4, 'UAV'),
+       ('EEE444', 95, 3, 5, 'AVI') ^;

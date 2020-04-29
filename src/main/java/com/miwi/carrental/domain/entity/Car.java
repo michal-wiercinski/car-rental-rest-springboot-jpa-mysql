@@ -36,6 +36,10 @@ public class Car implements Serializable {
   @JoinColumn(name = "FK_car_model")
   private CarModel carModel;
 
+  @ManyToOne
+  @JoinColumn(name = "FK_car_status")
+  private CarStatus carStatus;
+
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "FK_car_parameter")
   private CarParameter carParameter;
@@ -76,6 +80,14 @@ public class Car implements Serializable {
 
   public void setCarModel(CarModel carModel) {
     this.carModel = carModel;
+  }
+
+  public CarStatus getCarStatus() {
+    return carStatus;
+  }
+
+  public void setCarStatus(CarStatus carStatus) {
+    this.carStatus = carStatus;
   }
 
   public CarParameter getCarParameter() {

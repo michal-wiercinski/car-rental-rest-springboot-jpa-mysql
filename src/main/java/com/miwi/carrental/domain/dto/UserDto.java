@@ -7,9 +7,13 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import org.springframework.hateoas.server.core.Relation;
 
+@Relation(value = "user", collectionRelation = "users")
 @PasswordMatches(message = "Password and confirm password is not match")
 public class UserDto {
+
+  private Long id;
 
   @NotNull(message = "The first name can't be null")
   @NotEmpty(message = "The first name can't be empty")
@@ -73,6 +77,14 @@ public class UserDto {
     this.street = street;
     this.houseNumber = houseNumber;
     this.zipCode = zipCode;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public String getFirstName() {

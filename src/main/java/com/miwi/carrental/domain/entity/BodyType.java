@@ -1,10 +1,13 @@
 package com.miwi.carrental.domain.entity;
 
+import com.miwi.carrental.domain.enums.BodyTypeName;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,8 +26,9 @@ public class BodyType implements Serializable {
   @Column(name = "PK_body_type")
   private Long id;
 
+  @Enumerated(EnumType.STRING)
   @Column(name = "type_name")
-  private String typeName;
+  private BodyTypeName typeName;
 
   @Column(name = "number_of_seats")
   private Integer numberOfSeats;
@@ -35,11 +39,8 @@ public class BodyType implements Serializable {
   @Column(name = "fuel_tank_volume")
   private Integer fuelTankVolume;
 
-  @Column(name = "min_volume_of_luggage")
-  private Integer minVolumeOfLuggage;
-
-  @Column(name = "max_volume_of_luggage")
-  private Integer maxVolumeOfLuggage;
+  @Column(name = "volume_of_luggage")
+  private Integer volumeOfLuggage;
 
   @OneToMany(mappedBy = "bodyType",
       cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
@@ -53,11 +54,11 @@ public class BodyType implements Serializable {
     this.id = id;
   }
 
-  public String getTypeName() {
+  public BodyTypeName getTypeName() {
     return typeName;
   }
 
-  public void setTypeName(String typeName) {
+  public void setTypeName(BodyTypeName typeName) {
     this.typeName = typeName;
   }
 
@@ -94,19 +95,11 @@ public class BodyType implements Serializable {
     this.fuelTankVolume = fuelTankVolume;
   }
 
-  public Integer getMinVolumeOfLuggage() {
-    return minVolumeOfLuggage;
+  public Integer getVolumeOfLuggage() {
+    return volumeOfLuggage;
   }
 
-  public void setMinVolumeOfLuggage(Integer minVolumeOfLuggage) {
-    this.minVolumeOfLuggage = minVolumeOfLuggage;
-  }
-
-  public Integer getMaxVolumeOfLuggage() {
-    return maxVolumeOfLuggage;
-  }
-
-  public void setMaxVolumeOfLuggage(Integer maxVolumeOfLuggage) {
-    this.maxVolumeOfLuggage = maxVolumeOfLuggage;
+  public void setVolumeOfLuggage(Integer maxVolumeOfLuggage) {
+    this.volumeOfLuggage = maxVolumeOfLuggage;
   }
 }

@@ -1,10 +1,15 @@
 package com.miwi.carrental.domain.entity;
 
+import com.miwi.carrental.domain.enums.CarStatusType;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
 
@@ -18,8 +23,12 @@ public class CarStatus {
   @Id
   private String statusCode;
 
+  @Enumerated(EnumType.STRING)
   @Column(name = "status_description")
-  private String statusDescription;
+  private CarStatusType carStatusName;
+
+  @OneToMany(mappedBy = "carStatus")
+  private List<Car> cars;
 
   public String getStatusCode() {
     return statusCode;
@@ -29,11 +38,11 @@ public class CarStatus {
     this.statusCode = statusCode;
   }
 
-  public String getStatusDescription() {
-    return statusDescription;
+  public CarStatusType getCarStatusName() {
+    return carStatusName;
   }
 
-  public void setStatusDescription(String statusDescription) {
-    this.statusDescription = statusDescription;
+  public void setCarStatusName(CarStatusType carStatusName) {
+    this.carStatusName = carStatusName;
   }
 }

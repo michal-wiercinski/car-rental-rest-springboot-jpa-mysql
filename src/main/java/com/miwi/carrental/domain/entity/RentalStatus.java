@@ -1,5 +1,6 @@
 package com.miwi.carrental.domain.entity;
 
+import com.miwi.carrental.domain.enums.RentalStatusType;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +22,7 @@ public class RentalStatus {
   private Long id;
 
   @Column(name = "status_desc")
-  private String statusDescription;
+  private RentalStatusType rentalStatusType;
 
   @OneToMany(mappedBy = "rentalStatus")
   private List<Rental> rentals;
@@ -34,12 +35,12 @@ public class RentalStatus {
     this.id = id;
   }
 
-  public String getStatusDescription() {
-    return statusDescription;
+  public RentalStatusType getRentalStatusType() {
+    return rentalStatusType;
   }
 
-  public void setStatusDescription(String statusDescription) {
-    this.statusDescription = statusDescription;
+  public void setRentalStatusType(RentalStatusType rentalStatusType) {
+    this.rentalStatusType = rentalStatusType;
   }
 
   public List<Rental> getRentals() {

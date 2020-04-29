@@ -1,6 +1,9 @@
-package mira.dbproject.carrental.domain.dto;
+package com.miwi.carrental.domain.dto;
 
-public class RoleDto {
+import org.springframework.hateoas.server.core.Relation;
+
+@Relation(value = "role", collectionRelation = "roles")
+public class RoleDto  {
 
   private Long id;
   private String name;

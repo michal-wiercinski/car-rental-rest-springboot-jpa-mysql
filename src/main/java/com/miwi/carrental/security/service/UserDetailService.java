@@ -4,7 +4,7 @@ import com.miwi.carrental.domain.dto.UserDto;
 import com.miwi.carrental.domain.entity.Address;
 import com.miwi.carrental.domain.entity.UserDetail;
 import com.miwi.carrental.security.repository.UserDetailDao;
-import com.miwi.carrental.service.entityservice.AddressService;
+import com.miwi.carrental.service.AddressService;
 import org.springframework.stereotype.Service;
 
 @Service

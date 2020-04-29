@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests()
+    /*http.authorizeRequests()
         .antMatchers("/cars/our-fleet/**", "/rent-car/all-rent")
         .access("hasRole('ADMIN')")
         .antMatchers("/rent-car/**", "/manage/**")
@@ -59,6 +59,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .permitAll()
         .and()
         .logout()
-        .logoutSuccessUrl("/");
+        .logoutSuccessUrl("/");*/
   }
 }

@@ -5,7 +5,7 @@ public enum FuelType {
 
   private final String type;
 
-  FuelType(String type) {
+  private FuelType(String type) {
     this.type = type;
   }
 
