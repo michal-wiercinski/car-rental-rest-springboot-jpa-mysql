@@ -19,34 +19,26 @@ public class MyUserDetailsService implements UserDetailsService {
 
   private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-  private final RoleService roleService;
   private final UserService userService;
 
   public MyUserDetailsService(
       final RoleService roleService,
       final UserService userService) {
-    this.roleService = roleService;
     this.userService = userService;
   }
 
   @Override
   @Transactional
   public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-    Optional<User> user = userService.findByEmail(s);
-    if (user.isPresent()) {
-      logger.info("User {} has been found", user.get().getEmail());
-      MyUserPrincipal myUserPrincipal = new MyUserPrincipal(user.get());
-      logger.warn("Roles: {}", myUserPrincipal.getAuthorities());
-      return new org.springframework.security.core.userdetails.User(
-          myUserPrincipal.getUsername(),
-          myUserPrincipal.getPassword(),
-          myUserPrincipal.isEnabled(),
-          myUserPrincipal.isAccountNonExpired(),
-          myUserPrincipal.isCredentialsNonExpired(),
-          myUserPrincipal.isAccountNonLocked(),
-          myUserPrincipal.getAuthorities());
-    } else {
-      throw new UsernameNotFoundException(String.format("User: %s is not found", s));
-    }
+    User user = userService.findByEmail(s);
+    MyUserPrincipal myUserPrincipal = new MyUserPrincipal(user);
+    return new org.springframework.security.core.userdetails.User(
+        myUserPrincipal.getUsername(),
+        myUserPrincipal.getPassword(),
+        myUserPrincipal.isEnabled(),
+        myUserPrincipal.isAccountNonExpired(),
+        myUserPrincipal.isCredentialsNonExpired(),
+        myUserPrincipal.isAccountNonLocked(),
+        myUserPrincipal.getAuthorities());
   }
 }

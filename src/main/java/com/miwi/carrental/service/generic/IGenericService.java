@@ -22,4 +22,7 @@ public interface IGenericService<T> {
   @Transactional
   void deleteById(Long id);
 
+  Page<T> findAll(Pageable pageable);
+
+  // <T> Page<T> checkFound(final Page<T> resources);
 }

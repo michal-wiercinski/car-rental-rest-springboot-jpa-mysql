@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public class GenericService<T> implements IGenericService<T> {
 
@@ -36,6 +37,11 @@ public class GenericService<T> implements IGenericService<T> {
   public void deleteById(Long id) {
   }
 
+  @Override
+  public Page<T> findAll(Pageable pageable) {
+    return null;
+  }
+
   public static <T> T checkFound(final Optional<T> resource) throws MyResourceNotFoundException {
     if (resource.isEmpty()) {
       throw new MyResourceNotFoundException("Resource not found");
@@ -44,7 +50,7 @@ public class GenericService<T> implements IGenericService<T> {
   }
 
   public static <T> Page<T> checkFound(final Page<T> resources) throws MyResourceNotFoundException {
-    if (resources.isEmpty()) {
+    if (resources.getSize() <= 0) {
       throw new MyResourceNotFoundException("Resources not found");
     }
     return resources;

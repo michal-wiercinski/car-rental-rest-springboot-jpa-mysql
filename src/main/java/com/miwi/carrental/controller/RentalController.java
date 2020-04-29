@@ -13,7 +13,6 @@ import com.miwi.carrental.service.RentalDetailService;
 import com.miwi.carrental.service.RentalService;
 import java.net.URI;
 import java.security.Principal;
-import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +22,6 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.PagedModel;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -80,7 +78,6 @@ public class RentalController {
     return ResponseEntity.ok().body(rentalDto);
   }
 
-
   @GetMapping("/all-rent")
   public ResponseEntity<Page<RentalDto>> getAllRental(
       Pageable pageable, Sort sort, HttpServletRequest httpServletRequest) {
@@ -132,7 +129,4 @@ public class RentalController {
 
     return rentalDtoPagedModel;
   }
-
-  // private void addMyRentLink()
-
 }

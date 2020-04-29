@@ -7,7 +7,6 @@ import java.net.URI;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -82,6 +81,7 @@ public class ManageController {
     return ResponseEntity.ok().body(car);
   }
 */
+
   private boolean checkErrors(BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
       System.out.println("there were errors");

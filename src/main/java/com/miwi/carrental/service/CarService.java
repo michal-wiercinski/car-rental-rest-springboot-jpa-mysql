@@ -3,9 +3,9 @@ package com.miwi.carrental.service;
 import com.miwi.carrental.domain.dto.CarDto;
 import com.miwi.carrental.domain.entity.Car;
 import com.miwi.carrental.domain.entity.CarParameter;
+import com.miwi.carrental.domain.entity.CarStatus;
 import com.miwi.carrental.domain.enums.CarStatusType;
 import com.miwi.carrental.exception.MyResourceNotFoundException;
-import com.miwi.carrental.exception.RestPreconditions;
 import com.miwi.carrental.mapper.dto.CarDtoMapper;
 import com.miwi.carrental.repository.CarDao;
 import com.miwi.carrental.service.generic.GenericService;
@@ -49,28 +49,18 @@ public class CarService extends GenericService<Car> {
     carDao.changeToAvailable(carId, carStatus);
   }
 
-  public Page<Car> findAll(Pageable pageable) {
-    try {
-      return carDao.findAll(pageable);
-    } catch (NoResultException ex) {
-      logger.warn("Cars page is empty");
-      return Page.empty();
-    }
-  }
-
   public Page<Car> findByAvailability(String availabilityParameter,
       Pageable pageable) {
     if (validCarStatusParam(availabilityParameter)) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad availability parameter");
     }
     try {
-      return carDao.findAllByCarStatusLike(
-          carStatusService.findByCarStatusName(CarStatusType.valueOf(availabilityParameter)),
-          pageable);
-    } catch (
-        NoResultException ex) {
-      logger.warn("No results found for the parameter: {}", availabilityParameter);
-      return Page.empty();
+      CarStatus carStatus = carStatusService
+          .findByCarStatusName(CarStatusType.valueOf(availabilityParameter));
+      return checkFound(carDao.findAllByCarStatusLike(carStatus, pageable));
+    } catch (MyResourceNotFoundException ex) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+          "No cars found for status: " + availabilityParameter);
     }
 
   }
@@ -114,9 +104,18 @@ public class CarService extends GenericService<Car> {
     try {
       return checkFound(carDao.findById(id));
     } catch (MyResourceNotFoundException ex) {
-      // logger.warn("The car with id: {} was not found ", id);
       throw new ResponseStatusException(HttpStatus.NOT_FOUND,
           "The car with id: " + id + " was not found");
+    }
+  }
+
+  @Override
+  public Page<Car> findAll(Pageable pageable) {
+    try {
+      return checkFound(carDao.findAll(pageable));
+    } catch (MyResourceNotFoundException ex) {
+      logger.warn("Cars page is empty");
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Page with cars not found", ex);
     }
   }
 
