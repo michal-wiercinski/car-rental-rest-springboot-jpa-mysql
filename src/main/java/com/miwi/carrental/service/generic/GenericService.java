@@ -55,4 +55,11 @@ public class GenericService<T> implements IGenericService<T> {
     }
     return resources;
   }
+
+  public static <T> List<T> checkFound(final List<T> resources) throws MyResourceNotFoundException {
+    if (resources.size() <= 0) {
+      throw new MyResourceNotFoundException("Resources not found");
+    }
+    return resources;
+  }
 }

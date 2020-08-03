@@ -2,6 +2,7 @@ package com.miwi.carrental.mapper.dto;
 
 import com.miwi.carrental.domain.dto.CarDto;
 import com.miwi.carrental.domain.entity.Car;
+import com.miwi.carrental.domain.enums.CarStatusType;
 import com.miwi.carrental.mapper.generic.GenericMapper;
 import com.miwi.carrental.service.CarModelService;
 import com.miwi.carrental.service.CarStatusService;
@@ -16,30 +17,35 @@ public class CarDtoMapper extends GenericMapper<Car, CarDto> {
   private final CarParameterDtoMapper carParameterMapper;
   private final CarModelDtoMapper carModelDtoMapper;
   private final LocationDtoMapper locationDtoMapper;
+  private final LocationService locationService;
   private final CarStatusService carStatusService;
 
   public CarDtoMapper(final CarModelService carModelService,
-      final LocationService locationService,
       final CarParameterDtoMapper carParameterMapper,
       final CarModelDtoMapper carModelDtoMapper,
       final LocationDtoMapper locationDtoMapper,
+      final LocationService locationService,
       CarStatusService carStatusService) {
     this.carModelService = carModelService;
     this.carParameterMapper = carParameterMapper;
     this.carModelDtoMapper = carModelDtoMapper;
     this.locationDtoMapper = locationDtoMapper;
+    this.locationService = locationService;
     this.carStatusService = carStatusService;
+
   }
+
 
   @Override
   public Car mapDtoToEntity(CarDto dto) {
     Car car = new Car();
 
     car.setRegistrationNumber(dto.getRegistrationNumber());
-    car.setCarModel(carModelService.findByName(dto.getCarModelDto().getCarModelName()));
-    car.setLocation(locationDtoMapper.mapDtoToEntity(dto.getLocationDto()));
+    car.setCarModel(carModelService.findById(dto.getCarModelDto().getId()));
+    car.setLocation(locationService.findById(dto.getLocationDto().getId()));
     car.setCarParameter(carParameterMapper.mapDtoToEntity(dto.getCarParameterDto()));
-    car.setCarStatus(carStatusService.getCarStatusFromCarParamDto(dto));
+    car.setCarStatus(
+        carStatusService.findByCarStatusName(CarStatusType.valueOf(dto.getCarStatus())));
 
     return car;
   }

@@ -1,3 +1,4 @@
+/*
 package com.miwi.carrental.controller;
 
 import com.miwi.carrental.domain.dto.UserDto;
@@ -52,4 +53,4 @@ public class RegistrationController {
     }
     return "redirect:/login";
   }
-}
+}*/

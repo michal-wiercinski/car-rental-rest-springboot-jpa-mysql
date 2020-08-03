@@ -4,10 +4,14 @@ import com.miwi.carrental.domain.dto.CarParameterDto;
 import com.miwi.carrental.domain.entity.DriveTrain;
 import com.miwi.carrental.domain.enums.GearboxType;
 import com.miwi.carrental.domain.enums.WheelDrive;
+import com.miwi.carrental.exception.MyResourceNotFoundException;
 import com.miwi.carrental.repository.DriveTrainDao;
 import com.miwi.carrental.service.generic.GenericService;
+import java.util.List;
 import java.util.Optional;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class DriveTrainService extends GenericService<DriveTrain> {
@@ -21,7 +25,8 @@ public class DriveTrainService extends GenericService<DriveTrain> {
   public DriveTrain getDriveTrainFromNewCarParam(CarParameterDto carParameterDto) {
     Optional<DriveTrain> driveTrain = findByWheelDriveAndGearbox(
         WheelDrive.valueOf(carParameterDto.getWheelDrive()),
-        GearboxType.valueOf(carParameterDto.getGearboxType()));
+        GearboxType.valueOf(carParameterDto.getGearboxType()),
+        carParameterDto.getNumberOfGears());
 
     if (driveTrain.isPresent()) {
       return driveTrain.get();
@@ -29,19 +34,23 @@ public class DriveTrainService extends GenericService<DriveTrain> {
     DriveTrain newDriveTrain = new DriveTrain();
     newDriveTrain.setWheelDrive(WheelDrive.valueOf(carParameterDto.getWheelDrive()));
     newDriveTrain.setGearboxType(GearboxType.valueOf(carParameterDto.getGearboxType()));
+    newDriveTrain.setNumberOfGears(carParameterDto.getNumberOfGears());
 
     return newDriveTrain;
   }
 
-  public Optional<DriveTrain> findByWheelDriveAndGearbox(WheelDrive wheelDrive,
-      GearboxType gearboxType) {
-    return driveTrainDao.findByWheelDriveAndGearboxType(wheelDrive, gearboxType);
+  private Optional<DriveTrain> findByWheelDriveAndGearbox(WheelDrive wheelDrive,
+      GearboxType gearboxType, Integer numberOfGears) {
+    return driveTrainDao.findByWheelDriveAndGearboxTypeAndNumberOfGears(wheelDrive, gearboxType, numberOfGears);
   }
 
   public DriveTrain editDriveTrainByDto(CarParameterDto carParameterDto) {
     DriveTrain driveTrain = new DriveTrain();
-    Optional<DriveTrain> optDriveTrain = findByWheelDriveAndGearbox(WheelDrive.valueOf(carParameterDto.getWheelDrive()),
-        GearboxType.valueOf(carParameterDto.getGearboxType()));
+    Optional<DriveTrain> optDriveTrain = findByWheelDriveAndGearbox(
+        WheelDrive.valueOf(carParameterDto.getWheelDrive()),
+        GearboxType.valueOf(carParameterDto.getGearboxType()),
+        carParameterDto.getNumberOfGears());
+
     if (optDriveTrain.isEmpty()) {
       if (carParameterDto.getWheelDrive() != null) {
         driveTrain.setWheelDrive(WheelDrive.valueOf(carParameterDto.getWheelDrive()));
@@ -53,5 +62,15 @@ public class DriveTrainService extends GenericService<DriveTrain> {
     }
 
     return optDriveTrain.get();
+  }
+
+  @Override
+  public List<DriveTrain> findAll() {
+    try {
+      return checkFound(driveTrainDao.findAll());
+    } catch (
+        MyResourceNotFoundException ex) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "List of drive trains not found", ex);
+    }
   }
 }

@@ -23,6 +23,7 @@ public class BrandService extends GenericService<Brand> {
     this.brandDao = brandDao;
   }
 
+
   @Override
   public Brand findById(Long id) {
     try {

@@ -2,12 +2,13 @@ package com.miwi.carrental.mapper.dto;
 
 import com.miwi.carrental.domain.dto.LocationDto;
 import com.miwi.carrental.domain.entity.Location;
+import com.miwi.carrental.mapper.generic.GenericMapper;
 import com.miwi.carrental.service.AddressService;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LocationDtoMapper {
+public class LocationDtoMapper extends GenericMapper<Location, LocationDto> {
 
   private final AddressService addressService;
 

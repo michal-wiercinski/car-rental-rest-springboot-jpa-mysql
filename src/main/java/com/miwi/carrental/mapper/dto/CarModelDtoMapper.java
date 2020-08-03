@@ -2,11 +2,12 @@ package com.miwi.carrental.mapper.dto;
 
 import com.miwi.carrental.domain.dto.CarModelDto;
 import com.miwi.carrental.domain.entity.CarModel;
+import com.miwi.carrental.mapper.generic.GenericMapper;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CarModelDtoMapper {
+public class CarModelDtoMapper extends GenericMapper<CarModel, CarModelDto> {
 
   @Transactional
   public CarModel mapDtoToEntity(CarModelDto carModelDto) {

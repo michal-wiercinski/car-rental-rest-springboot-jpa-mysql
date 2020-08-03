@@ -1,6 +1,7 @@
 package com.miwi.carrental.domain.entity;
 
 import java.awt.Color;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -29,7 +30,7 @@ public class CarParameter {
   private Integer yearOfProd;
 
   @Column(name = "daily_rate")
-  private Integer dailyRate;
+  private Double dailyRate;
 
   @Column(name = "color")
   private String color;
@@ -37,15 +38,15 @@ public class CarParameter {
   @Column(name = "current_mileage")
   private Integer currentMileage;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.PERSIST)
   @JoinColumn(name = "FK_engine")
   private Engine engine;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.PERSIST)
   @JoinColumn(name = "FK_drive_train")
   private DriveTrain driveTrain;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.PERSIST)
   @JoinColumn(name = "FK_body_type")
   private BodyType bodyType;
 
@@ -65,11 +66,11 @@ public class CarParameter {
     this.yearOfProd = yearOfProd;
   }
 
-  public Integer getDailyRate() {
+  public Double getDailyRate() {
     return dailyRate;
   }
 
-  public void setDailyRate(Integer dailyRate) {
+  public void setDailyRate(Double dailyRate) {
     this.dailyRate = dailyRate;
   }
 

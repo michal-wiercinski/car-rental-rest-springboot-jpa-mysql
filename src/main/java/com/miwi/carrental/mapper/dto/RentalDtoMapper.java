@@ -1,3 +1,4 @@
+/*
 package com.miwi.carrental.mapper.dto;
 
 import com.miwi.carrental.domain.dto.RentalDto;
@@ -33,3 +34,4 @@ public class RentalDtoMapper extends GenericMapper<Rental, RentalDto> {
     return rentalDto;
   }
 }
+*/

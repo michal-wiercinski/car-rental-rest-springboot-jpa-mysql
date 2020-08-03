@@ -1,3 +1,4 @@
+/*
 package com.miwi.carrental.service;
 
 import com.miwi.carrental.domain.dto.RentalDto;
@@ -111,4 +112,4 @@ public class RentalService extends GenericService<Rental> {
   public void deleteById(Long id) {
     delete(findById(id));
   }
-}
+}*/

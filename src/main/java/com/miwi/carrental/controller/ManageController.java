@@ -3,7 +3,6 @@ package com.miwi.carrental.controller;
 import com.miwi.carrental.domain.dto.CarDto;
 import com.miwi.carrental.domain.entity.Car;
 import com.miwi.carrental.service.CarService;
-import java.net.URI;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,15 +13,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+@CrossOrigin("*")
 @RestController
-@RequestMapping(path = "/manage", produces = MediaType.APPLICATION_JSON_VALUE)
-@CrossOrigin(origins = "*")
+@RequestMapping(path = "/manage ", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ManageController {
 
   private Logger logger = LoggerFactory.getLogger(getClass().getName());
@@ -34,8 +31,9 @@ public class ManageController {
     this.carService = carService;
   }
 
+/*
   @PostMapping(path = "/add-car", consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Car> createCar(@Valid @RequestBody CarDto car,
+  public ResponseEntity<Car> createCar(@Valid @RequestBody NewCarDto car,
       BindingResult bindingResult) {
     if (checkErrors(bindingResult)) {
       return ResponseEntity.badRequest().build();
@@ -50,6 +48,7 @@ public class ManageController {
 
     return ResponseEntity.created(location).build();
   }
+*/
 
   @PatchMapping(path = "/edit-car/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Car> editCar(@Valid @RequestBody CarDto carDto, @PathVariable("id") Long id,
@@ -68,7 +67,9 @@ public class ManageController {
       return ResponseEntity.ok().build();
     }
     return ResponseEntity.notFound().build();
-  }/*
+  }
+
+  /*
 
   @PatchMapping(path = "/make-availability/{carId}/{status}", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Car> makeAvailability(@PathVariable("carId") Long carId,

@@ -2,8 +2,8 @@ package com.miwi.carrental.service;
 
 import com.miwi.carrental.domain.entity.CarModel;
 import com.miwi.carrental.exception.MyResourceNotFoundException;
-import com.miwi.carrental.exception.RestPreconditions;
 import com.miwi.carrental.repository.CarModelDao;
+import com.miwi.carrental.repository.CarModelDaoImpl;
 import com.miwi.carrental.service.generic.GenericService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,18 +17,37 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class CarModelService extends GenericService<CarModel> {
 
+  private static final int RESULTS_LIMIT_FOR_AUTOCOMPLETION = 10;
   private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
   private final CarModelDao carModelDao;
+  private final CarModelDaoImpl carModelDaoImpl;
 
-  public CarModelService(final CarModelDao carModelDao) {
+  public CarModelService(final CarModelDao carModelDao,
+      CarModelDaoImpl carModelDaoImpl) {
     this.carModelDao = carModelDao;
+    this.carModelDaoImpl = carModelDaoImpl;
+  }
+
+  public List<CarModel> findByParamContaining(String param) {
+    try {
+      return checkFound(
+          carModelDaoImpl.searchByCarModelNameOrBrandName(param, RESULTS_LIMIT_FOR_AUTOCOMPLETION));
+    } catch (MyResourceNotFoundException ex) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+          "The cars model with name: " + param + " were not found",
+          ex);
+    }
   }
 
   public CarModel findByName(String carModelName) {
-    Optional<CarModel> carModel = carModelDao.findByName(carModelName);
-
-    return carModel.orElse(new CarModel());
+    try {
+      return checkFound(carModelDao.findByName(carModelName));
+    } catch (MyResourceNotFoundException ex) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+          "The car model with name: " + carModelName + " was not found",
+          ex);
+    }
   }
 
   @Override

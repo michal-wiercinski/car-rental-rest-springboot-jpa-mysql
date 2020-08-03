@@ -1,3 +1,4 @@
+/*
 package com.miwi.carrental.config;
 
 import com.miwi.carrental.security.service.MyUserDetailsService;
@@ -15,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
@@ -44,7 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    /*http.authorizeRequests()
+    */
+/*http.authorizeRequests()
         .antMatchers("/cars/our-fleet/**", "/rent-car/all-rent")
         .access("hasRole('ADMIN')")
         .antMatchers("/rent-car/**", "/manage/**")
@@ -59,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .permitAll()
         .and()
         .logout()
-        .logoutSuccessUrl("/");*/
+        .logoutSuccessUrl("/");*//*
+
   }
-}
+}*/

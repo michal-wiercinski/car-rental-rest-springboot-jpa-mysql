@@ -1,16 +1,19 @@
 package com.miwi.carrental.service;
 
+import com.miwi.carrental.domain.dto.NewCarDto;
 import com.miwi.carrental.domain.dto.CarDto;
 import com.miwi.carrental.domain.entity.Car;
-import com.miwi.carrental.domain.entity.CarParameter;
 import com.miwi.carrental.domain.entity.CarStatus;
+import com.miwi.carrental.domain.enums.BodyTypeName;
 import com.miwi.carrental.domain.enums.CarStatusType;
+import com.miwi.carrental.domain.enums.FuelType;
+import com.miwi.carrental.domain.enums.GearboxType;
 import com.miwi.carrental.exception.MyResourceNotFoundException;
 import com.miwi.carrental.mapper.dto.CarDtoMapper;
+import com.miwi.carrental.mapper.dto.NewCarDtoMapper;
 import com.miwi.carrental.repository.CarDao;
 import com.miwi.carrental.service.generic.GenericService;
 import java.util.List;
-import javax.persistence.NoResultException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -27,18 +30,21 @@ public class CarService extends GenericService<Car> {
   private final CarDao carDao;
 
   private final CarDtoMapper carMapper;
+  private final NewCarDtoMapper newCarMapper;
   private final CarParameterService carParameterService;
   private final CarStatusService carStatusService;
   private final CarModelService carModelService;
   private final LocationService locationService;
 
   public CarService(final CarDao carDao, final CarDtoMapper carMapper,
+      NewCarDtoMapper newCarMapper,
       final CarParameterService carParameterService,
       final CarStatusService carStatusService,
       CarModelService carModelService,
       LocationService locationService) {
     this.carDao = carDao;
     this.carMapper = carMapper;
+    this.newCarMapper = newCarMapper;
     this.carParameterService = carParameterService;
     this.carStatusService = carStatusService;
     this.carModelService = carModelService;
@@ -47,6 +53,37 @@ public class CarService extends GenericService<Car> {
 
   public void changeToAvailable(Long carId, String carStatus) {
     carDao.changeToAvailable(carId, carStatus);
+  }
+
+  public Page<Car> findByBodyTypeName(String typeNameParam, Pageable pageable) {
+    try {
+      return checkFound(carDao
+          .findAllByCarParameter_BodyTypeTypeName(BodyTypeName.valueOf(typeNameParam), pageable));
+    } catch (MyResourceNotFoundException ex) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+          "No cars found for body type name: " + typeNameParam);
+    }
+  }
+
+  public Page<Car> findByGearboxType(String typeNameParam, Pageable pageable) {
+    try {
+      return checkFound(carDao
+          .findAllByCarParameter_DriveTrainGearboxType(GearboxType.valueOf(typeNameParam),
+              pageable));
+    } catch (MyResourceNotFoundException ex) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+          "No cars found for gearbox type name: " + typeNameParam);
+    }
+  }
+
+  public Page<Car> findByFuelType(String typeNameParam, Pageable pageable) {
+    try {
+      return checkFound(carDao
+          .findAllByCarParameter_EngineFuelType(FuelType.valueOf(typeNameParam), pageable));
+    } catch (MyResourceNotFoundException ex) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+          "No cars found for fuel type name: " + typeNameParam);
+    }
   }
 
   public Page<Car> findByAvailability(String availabilityParameter,
@@ -65,10 +102,9 @@ public class CarService extends GenericService<Car> {
 
   }
 
-  public Car createNewCar(CarDto carDto) {
-    Car car = carMapper.mapDtoToEntity(carDto);
-    CarParameter carParameter = carParameterService.createNewParameter(carDto);
-    logger.debug("carDto has been mapped to entity");
+  public Car createNewCar(CarDto newCarDto) {
+    Car car = carMapper.mapDtoToEntity(newCarDto);
+    logger.debug("newCarDto has been mapped to entity");
     save(car);
     logger.info("New car for id {} has been created ", car.getId());
     return car;

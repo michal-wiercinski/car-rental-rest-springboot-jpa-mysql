@@ -1,17 +1,24 @@
 package com.miwi.carrental.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.miwi.carrental.domain.dto.CarParameterDto;
 import com.miwi.carrental.validation.OnUpdate;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import org.springframework.hateoas.RepresentationModel;
-import org.springframework.hateoas.server.core.Relation;
+import org.springframework.data.rest.core.annotation.RestResource;
 
-@Relation(value = "car", collectionRelation = "cars")
-public class CarDto extends RepresentationModel<CarDto> {
 
-  private Long id;
+public class NewCarDto {
 
+  @JsonProperty
+  @NotNull
+  private Long carModelId;
+
+  @JsonProperty
+  @NotNull
+  private Long locationId;
+
+  @JsonProperty
   @NotNull(message = "The registration number can't be null", groups = OnUpdate.class)
   @Size(min = 4, max = 7, message = "The registration number must have a minimum of 3 and a maximum of 7 letters")
   private String registrationNumber;
@@ -19,21 +26,23 @@ public class CarDto extends RepresentationModel<CarDto> {
   @NotNull(message = "The car status can't be null", groups = OnUpdate.class)
   private String carStatus;
 
-  @JsonProperty(value = "location")
-  private LocationDto locationDto;
-
-  @JsonProperty(value = "carModel")
-  private CarModelDto carModelDto;
-
   @JsonProperty(value = "carParameter")
   private CarParameterDto carParameterDto;
 
-  public Long getId() {
-    return id;
+  public Long getCarModelId() {
+    return carModelId;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setCarModelId(Long carModelId) {
+    this.carModelId = carModelId;
+  }
+
+  public Long getLocationId() {
+    return locationId;
+  }
+
+  public void setLocationId(Long locationId) {
+    this.locationId = locationId;
   }
 
   public String getRegistrationNumber() {
@@ -52,27 +61,11 @@ public class CarDto extends RepresentationModel<CarDto> {
     this.carStatus = carStatus;
   }
 
-  public CarModelDto getCarModelDto() {
-    return carModelDto;
-  }
-
-  public void setCarModelDto(CarModelDto carModelDto) {
-    this.carModelDto = carModelDto;
-  }
-
   public CarParameterDto getCarParameterDto() {
     return carParameterDto;
   }
 
   public void setCarParameterDto(CarParameterDto carParameterDto) {
     this.carParameterDto = carParameterDto;
-  }
-
-  public LocationDto getLocationDto() {
-    return locationDto;
-  }
-
-  public void setLocationDto(LocationDto locationDto) {
-    this.locationDto = locationDto;
   }
 }

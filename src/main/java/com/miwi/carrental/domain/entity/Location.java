@@ -9,12 +9,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Data;
 
-
+@NamedQueries({
+    @NamedQuery(name = "Location.findByNameWithConcat",
+        query = "SELECT l FROM Location l LEFT JOIN  Address a ON  l.address.id = a.id "
+            + "WHERE l.name LIKE CONCAT('%',:param,'%') "
+            + "OR  a.city LIKE CONCAT('%',:param,'%') "
+            + "OR a.street LIKE CONCAT('%',:param,'%')"
+            + "OR a.zipCode LIKE CONCAT('%',:param,'%') ")
+})
 @Data
 @Table(name = "location")
 @Entity

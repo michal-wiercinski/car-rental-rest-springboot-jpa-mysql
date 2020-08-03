@@ -1,3 +1,4 @@
+/*
 package com.miwi.carrental.config;
 
 import org.springframework.context.annotation.Bean;
@@ -7,7 +8,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
-public class RestConfig {
+public class RestConfig  {
 
   @Bean
   public CorsFilter corsFilter() {
@@ -25,3 +26,4 @@ public class RestConfig {
     return new CorsFilter(source);
   }
 }
+*/

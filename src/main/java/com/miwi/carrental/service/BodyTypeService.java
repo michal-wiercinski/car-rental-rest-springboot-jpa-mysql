@@ -4,7 +4,6 @@ import com.miwi.carrental.domain.dto.CarParameterDto;
 import com.miwi.carrental.domain.entity.BodyType;
 import com.miwi.carrental.domain.enums.BodyTypeName;
 import com.miwi.carrental.exception.MyResourceNotFoundException;
-import com.miwi.carrental.exception.RestPreconditions;
 import com.miwi.carrental.repository.BodyTypeDao;
 import com.miwi.carrental.service.generic.GenericService;
 import java.util.List;
@@ -17,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class BodyTypeService extends GenericService<BodyType> {
+
   private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
   private final BodyTypeDao bodyTypeDao;
@@ -32,8 +32,20 @@ public class BodyTypeService extends GenericService<BodyType> {
             bodyTypeName, seats, doors, fuelTank, luggage);
   }
 
+  public List<BodyType> findByParamContaining(String param) {
+    try {
+      return checkFound(
+          bodyTypeDao.findAllByTypeNameContaining(BodyTypeName.valueOf(param)));
+    } catch (MyResourceNotFoundException ex) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+          "The body type with param: " + param + " was not found",
+          ex);
+    }
+  }
+
   public BodyType getBodyTypeFromNewCarParam(CarParameterDto carParameterDto) {
-    Optional<BodyType> bodyType = findByAllParameters(BodyTypeName.valueOf(carParameterDto.getBodyTypeName()),
+    Optional<BodyType> bodyType = findByAllParameters(
+        BodyTypeName.valueOf(carParameterDto.getBodyTypeName()),
         carParameterDto.getNumberOfSeats(),
         carParameterDto.getNumberOfDoors(), carParameterDto.getFuelTankVolume(),
         carParameterDto.getVolumeOfLuggage());
@@ -54,7 +66,8 @@ public class BodyTypeService extends GenericService<BodyType> {
 
   public BodyType editBodyTypeByDto(CarParameterDto carParameterDto) {
     BodyType bodyType = new BodyType();
-    Optional<BodyType> optBodyType = findByAllParameters(BodyTypeName.valueOf(carParameterDto.getBodyTypeName()),
+    Optional<BodyType> optBodyType = findByAllParameters(
+        BodyTypeName.valueOf(carParameterDto.getBodyTypeName()),
         carParameterDto.getNumberOfSeats(), carParameterDto.getNumberOfDoors(),
         carParameterDto.getFuelTankVolume(), carParameterDto.getVolumeOfLuggage());
 
@@ -82,7 +95,14 @@ public class BodyTypeService extends GenericService<BodyType> {
 
   @Override
   public List<BodyType> findAll() {
-    return bodyTypeDao.findAll();
+    try {
+      return checkFound(bodyTypeDao.findAll());
+    } catch (
+        MyResourceNotFoundException ex) {
+      logger.warn("Cars page is empty");
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Page with cars not found", ex);
+    }
+
   }
 
   @Override
@@ -96,5 +116,5 @@ public class BodyTypeService extends GenericService<BodyType> {
           ex);
     }
   }
-  }
+}
 

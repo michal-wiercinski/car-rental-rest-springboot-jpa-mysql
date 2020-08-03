@@ -1,3 +1,4 @@
+/*
 package com.miwi.carrental.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -88,3 +89,4 @@ public class RentalDto extends RepresentationModel<RentalDto> {
     this.distance = distance;
   }
 }
+*/

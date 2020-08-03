@@ -18,12 +18,10 @@ import lombok.Data;
 
 @NamedQueries({
     @NamedQuery(
-        name = "CarModel.FindByName",
-        query = "select m from CarModel m where m.name = :name"
-    ),
-    @NamedQuery(
-        name = "CarModel.FindByManufacturerName",
-        query = "select m from CarModel m where m.brand = :brandId"
+        name = "CarModel.FindByNameWithConcat",
+        query = "SELECT cm FROM CarModel cm JOIN Brand br ON cm.brand.id = br.id "
+            + "WHERE cm.name LIKE CONCAT('%', :param, '%') "
+            + "OR br.name LIKE concat('%', :param, '%') "
     )
 })
 @Data

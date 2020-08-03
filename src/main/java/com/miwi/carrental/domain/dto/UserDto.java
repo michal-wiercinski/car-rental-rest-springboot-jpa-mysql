@@ -1,3 +1,4 @@
+/*
 package com.miwi.carrental.domain.dto;
 
 
@@ -159,3 +160,4 @@ public class UserDto {
     this.zipCode = zipCode;
   }
 }
+*/

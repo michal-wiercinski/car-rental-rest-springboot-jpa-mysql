@@ -30,6 +30,9 @@ public class DriveTrain {
   @Column(name = "gearbox_type")
   private GearboxType gearboxType;
 
+  @Column(name = "number_of_gears")
+  private Integer numberOfGears;
+
   @OneToMany(mappedBy = "driveTrain")
   private Collection<CarParameter> carParameters;
 
@@ -55,6 +58,14 @@ public class DriveTrain {
 
   public void setGearboxType(GearboxType gearboxType) {
     this.gearboxType = gearboxType;
+  }
+
+  public Integer getNumberOfGears() {
+    return numberOfGears;
+  }
+
+  public void setNumberOfGears(Integer numberOfGears) {
+    this.numberOfGears = numberOfGears;
   }
 
   public Collection<CarParameter> getCarParameters() {

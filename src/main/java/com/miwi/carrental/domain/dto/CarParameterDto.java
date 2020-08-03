@@ -5,7 +5,6 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
-import org.springframework.security.access.prepost.PreAuthorize;
 
 @Relation(value = "carParameter", collectionRelation = "carParameters")
 public class CarParameterDto extends RepresentationModel<CarParameterDto> {
@@ -13,7 +12,7 @@ public class CarParameterDto extends RepresentationModel<CarParameterDto> {
   private Long id;
 
   @NotNull(message = "The daily rate can't be null", groups = OnUpdate.class)
-  private Integer dailyRate;
+  private Double dailyRate;
 
   @NotNull(message = "The name of the body type cannot be empty", groups = OnUpdate.class)
   private String bodyTypeName;
@@ -53,6 +52,9 @@ public class CarParameterDto extends RepresentationModel<CarParameterDto> {
   @NotNull(message = "You must choose the gearbox type", groups = OnUpdate.class)
   private String gearboxType;
 
+  @NotNull(message = "You must enter the number of gears", groups = OnUpdate.class)
+  private Integer numberOfGears;
+
   @NotNull(message = "The year of production can't be null", groups = OnUpdate.class)
   @Range(min = 1950, max = 2100, message = "The year of production must be a minimum of 1950 and a maximum of 2100")
   private Integer yearOfProd;
@@ -68,11 +70,11 @@ public class CarParameterDto extends RepresentationModel<CarParameterDto> {
     this.id = id;
   }
 
-  public Integer getDailyRate() {
+  public Double getDailyRate() {
     return dailyRate;
   }
 
-  public void setDailyRate(Integer dailyRate) {
+  public void setDailyRate(Double dailyRate) {
     this.dailyRate = dailyRate;
   }
 
@@ -171,6 +173,14 @@ public class CarParameterDto extends RepresentationModel<CarParameterDto> {
 
   public void setGearboxType(String gearboxType) {
     this.gearboxType = gearboxType;
+  }
+
+  public Integer getNumberOfGears() {
+    return numberOfGears;
+  }
+
+  public void setNumberOfGears(Integer numberOfGears) {
+    this.numberOfGears = numberOfGears;
   }
 
   public Integer getYearOfProd() {

@@ -4,21 +4,27 @@ VALUES ('Hatchback', 5, 5, 70, 250),
        ('Wagon', 5, 5, 90, 400),
        ('Sedan', 5, 4, 80, 300),
        ('SUV', 5, 5, 90, 390),
+       ('Sedan', 5, 5, 70, 300),
+       ('Hatchback', 5, 5, 65, 390),
+       ('SUV', 5, 5, 85, 400),
+       ('JEEP', 5, 5, 100, 500),
        ('Coupe', 2, 2, 65, 200) ^;
 
 INSERT INTO drive_train(PK_drive_train, wheel_drive, gearbox_type, number_of_gears)
 VALUES (1, 'FRONT_WHEEL_DRIVE', 'MANUAL', 6),
        (2, 'FRONT_WHEEL_DRIVE', 'AUTOMATIC', 6),
        (3, 'REAR_WHEEL_DRIVE', 'MANUAL', 6),
-       (4, 'FOUR_WHEEL_DRIVE', 'AUTOMATIC', 6),
-       (5, 'FRONT_WHEEL_DRIVE', 'AUTOMATIC', 6) ^;
+       (4, 'FOUR_WHEEL_DRIVE', 'AUTOMATIC', 6) ^;
 
 INSERT INTO engine(PK_engine, power, capacity, fuel_type, fuel_consumption)
 VALUES (1, 200, 2500, 'PETROL', 7.5),
        (2, 250, 3000, 'PETROL', 9.5),
        (3, 150, 2000, 'DIESEL', 6.5),
        (4, 150, 2000, 'HYBRID', 6.0),
-       (5, 300, 4000, 'PETROL', 10.0) ^;
+       (5, 300, 4000, 'PETROL', 10.0),
+       (6, 130, 2000, 'DIESEL', 8.5),
+       (7, 220, 4000, 'PETROL', 10.0),
+       (8, 180, 2000, 'HYBRID', 10.0) ^;
 
 INSERT
 INTO location (location_name)
@@ -1828,11 +1834,16 @@ VALUES (3, 'Cobra', 1),
 
 INSERT INTO car_parameter(FK_body_type, FK_drive_train, FK_engine, current_mileage, year_of_prod,
                           daily_rate)
-VALUES (3, 2, 3, 160, 2019, 8),
-       (3, 1, 1, 200, 2019, 9),
-       (2, 3, 2, 560, 2018, 10),
-       (2, 5, 4, 280, 2018, 15),
-       (5, 4, 5, 520, 2018, 20) ^;
+VALUES (3, 2, 3, 160, 2019, 8.00),
+       (3, 1, 1, 200, 2019, 9.00),
+       (1, 3, 2, 560, 2018, 10.00),
+       (2, 2, 4, 280, 2018, 15.00),
+       (2, 2, 4, 400, 2018, 15.00),
+       (6, 4, 5, 1000, 2018, 15.00),
+       (8, 1, 6, 633, 2018, 15.00),
+       (7, 4, 8, 700, 2018, 17.00),
+       (3, 2, 3, 600, 2017, 15.00),
+       (5, 2, 7, 300, 2018, 11.00) ^;
 
 
 INSERT INTO car (registration_number, FK_car_model, FK_location,
@@ -1840,5 +1851,10 @@ INSERT INTO car (registration_number, FK_car_model, FK_location,
 VALUES ('AAA000', 58, 3, 1, 'AVI'),
        ('BBB111', 61, 3, 2, 'AVI'),
        ('CCC222', 68, 3, 3, 'UAV'),
-       ('DDD333', 96, 3, 4, 'UAV'),
-       ('EEE444', 95, 3, 5, 'AVI') ^;
+       ('DDD333', 96, 1, 4, 'UAV'),
+       ('EEE444', 57, 2, 8, 'AVI'),
+       ('FFF555', 179, 4, 7, 'AVI'),
+       ('GGG666', 12, 3, 6, 'AVI'),
+       ('HHH777', 1355, 4, 5, 'AVI'),
+       ('III888', 1932, 4, 10, 'AVI'),
+       ('JJJ000', 576, 6, 9, 'AVI') ^;

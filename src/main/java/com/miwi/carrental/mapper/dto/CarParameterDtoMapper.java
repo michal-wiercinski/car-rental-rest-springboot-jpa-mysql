@@ -3,7 +3,6 @@ package com.miwi.carrental.mapper.dto;
 import com.miwi.carrental.domain.dto.CarParameterDto;
 import com.miwi.carrental.domain.entity.CarParameter;
 import com.miwi.carrental.service.BodyTypeService;
-import com.miwi.carrental.service.CarStatusService;
 import com.miwi.carrental.service.DriveTrainService;
 import com.miwi.carrental.service.EngineService;
 import javax.transaction.Transactional;
@@ -15,17 +14,14 @@ public class CarParameterDtoMapper {
   private final BodyTypeService bodyTypeService;
   private final EngineService engineService;
   private final DriveTrainService driveTrainService;
-  private final CarStatusService carStatusService;
 
   public CarParameterDtoMapper(
       final BodyTypeService bodyTypeService,
       final EngineService engineService,
-      final DriveTrainService driveTrainService,
-      final CarStatusService carStatusService) {
+      final DriveTrainService driveTrainService) {
     this.bodyTypeService = bodyTypeService;
     this.engineService = engineService;
     this.driveTrainService = driveTrainService;
-    this.carStatusService = carStatusService;
   }
 
   @Transactional
@@ -35,6 +31,7 @@ public class CarParameterDtoMapper {
     carParameter.setCurrentMileage(carParameterDto.getCurrentMileage());
     carParameter.setColor(carParameterDto.getColor());
     carParameter.setYearOfProd(carParameterDto.getYearOfProd());
+    carParameter.setDailyRate(carParameterDto.getDailyRate());
     carParameter.setBodyType(bodyTypeService.getBodyTypeFromNewCarParam(carParameterDto));
     carParameter.setDriveTrain(driveTrainService.getDriveTrainFromNewCarParam(carParameterDto));
     carParameter.setEngine(engineService.getEngineFromNewCarParam(carParameterDto));
@@ -49,7 +46,9 @@ public class CarParameterDtoMapper {
     carParameterDto.setId(carParameter.getId());
     carParameterDto.setColor(carParameter.getColor());
     carParameterDto.setYearOfProd(carParameter.getYearOfProd());
+    carParameterDto.setDailyRate(carParameter.getDailyRate());
     carParameterDto.setGearboxType(carParameter.getDriveTrain().getGearboxType().getType());
+    carParameterDto.setNumberOfGears(carParameter.getDriveTrain().getNumberOfGears());
     carParameterDto.setWheelDrive(carParameter.getDriveTrain().getWheelDrive().getType());
     carParameterDto.setEnginePower(carParameter.getEngine().getPower());
     carParameterDto.setEngineCapacity(carParameter.getEngine().getCapacity());

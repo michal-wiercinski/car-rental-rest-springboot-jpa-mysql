@@ -1,3 +1,4 @@
+/*
 package com.miwi.carrental.controller;
 
 
@@ -129,4 +130,4 @@ public class RentalController {
 
     return rentalDtoPagedModel;
   }
-}
+}*/

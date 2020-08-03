@@ -31,14 +31,15 @@ END ^;
 CREATE PROCEDURE change_to_available_if_not_rented(IN p_pk_car BIGINT, IN p_pk_car_status VARCHAR(3))
 BEGIN
 
-    UPDATE car_parameter
+    UPDATE car
     SET FK_car_status = p_pk_car_status
-    WHERE PK_car_parameter = (SELECT FK_car_parameter FROM car WHERE PK_car = p_pk_car)
-      AND (SELECT FK_car_parameter
-           FROM car AS c
-                    JOIN rental AS r ON c.PK_car = r.FK_car
-           WHERE c.PK_car = p_pk_car
-             AND r.FK_status = 2) IS NULL;
+    WHERE PK_car = p_pk_car
+      AND (SELECT *
+           FROM (SELECT PK_car
+                 FROM car AS c
+                          JOIN rental AS r ON c.PK_car = r.FK_car
+                 WHERE c.PK_car = p_pk_car
+                   AND r.FK_status = 2) as crPc) IS NULL;
 END ^;
 
 CREATE FUNCTION get_car_distance(date_from TIMESTAMP, date_end TIMESTAMP)

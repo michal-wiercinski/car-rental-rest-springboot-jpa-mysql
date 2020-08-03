@@ -7,7 +7,7 @@ import org.springframework.hateoas.server.core.Relation;
 
 @Relation(value = "carModel", collectionRelation = "carsModel")
 public class CarModelDto extends RepresentationModel<CarModelDto> {
-
+  
   private Long id;
 
   @NotNull(message = "You must enter the name of car model", groups = OnUpdate.class)
