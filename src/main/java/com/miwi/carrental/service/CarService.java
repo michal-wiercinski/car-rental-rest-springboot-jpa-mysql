@@ -112,7 +112,7 @@ public class CarService extends GenericService<Car> {
 
   public Car editCar(Long id, CarDto carDto) {
     try {
-      Car car = carDao.findById(id).orElseGet(Car::new);
+      Car car = carDao.getOne(id);
 
       car.setId(carDto.getId());
       if (carDto.getRegistrationNumber() != null) {

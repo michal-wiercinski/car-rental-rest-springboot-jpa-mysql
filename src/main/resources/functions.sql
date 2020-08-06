@@ -41,10 +41,6 @@ BEGIN
                  WHERE c.PK_car = p_pk_car
                    AND r.FK_status = 2) as crPc) IS NULL;
 END ^;
-Konsultant telefoniczny
-Call Center Inter Galactica, Gdynia
-
-Praca na infolinii firmy z branży energetycznej w dziale połączeń przychodzących, rozwiązywanie różnych problemów oraz przyjmowanie zgłoszeń i reklamacji  od klientów . Nabyte umięjętności -
 
 
 CREATE FUNCTION get_car_distance(date_from TIMESTAMP, date_end TIMESTAMP)

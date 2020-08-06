@@ -50,7 +50,7 @@ public class ManageController {
   }
 */
 
-  @PatchMapping(path = "/edit-car/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+/*  @PatchMapping(path = "/edit-car/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Car> editCar(@Valid @RequestBody CarDto carDto, @PathVariable("id") Long id,
       BindingResult bindingResult) {
     if (checkErrors(bindingResult)) {
@@ -58,7 +58,7 @@ public class ManageController {
     }
     Car car = carService.editCar(id, carDto);
     return ResponseEntity.ok().body(car);
-  }
+  }*/
 
   @DeleteMapping(path = "/delete/{id}")
   public ResponseEntity<Car> deleteCarById(@PathVariable("id") Long id) {

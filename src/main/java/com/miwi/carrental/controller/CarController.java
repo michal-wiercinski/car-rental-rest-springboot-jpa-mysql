@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,7 +58,7 @@ public class CarController {
     this.pagedDtoAssembler = pagedDtoAssembler;
   }
 
- @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Car> createCar(@Valid @RequestBody CarDto car,
       BindingResult bindingResult) {
     if (checkErrors(bindingResult)) {
@@ -173,6 +174,7 @@ public class CarController {
                 .withRel("carsPage"));
     return carDtoPagedModel;
   }
+
   @DeleteMapping(path = "/{id}")
   public ResponseEntity<Car> deleteCarById(@PathVariable("id") Long id) {
     if (carService.findById(id) != null) {
@@ -182,16 +184,28 @@ public class CarController {
     return ResponseEntity.notFound().build();
   }
 
+  @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Car> editCar(@Valid @RequestBody CarDto carDto, @PathVariable("id") Long id,
+      BindingResult bindingResult) {
+    if (checkErrors(bindingResult)) {
+      return ResponseEntity.badRequest().build();
+    }
+    Car car = carService.editCar(id, carDto);
+    return ResponseEntity.ok().body(car);
+  }
+
   @PatchMapping(path = "/make-availability/{carId}/{status}", consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Car> makeAvailability(@PathVariable("carId") Long carId,
+  public ResponseEntity<CarDto> makeAvailability(@PathVariable("carId") Long carId,
       @PathVariable("status") String carStatus) {
     if (carId == null || carStatus.isEmpty()) {
       return ResponseEntity.badRequest().build();
     }
     Car car = carService.findById(carId);
     carService.changeToAvailable(carId, carStatus);
-    return ResponseEntity.ok().body(car);
+    CarDto carDto = carDtoMapper.mapEntityToDto(car);
+    return ResponseEntity.ok().body(carDto);
   }
+
   /*@GetMapping
  public CollectionModel<EntityModel<CarDto>> getAll() {
    List<CarDto> carDtos = carService.getAllDtos();
