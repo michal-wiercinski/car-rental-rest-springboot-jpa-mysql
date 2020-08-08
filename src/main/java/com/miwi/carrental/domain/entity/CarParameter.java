@@ -38,15 +38,15 @@ public class CarParameter {
   @Column(name = "current_mileage")
   private Integer currentMileage;
 
-  @ManyToOne(cascade = CascadeType.PERSIST)
+  @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
   @JoinColumn(name = "FK_engine")
   private Engine engine;
 
-  @ManyToOne(cascade = CascadeType.PERSIST)
+  @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
   @JoinColumn(name = "FK_drive_train")
   private DriveTrain driveTrain;
 
-  @ManyToOne(cascade = CascadeType.PERSIST)
+  @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
   @JoinColumn(name = "FK_body_type")
   private BodyType bodyType;
 

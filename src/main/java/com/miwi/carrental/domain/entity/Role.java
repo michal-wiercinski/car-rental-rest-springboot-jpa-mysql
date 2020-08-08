@@ -1,20 +1,17 @@
 package com.miwi.carrental.domain.entity;
 
-import com.miwi.carrental.converter.RoleNameConverter;
+import com.miwi.carrental.control.converter.RoleNameConverter;
 import com.miwi.carrental.domain.enums.RoleName;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import lombok.Data;
 
 
 @Table(name = "role")

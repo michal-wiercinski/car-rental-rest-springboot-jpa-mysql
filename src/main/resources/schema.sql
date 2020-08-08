@@ -20,9 +20,7 @@ DROP TABLE IF EXISTS role ^;
 DROP TABLE IF EXISTS user ^;
 DROP TABLE IF EXISTS user_details ^;
 DROP TABLE IF EXISTS user_roles ^;
-DROP VIEW IF EXISTS details_fleet_for_admin ^;
-DROP VIEW IF EXISTS details_fleet_for_user^;
-DROP VIEW IF EXISTS rental_view ^;
+
 
 CREATE TABLE address
 (
@@ -184,77 +182,3 @@ CREATE TABLE user_roles
     FOREIGN KEY (FK_role) REFERENCES role (PK_role),
     UNIQUE (FK_user, FK_role)
 ) ^;
-/*
-CREATE VIEW details_fleet_for_user
-AS
-SELECT c.PK_car              AS 'car_id',
-       br.brand_name         AS 'brand',
-       cm.car_model_name     AS 'car_model',
-       bt.type_name          AS 'body_type',
-       cp.power              AS 'engine_power',
-       cp.engine_size        AS 'engine_size',
-       cp.year_of_prod       AS 'production_year',
-       cp.daily_rate         AS 'daily_rate',
-       l.location_name       AS 'location_name',
-       cs.status_description AS 'status'
-
-FROM car AS c
-         LEFT JOIN car_parameter AS cp
-                   on c.FK_car_parameter = cp.PK_car_parameter
-         LEFT JOIN car_model AS cm ON c.FK_car_model = cm.PK_car_model
-         LEFT JOIN car_status cs ON cp.FK_car_status = cs.PK_status_code
-         LEFT JOIN body_type AS bt ON cp.FK_body_type = bt.PK_body_type
-         LEFT JOIN location AS l ON l.PK_location = c.FK_location
-         LEFT JOIN brand AS br ON cm.FK_brand = br.PK_brand ^;*/
-
-/*CREATE VIEW details_fleet_for_admin
-AS
-SELECT c.PK_car                         AS 'car_id',
-       c.registration_number            AS 'registration_number',
-       COALESCE(SUM(rd.rental_cost), 0) AS 'income',
-       br.brand_name                    AS 'brand',
-       cm.car_model_name                AS 'car_model',
-       bt.type_name                     AS 'body_type',
-       cp.power                         AS 'engine_power',
-       cp.engine_size                   AS 'engine_size',
-       cp.year_of_prod                  AS 'production_year',
-       cp.current_mileage               AS 'current_mileage',
-       cp.daily_rate                    AS 'daily_rate',
-       cs.status_description            AS 'status',
-       cp.fuel_consumption              AS 'avg_fuel_consumption',
-       l.location_name                  AS 'location_name'
-FROM car AS c
-         LEFT JOIN car_parameter AS cp
-                   ON c.FK_car_parameter = cp.PK_car_parameter
-         LEFT JOIN car_model AS cm ON c.FK_car_model = cm.PK_car_model
-         LEFT JOIN car_status cs ON cp.FK_car_status = cs.PK_status_code
-         LEFT JOIN brand AS br ON cm.FK_brand = br.PK_brand
-         LEFT JOIN body_type AS bt ON cp.FK_body_type = bt.PK_body_type
-         LEFT JOIN rental r ON c.PK_car = r.FK_car
-         LEFT JOIN rental_details rd ON r.FK_rental_details = rd.PK_rental_details
-         LEFT JOIN location l ON c.FK_location = l.PK_location
-GROUP BY c.PK_car ^;
-
-CREATE VIEW rental_view
-AS
-SELECT r.PK_rental           AS 'rental_id',
-       u.email               AS 'user_email',
-       c.PK_car              AS 'car_id',
-       c.registration_number AS 'registration_number',
-       rs.status_desc        AS 'rental_status',
-       br.brand_name         AS 'brand_name',
-       cm.car_model_name     AS 'model_name',
-       cp.daily_rate         AS 'daily_rate',
-       rd.start_date         AS 'start_date',
-       rd.end_date           AS 'end_date',
-       rd.distance           AS 'distance',
-       rd.rental_cost        AS 'rental_cost'
-FROM rental AS r
-         JOIN car c on r.FK_car = c.PK_car
-         JOIN rental_status rs on r.FK_status = rs.PK_status
-         JOIN car_model cm on c.FK_car_model = cm.PK_car_model
-         JOIN brand br on cm.FK_brand = br.PK_brand
-         JOIN car_parameter cp on c.FK_car_parameter = cp.PK_car_parameter
-         JOIN rental_details rd on r.FK_rental_details = rd.PK_rental_details
-         JOIN user u on r.FK_user = u.PK_user ^;
-*/

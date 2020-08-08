@@ -11,11 +11,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
   @Override
-  public void addViewControllers(ViewControllerRegistry registry) {
-    registry.addViewController("/login").setViewName("loginPage");
-  }
-
-  @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
         .allowedOrigins("*");

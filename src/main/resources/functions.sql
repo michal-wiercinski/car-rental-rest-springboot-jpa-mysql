@@ -30,7 +30,6 @@ END ^;
 
 CREATE PROCEDURE change_to_available_if_not_rented(IN p_pk_car BIGINT, IN p_pk_car_status VARCHAR(3))
 BEGIN
-
     UPDATE car
     SET FK_car_status = p_pk_car_status
     WHERE PK_car = p_pk_car
@@ -100,9 +99,9 @@ CREATE TRIGGER change_car_status_to_unavailable
     ON rental
     FOR EACH ROW
 BEGIN
-    UPDATE car_parameter
+    UPDATE car
     SET FK_car_status = 'UAV'
-    WHERE PK_car_parameter = get_pk_car_param_by_pk_rental(NEW.PK_rental);
+    WHERE PK_car = NEW.FK_car;
 END ^;
 
 CREATE TRIGGER change_car_status_and_mileage_after_cancel_rental
@@ -112,9 +111,11 @@ CREATE TRIGGER change_car_status_and_mileage_after_cancel_rental
 BEGIN
     IF (NEW.FK_status = 1)
     THEN
+        UPDATE car
+        SET FK_car_status = 'AVI'
+        WHERE PK_car = OLD.FK_car;
         UPDATE car_parameter
-        SET FK_car_status   = 'AVI',
-            current_mileage = current_mileage + (SELECT distance
+        SET current_mileage = current_mileage + (SELECT distance
                                                  FROM rental_details AS rd
                                                           JOIN rental AS r ON rd.PK_rental_details = r.FK_rental_details
                                                  WHERE r.PK_rental = OLD.PK_rental)
@@ -137,7 +138,6 @@ BEGIN
     SET NEW.distance = get_car_distance(OLD.start_date, NEW.end_date);
 
 END ^;
-
 
 
 

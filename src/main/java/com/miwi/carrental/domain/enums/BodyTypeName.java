@@ -1,8 +1,8 @@
 package com.miwi.carrental.domain.enums;
 
 public enum BodyTypeName {
-    HATCHBACK("Hatchback"), SEDAN("Sedan"), SUV("SUV"), COUPE("Coupe"),
-    WAGON("Wagon"), VAN("VAN"), JEEP("Jeep");
+  HATCHBACK("Hatchback"), SEDAN("Sedan"), SUV("SUV"), COUPE("Coupe"),
+  WAGON("Wagon"), VAN("VAN"), JEEP("Jeep");
 
   private String type;
 
