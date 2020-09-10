@@ -1,18 +1,18 @@
 package com.miwi.carrental.control.service.car;
 
-import com.miwi.carrental.control.service.location.LocationService;
 import com.miwi.carrental.control.dto.CarDto;
+import com.miwi.carrental.control.exception.MyResourceNotFoundException;
+import com.miwi.carrental.control.mapper.dto.CarDtoMapper;
+import com.miwi.carrental.control.repository.CarDao;
+import com.miwi.carrental.control.service.generic.GenericService;
+import com.miwi.carrental.control.service.location.LocationService;
 import com.miwi.carrental.domain.entity.Car;
 import com.miwi.carrental.domain.entity.CarStatus;
 import com.miwi.carrental.domain.enums.BodyTypeName;
 import com.miwi.carrental.domain.enums.CarStatusType;
 import com.miwi.carrental.domain.enums.FuelType;
 import com.miwi.carrental.domain.enums.GearboxType;
-import com.miwi.carrental.control.exception.MyResourceNotFoundException;
-import com.miwi.carrental.control.mapper.dto.CarDtoMapper;
-import com.miwi.carrental.control.mapper.dto.NewCarDtoMapper;
-import com.miwi.carrental.control.repository.CarDao;
-import com.miwi.carrental.control.service.generic.GenericService;
+import com.querydsl.core.types.Predicate;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,27 +28,33 @@ public class CarService extends GenericService<Car> {
   private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
   private final CarDao carDao;
-
   private final CarDtoMapper carMapper;
-  private final NewCarDtoMapper newCarMapper;
   private final CarParameterService carParameterService;
   private final CarStatusService carStatusService;
   private final CarModelService carModelService;
   private final LocationService locationService;
 
-  public CarService(final CarDao carDao, final CarDtoMapper carMapper,
-      NewCarDtoMapper newCarMapper,
+  public CarService(final CarDao carDao,
+      final CarDtoMapper carMapper,
       final CarParameterService carParameterService,
       final CarStatusService carStatusService,
       CarModelService carModelService,
       LocationService locationService) {
     this.carDao = carDao;
     this.carMapper = carMapper;
-    this.newCarMapper = newCarMapper;
     this.carParameterService = carParameterService;
     this.carStatusService = carStatusService;
     this.carModelService = carModelService;
     this.locationService = locationService;
+  }
+
+  public Page<Car> findByPredicate(Predicate predicate, Pageable pageable) {
+    try {
+      return checkFound(carDao.findAll(predicate, pageable));
+    } catch (MyResourceNotFoundException ex) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+          "No cars found for predicate: " + predicate);
+    }
   }
 
   public void changeToAvailable(Long carId, String carStatus) {

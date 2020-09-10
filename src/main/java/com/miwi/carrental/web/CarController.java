@@ -7,6 +7,7 @@ import com.miwi.carrental.control.dto.CarDto;
 import com.miwi.carrental.control.mapper.dto.CarDtoMapper;
 import com.miwi.carrental.control.service.car.CarService;
 import com.miwi.carrental.domain.entity.Car;
+import com.querydsl.core.types.Predicate;
 import java.net.URI;
 import javax.validation.Valid;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.MediaTypes;
@@ -56,6 +58,16 @@ public class CarController {
     this.pagedDtoAssembler = pagedDtoAssembler;
   }
 
+  @GetMapping("/search")
+  public ResponseEntity<PagedModel<EntityModel<CarDto>>> readAllCarsByFilters(Pageable pageable,
+      @QuerydslPredicate(root = Car.class) Predicate predicate, Sort sort) {
+
+    Page<Car> carPage = carService
+        .findByPredicate(predicate,
+            PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort));
+    return getPagedModelResponseEntity(carPage);
+  }
+
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Car> createCar(@Valid @RequestBody CarDto car,
       BindingResult bindingResult) {
@@ -78,14 +90,7 @@ public class CarController {
   public ResponseEntity<PagedModel<EntityModel<CarDto>>> readAllCars(Pageable pageable, Sort sort) {
     Page<Car> carPage = carService
         .findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort));
-    if (carPage == null) {
-      return ResponseEntity.notFound().build();
-    }
-    Page<CarDto> carsDto = carDtoMapper.mapEntityPageToPageDto(carPage);
-
-    PagedModel<EntityModel<CarDto>> carsPagedModel = getPagedModelByDto(carsDto);
-
-    return ResponseEntity.ok().body(carsPagedModel);
+    return getPagedModelResponseEntity(carPage);
   }
 
   @GetMapping("/{id}")
@@ -186,6 +191,18 @@ public class CarController {
         carDtoMapper.mapEntityPageToPageDto(cars));
 
     return ResponseEntity.ok().body(carsDto);
+  }
+
+  private ResponseEntity<PagedModel<EntityModel<CarDto>>> getPagedModelResponseEntity(
+      Page<Car> carPage) {
+    if (carPage == null) {
+      return ResponseEntity.notFound().build();
+    }
+    Page<CarDto> carsDto = carDtoMapper.mapEntityPageToPageDto(carPage);
+
+    PagedModel<EntityModel<CarDto>> carsPagedModel = getPagedModelByDto(carsDto);
+
+    return ResponseEntity.ok().body(carsPagedModel);
   }
 
 
