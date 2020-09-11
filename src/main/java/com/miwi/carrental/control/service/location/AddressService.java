@@ -1,10 +1,12 @@
 package com.miwi.carrental.control.service.location;
 
 import com.miwi.carrental.control.dto.LocationDto;
-import com.miwi.carrental.domain.entity.Address;
+import com.miwi.carrental.control.dto.UserDto;
 import com.miwi.carrental.control.repository.AddressDao;
 import com.miwi.carrental.control.service.generic.GenericService;
+import com.miwi.carrental.domain.entity.Address;
 import java.util.Optional;
+import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -37,7 +39,7 @@ public class AddressService extends GenericService<Address> {
     return newAddress;
   }
 
-/*  @Transactional
+ @Transactional
   public Address createAddressByUserDto(UserDto userDto) {
     Optional<Address> address = addressDao
         .findByCityAndStreetAndHouseNumber(userDto.getCity(), userDto.getStreet(),
@@ -54,7 +56,7 @@ public class AddressService extends GenericService<Address> {
     save(newAddress);
 
     return newAddress;
-  }*/
+  }
 
   @Override
   public Address save(Address address) {

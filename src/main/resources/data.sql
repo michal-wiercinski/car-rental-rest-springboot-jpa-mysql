@@ -53,11 +53,7 @@ INSERT INTO address(city, street, house_number, zip_code)
 VALUES ('Gdynia', 'Władysława IV', '100', '00-000'),
        ('Gdańsk', 'Dmowskiego', '20', '11-111') ^;
 
-INSERT INTO user_details(FK_address)
-VALUES (1),
-       (2) ^;
-
-INSERT INTO user(first_name, last_name, password, email, FK_user_details)
+INSERT INTO user(first_name, last_name, password, email, FK_address)
 VALUES ('Michał', 'Michałowski', 'hasełko', 'michalowski@michalowski.pl', 1),
        ('Andrzej', 'Andrzejowski', 'masełko', 'andrzejowski@andrzejowski.com', 2) ^;
 

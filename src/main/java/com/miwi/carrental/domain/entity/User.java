@@ -1,6 +1,7 @@
 package com.miwi.carrental.domain.entity;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -39,9 +41,9 @@ public class User implements Serializable {
   @Column(name = "email")
   private String email;
 
-  @OneToOne
-  @JoinColumn(name = "FK_user_details")
-  private UserDetail userDetail;
+  @ManyToOne
+  @JoinColumn(name = "FK_address")
+  private Address address;
 
   @OneToMany(mappedBy = "user")
   private List<Rental> rentals;
@@ -100,12 +102,12 @@ public class User implements Serializable {
     this.roles = roles;
   }
 
-  public UserDetail getUserDetail() {
-    return userDetail;
+  public Address getAddress(){
+    return address;
   }
 
-  public void setUserDetail(UserDetail userDetail) {
-    this.userDetail = userDetail;
+  public void setAddress(Address address){
+    this.address = address;
   }
 
   public List<Rental> getRentals() {

@@ -34,7 +34,7 @@ public class Address {
   private String zipCode;
 
   @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
-  private List<UserDetail> users;
+  private List<User> users;
 
   public Long getId() {
     return id;
@@ -76,11 +76,11 @@ public class Address {
     this.houseNumber = houseNumber;
   }
 
-  public List<UserDetail> getUsers() {
+  public List<User> getUsers() {
     return users;
   }
 
-  public void setUsers(List<UserDetail> customers) {
-    this.users = customers;
+  public void setUsers(List<User> users) {
+    this.users = users;
   }
 }

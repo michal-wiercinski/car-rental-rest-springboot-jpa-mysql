@@ -18,7 +18,6 @@ DROP TABLE IF EXISTS rental_status ^;
 DROP TABLE IF EXISTS rental_details ^;
 DROP TABLE IF EXISTS role ^;
 DROP TABLE IF EXISTS user ^;
-DROP TABLE IF EXISTS user_details ^;
 DROP TABLE IF EXISTS user_roles ^;
 
 
@@ -105,8 +104,6 @@ CREATE TABLE location
 (
     PK_location   BIGINT AUTO_INCREMENT PRIMARY KEY,
     location_name VARCHAR(255) NOT NULL,
-    -- longitude     DOUBLE,
-    -- latitude      DOUBLE,
     FK_address    BIGINT,
     FOREIGN KEY (FK_address) REFERENCES address (PK_address)
 
@@ -132,12 +129,6 @@ CREATE TABLE role
     role_name ENUM ('ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER') NOT NULL
 ) ^;
 
-CREATE TABLE user_details
-(
-    PK_user_details BIGINT AUTO_INCREMENT PRIMARY KEY,
-    FK_address      BIGINT NOT NULL,
-    FOREIGN KEY (FK_address) REFERENCES address (PK_address)
-) ^;
 
 CREATE TABLE user
 (
@@ -146,8 +137,8 @@ CREATE TABLE user
     last_name       VARCHAR(30)   NOT NULL,
     password        VARCHAR(255)  NOT NULL,
     email           VARCHAR(50)   NOT NULL,
-    FK_user_details BIGINT UNIQUE NOT NULL,
-    FOREIGN KEY (FK_user_details) REFERENCES user_details (PK_user_details)
+    FK_address      BIGINT NOT NULL,
+    FOREIGN KEY (FK_address) REFERENCES address (PK_address)
 ) ^;
 
 

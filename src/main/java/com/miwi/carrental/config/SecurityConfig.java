@@ -1,19 +1,17 @@
-/*
 package com.miwi.carrental.config;
 
 import com.miwi.carrental.security.service.MyUserDetailsService;
+import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import javax.sql.DataSource;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -44,11 +42,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    */
-/*http.authorizeRequests()
-        .antMatchers("/cars/our-fleet/**", "/rent-car/all-rent")
+    http.authorizeRequests()
+        .antMatchers("/cars/make-availability/**")
+        .access("hasAnyRole('ADMIN','SUPER_ADMIN')")
+        .antMatchers(HttpMethod.POST, "/cars/**")
+        .access("hasAnyRole('ADMIN','SUPER_ADMIN')")
+        .antMatchers(HttpMethod.PUT, "/cars/**")
+        .access("hasAnyRole('ADMIN','SUPER_ADMIN')")
+        .antMatchers(HttpMethod.PATCH, "/cars/**")
         .access("hasRole('ADMIN')")
-        .antMatchers("/rent-car/**", "/manage/**")
+        .antMatchers(HttpMethod.DELETE, "/cars/**")
+        .access("hasAnyRole('ADMIN','SUPER_ADMIN')")
+        .antMatchers()
         .access("hasAnyRole('ADMIN','USER')")
         .antMatchers("/cars/**", "/registration")
         .access("permitAll")
@@ -60,7 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .permitAll()
         .and()
         .logout()
-        .logoutSuccessUrl("/");*//*
+        .logoutSuccessUrl("/");
 
   }
-}*/
+}
