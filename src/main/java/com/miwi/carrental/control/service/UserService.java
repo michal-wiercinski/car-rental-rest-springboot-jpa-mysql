@@ -2,13 +2,12 @@ package com.miwi.carrental.control.service;
 
 
 import com.miwi.carrental.control.exception.MyResourceNotFoundException;
+import com.miwi.carrental.control.repository.UserDao;
 import com.miwi.carrental.control.service.generic.GenericService;
 import com.miwi.carrental.control.service.location.AddressService;
 import com.miwi.carrental.models.entity.User;
 import com.miwi.carrental.models.enums.RoleName;
-import com.miwi.carrental.security.mapper.UserDtoMapper;
 import com.miwi.carrental.security.payload.request.RegistrationRequest;
-import com.miwi.carrental.control.repository.UserDao;
 import com.miwi.carrental.security.validation.EmailExistsException;
 import java.util.List;
 import java.util.Set;
@@ -23,18 +22,16 @@ public class UserService extends GenericService<User> {
 
   private final UserDao userDao;
   private final AddressService addressService;
-  private final UserDtoMapper userDtoMapper;
+
   private final PasswordEncoder passwordEncoder;
   private final RoleService roleService;
 
   public UserService(final UserDao userDao,
       final AddressService addressService,
-      final UserDtoMapper userDtoMapper,
       final PasswordEncoder passwordEncoder,
       final RoleService roleService) {
     this.userDao = userDao;
     this.addressService = addressService;
-    this.userDtoMapper = userDtoMapper;
     this.passwordEncoder = passwordEncoder;
     this.roleService = roleService;
   }
@@ -112,9 +109,11 @@ public class UserService extends GenericService<User> {
 
   @PostConstruct
   public void createSomeUser() {
-    RegistrationRequest normalUserDto = new RegistrationRequest("Andrzej", "Andrzej", "andrzej@andrzej.pl", "proba",
+    RegistrationRequest normalUserDto = new RegistrationRequest("Andrzej", "Andrzej",
+        "andrzej@andrzej.pl", "proba",
         "proba", "Wrocław", "Warszawska", "34", "71-000");
-    RegistrationRequest adminUserDto = new RegistrationRequest("Michał", "Michał", "michal@michal.pl", "proba",
+    RegistrationRequest adminUserDto = new RegistrationRequest("Michał", "Michał",
+        "michal@michal.pl", "proba",
         "proba", "Wrocław", "Warszawska", "33", "71-000");
 
     User user = registrationNewUser(adminUserDto);

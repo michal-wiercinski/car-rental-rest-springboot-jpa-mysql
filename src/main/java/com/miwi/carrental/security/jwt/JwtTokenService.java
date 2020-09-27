@@ -17,8 +17,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @PropertySource("classpath:application.properties")
-public class JwtTokenService implements Serializable {
-  private static final long serialVersionUID = -2550185165626007488L;
+public class JwtTokenService {
   private static final Logger logger = LoggerFactory.getLogger(JwtTokenService.class);
 
   @Value("${car-rental.app.jwtSecret}")

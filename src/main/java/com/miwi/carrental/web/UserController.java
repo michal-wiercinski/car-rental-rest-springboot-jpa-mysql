@@ -4,7 +4,7 @@ import com.miwi.carrental.control.dto.UserDto;
 import com.miwi.carrental.models.entity.User;
 import com.miwi.carrental.security.userDetails.CustomUserDetails;
 import com.miwi.carrental.security.jwt.JwtTokenService;
-import com.miwi.carrental.security.mapper.UserDtoMapper;
+import com.miwi.carrental.control.mapper.dto.UserDtoMapper;
 import com.miwi.carrental.security.payload.request.LoginRequest;
 import com.miwi.carrental.security.payload.request.RegistrationRequest;
 import com.miwi.carrental.security.payload.response.JwtResponse;
@@ -54,7 +54,7 @@ public class UserController {
     this.userDtoMapper = userDtoMapper;
   }
 
-  @PostMapping(path = "/registration", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(path = "/registration")
   public ResponseEntity<User> registration(
       @Valid @RequestBody RegistrationRequest request, BindingResult bindingResult) {
     if (CheckerOfRequest.checkErrors(bindingResult)) {

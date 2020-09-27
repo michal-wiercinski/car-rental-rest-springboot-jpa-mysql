@@ -15,18 +15,12 @@ public class CustomUserDetails implements UserDetails {
   private static final long serialVersionUID = 1L;
 
   private Long id;
-
   private String email;
 
   @JsonIgnore
   private String password;
 
   private Collection<? extends GrantedAuthority> authorities;
-
-
-  public CustomUserDetails() {
-
-  }
 
   public CustomUserDetails(Long id,  String email, String password,
       Collection<? extends GrantedAuthority> authorities) {
