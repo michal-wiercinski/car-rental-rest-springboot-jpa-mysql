@@ -10,7 +10,6 @@ import javax.validation.constraints.Size;
 import org.springframework.hateoas.server.core.Relation;
 
 @Relation(value = "user", collectionRelation = "users")
-@PasswordMatches(message = "Password and confirm password is not match")
 public class UserDto {
 
   private Long id;

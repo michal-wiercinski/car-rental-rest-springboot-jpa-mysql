@@ -1,6 +1,6 @@
 package com.miwi.carrental.control.service.car;
 
-import com.miwi.carrental.domain.entity.CarModel;
+import com.miwi.carrental.models.entity.CarModel;
 import com.miwi.carrental.control.exception.MyResourceNotFoundException;
 import com.miwi.carrental.control.repository.CarModelDao;
 import com.miwi.carrental.control.repository.CarModelDaoImpl;

@@ -1,6 +1,6 @@
 package com.miwi.carrental.control.repository;
 
-import com.miwi.carrental.domain.entity.CarModel;
+import com.miwi.carrental.models.entity.CarModel;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.Query;

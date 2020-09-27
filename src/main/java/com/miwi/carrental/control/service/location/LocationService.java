@@ -1,6 +1,6 @@
 package com.miwi.carrental.control.service.location;
 
-import com.miwi.carrental.domain.entity.Location;
+import com.miwi.carrental.models.entity.Location;
 import com.miwi.carrental.control.exception.MyResourceNotFoundException;
 import com.miwi.carrental.control.repository.LocationDao;
 import com.miwi.carrental.control.repository.LocationDaoImpl;

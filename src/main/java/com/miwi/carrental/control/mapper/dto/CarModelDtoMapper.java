@@ -1,7 +1,7 @@
 package com.miwi.carrental.control.mapper.dto;
 
 import com.miwi.carrental.control.dto.CarModelDto;
-import com.miwi.carrental.domain.entity.CarModel;
+import com.miwi.carrental.models.entity.CarModel;
 import com.miwi.carrental.control.mapper.generic.GenericMapper;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Component;

@@ -9,7 +9,7 @@ import com.miwi.carrental.control.dto.RentalDto;
 import com.miwi.carrental.domain.entity.Rental;
 import com.miwi.carrental.domain.entity.RentalDetails;
 import com.miwi.carrental.control.mapper.dto.RentalDtoMapper;
-import com.miwi.carrental.security.service.UserService;
+import com.miwi.carrental.control.service.UserService;
 import com.miwi.carrental.control.service.RentalDetailService;
 import com.miwi.carrental.control.service.RentalService;
 import java.net.URI;

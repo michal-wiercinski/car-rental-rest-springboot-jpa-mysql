@@ -1,8 +1,8 @@
 package com.miwi.carrental.control.mapper.dto;
 
 import com.miwi.carrental.control.dto.NewCarDto;
-import com.miwi.carrental.domain.entity.Car;
-import com.miwi.carrental.domain.enums.CarStatusType;
+import com.miwi.carrental.models.entity.Car;
+import com.miwi.carrental.models.enums.CarStatusType;
 import com.miwi.carrental.control.service.car.CarModelService;
 import com.miwi.carrental.control.service.car.CarStatusService;
 import com.miwi.carrental.control.service.location.LocationService;

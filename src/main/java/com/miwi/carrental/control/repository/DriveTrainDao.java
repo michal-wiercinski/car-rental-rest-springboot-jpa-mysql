@@ -1,8 +1,8 @@
 package com.miwi.carrental.control.repository;
 
-import com.miwi.carrental.domain.entity.DriveTrain;
-import com.miwi.carrental.domain.enums.GearboxType;
-import com.miwi.carrental.domain.enums.WheelDrive;
+import com.miwi.carrental.models.entity.DriveTrain;
+import com.miwi.carrental.models.enums.GearboxType;
+import com.miwi.carrental.models.enums.WheelDrive;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
 

@@ -1,10 +1,10 @@
 package com.miwi.carrental.control.service.location;
 
 import com.miwi.carrental.control.dto.LocationDto;
-import com.miwi.carrental.control.dto.UserDto;
 import com.miwi.carrental.control.repository.AddressDao;
 import com.miwi.carrental.control.service.generic.GenericService;
-import com.miwi.carrental.domain.entity.Address;
+import com.miwi.carrental.models.entity.Address;
+import com.miwi.carrental.security.payload.request.RegistrationRequest;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -18,44 +18,38 @@ public class AddressService extends GenericService<Address> {
     this.addressDao = addressDao;
   }
 
-  public Optional<Address> findByCityStreetHouseNumber(String city, String street,
-      String houseNumber) {
-    return addressDao.findByCityAndStreetAndHouseNumber(city, street, houseNumber);
+
+  public Address getAddressFromCarLocation(LocationDto locationDto) {
+    if (locationDto.getCity() != null && locationDto.getZipCode() != null) {
+      Optional<Address> address = addressDao
+          .findByCityAndStreetAndHouseNumber(locationDto.getCity(),
+              locationDto.getStreet(), locationDto.getHouseNumber());
+
+      return address.orElseGet(() -> save(new Address(
+          locationDto.getCity(),
+          locationDto.getStreet(),
+          locationDto.getHouseNumber(),
+          locationDto.getZipCode()
+      )));
+    }
+    return new Address();
   }
 
-  public Address getAddressFromCarParam(LocationDto locationDto) {
-    Optional<Address> address = findByCityStreetHouseNumber(locationDto.getCity(),
-        locationDto.getStreet(), locationDto.getHouseNumber());
-
-    if (address.isPresent()) {
-      return address.get();
+  @Transactional
+  public Address createAddressByUserDto(RegistrationRequest regRequest) {
+    Optional<Address> address;
+    if (regRequest.getCity() != null && regRequest.getZipCode() != null) {
+      address = addressDao
+          .findByCityAndStreetAndHouseNumber(regRequest.getCity(), regRequest.getStreet(),
+              regRequest.getHouseNumber());
+      return address.orElseGet(() -> save(new Address(
+          regRequest.getCity(),
+          regRequest.getStreet(),
+          regRequest.getHouseNumber(),
+          regRequest.getZipCode()
+      )));
     }
-    Address newAddress = new Address();
-    newAddress.setCity(locationDto.getCity());
-    newAddress.setStreet(locationDto.getStreet());
-    newAddress.setHouseNumber(locationDto.getHouseNumber());
-    newAddress.setZipCode(locationDto.getZipCode());
-
-    return newAddress;
-  }
-
- @Transactional
-  public Address createAddressByUserDto(UserDto userDto) {
-    Optional<Address> address = addressDao
-        .findByCityAndStreetAndHouseNumber(userDto.getCity(), userDto.getStreet(),
-            userDto.getHouseNumber());
-
-    if (address.isPresent()) {
-      return address.get();
-    }
-    Address newAddress = new Address();
-    newAddress.setCity(userDto.getCity());
-    newAddress.setStreet(userDto.getCity());
-    newAddress.setHouseNumber(userDto.getHouseNumber());
-    newAddress.setZipCode(userDto.getZipCode());
-    save(newAddress);
-
-    return newAddress;
+    return new Address();
   }
 
   @Override

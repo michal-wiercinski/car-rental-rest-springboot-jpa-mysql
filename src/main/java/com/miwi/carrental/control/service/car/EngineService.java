@@ -1,8 +1,8 @@
 package com.miwi.carrental.control.service.car;
 
 import com.miwi.carrental.control.dto.CarParameterDto;
-import com.miwi.carrental.domain.entity.Engine;
-import com.miwi.carrental.domain.enums.FuelType;
+import com.miwi.carrental.models.entity.Engine;
+import com.miwi.carrental.models.enums.FuelType;
 import com.miwi.carrental.control.repository.EngineDao;
 import com.miwi.carrental.control.service.generic.GenericService;
 import java.util.Optional;

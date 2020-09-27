@@ -1,12 +1,12 @@
 package com.miwi.carrental.control.service.enums;
 
-import com.miwi.carrental.domain.enums.BodyTypeName;
-import com.miwi.carrental.domain.enums.CarStatusType;
-import com.miwi.carrental.domain.enums.FuelType;
-import com.miwi.carrental.domain.enums.GearboxType;
-import com.miwi.carrental.domain.enums.RentalStatusType;
-import com.miwi.carrental.domain.enums.RoleName;
-import com.miwi.carrental.domain.enums.WheelDrive;
+import com.miwi.carrental.models.enums.BodyTypeName;
+import com.miwi.carrental.models.enums.CarStatusType;
+import com.miwi.carrental.models.enums.FuelType;
+import com.miwi.carrental.models.enums.GearboxType;
+import com.miwi.carrental.models.enums.RentalStatusType;
+import com.miwi.carrental.models.enums.RoleName;
+import com.miwi.carrental.models.enums.WheelDrive;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;

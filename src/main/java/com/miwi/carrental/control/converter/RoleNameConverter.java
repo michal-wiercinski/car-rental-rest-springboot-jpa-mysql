@@ -1,6 +1,6 @@
 package com.miwi.carrental.control.converter;
 
-import com.miwi.carrental.domain.enums.RoleName;
+import com.miwi.carrental.models.enums.RoleName;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 

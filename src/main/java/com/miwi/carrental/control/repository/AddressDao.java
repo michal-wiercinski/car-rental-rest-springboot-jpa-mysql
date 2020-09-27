@@ -1,6 +1,6 @@
 package com.miwi.carrental.control.repository;
 
-import com.miwi.carrental.domain.entity.Address;
+import com.miwi.carrental.models.entity.Address;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

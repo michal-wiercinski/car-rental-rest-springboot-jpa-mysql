@@ -1,6 +1,6 @@
 package com.miwi.carrental.control.repository;
 
-import com.miwi.carrental.domain.entity.Location;
+import com.miwi.carrental.models.entity.Location;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

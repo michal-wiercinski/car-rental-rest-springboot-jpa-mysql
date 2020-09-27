@@ -1,7 +1,7 @@
 package com.miwi.carrental.control.repository;
 
-import com.miwi.carrental.domain.entity.Role;
-import com.miwi.carrental.domain.enums.RoleName;
+import com.miwi.carrental.models.entity.Role;
+import com.miwi.carrental.models.enums.RoleName;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
 

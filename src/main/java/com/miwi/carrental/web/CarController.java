@@ -6,7 +6,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import com.miwi.carrental.control.dto.CarDto;
 import com.miwi.carrental.control.mapper.dto.CarDtoMapper;
 import com.miwi.carrental.control.service.car.CarService;
-import com.miwi.carrental.domain.entity.Car;
+import com.miwi.carrental.models.entity.Car;
+import com.miwi.carrental.web.utils.CheckerOfRequest;
 import com.querydsl.core.types.Predicate;
 import java.net.URI;
 import javax.validation.Valid;
@@ -46,8 +47,7 @@ public class CarController {
 
   private final CarService carService;
   private final CarDtoMapper carDtoMapper;
-
-  private PagedResourcesAssembler<CarDto> pagedDtoAssembler;
+  private final PagedResourcesAssembler<CarDto> pagedDtoAssembler;
 
   public CarController(
       final CarService carService,
@@ -71,7 +71,7 @@ public class CarController {
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Car> createCar(@Valid @RequestBody CarDto car,
       BindingResult bindingResult) {
-    if (checkErrors(bindingResult)) {
+    if (CheckerOfRequest.checkErrors(bindingResult)) {
       return ResponseEntity.badRequest().build();
     }
 
@@ -109,7 +109,7 @@ public class CarController {
   public ResponseEntity<CarDto> updateCar(@Valid @RequestBody CarDto carDto,
       @PathVariable("id") Long id,
       BindingResult bindingResult) {
-    if (checkErrors(bindingResult)) {
+    if (CheckerOfRequest.checkErrors(bindingResult)) {
       return ResponseEntity.badRequest().build();
     }
     carService.editCar(id, carDto);
@@ -135,62 +135,6 @@ public class CarController {
     carService.changeToAvailable(carId, carStatus);
     CarDto carDto = carDtoMapper.mapEntityToDto(car);
     return ResponseEntity.ok().body(carDto);
-  }
-
-  @GetMapping("/carStatus")
-  private ResponseEntity<PagedModel<EntityModel<CarDto>>> getByAvailability(
-      Pageable pageable, Sort sort,
-      @RequestParam(value = "status") String availabilityParam) {
-
-    Page<Car> cars = carService
-        .findByAvailability(availabilityParam,
-            PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort));
-    PagedModel<EntityModel<CarDto>> carsDto = getPagedModelByDto(
-        carDtoMapper.mapEntityPageToPageDto(cars));
-
-    return ResponseEntity.ok().body(carsDto);
-  }
-
-  @GetMapping("/bodyType")
-  private ResponseEntity<PagedModel<EntityModel<CarDto>>> getByBodyTypeName(
-      Pageable pageable, Sort sort,
-      @RequestParam(value = "typeName") String bodyTypeParam) {
-
-    Page<Car> cars = carService
-        .findByBodyTypeName(bodyTypeParam,
-            PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort));
-    PagedModel<EntityModel<CarDto>> carsDto = getPagedModelByDto(
-        carDtoMapper.mapEntityPageToPageDto(cars));
-
-    return ResponseEntity.ok().body(carsDto);
-  }
-
-  @GetMapping("/gearboxType")
-  private ResponseEntity<PagedModel<EntityModel<CarDto>>> getByGearboxType(
-      Pageable pageable, Sort sort,
-      @RequestParam(value = "typeName") String gearBoxTypeParam) {
-
-    Page<Car> cars = carService
-        .findByGearboxType(gearBoxTypeParam,
-            PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort));
-    PagedModel<EntityModel<CarDto>> carsDto = getPagedModelByDto(
-        carDtoMapper.mapEntityPageToPageDto(cars));
-
-    return ResponseEntity.ok().body(carsDto);
-  }
-
-  @GetMapping("/fuelType")
-  private ResponseEntity<PagedModel<EntityModel<CarDto>>> getByFuelType(
-      Pageable pageable, Sort sort,
-      @RequestParam(value = "typeName") String fuelTypeParam) {
-
-    Page<Car> cars = carService
-        .findByFuelType(fuelTypeParam,
-            PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort));
-    PagedModel<EntityModel<CarDto>> carsDto = getPagedModelByDto(
-        carDtoMapper.mapEntityPageToPageDto(cars));
-
-    return ResponseEntity.ok().body(carsDto);
   }
 
   private ResponseEntity<PagedModel<EntityModel<CarDto>>> getPagedModelResponseEntity(
@@ -219,19 +163,5 @@ public class CarController {
                 .readAllCars(null, null))
                 .withRel("carsPage"));
     return carDtoPagedModel;
-  }
-
-  private boolean checkErrors(BindingResult bindingResult) {
-    if (bindingResult.hasErrors()) {
-      System.out.println("there were errors");
-      bindingResult.getAllErrors().forEach(error -> {
-        String errorObjectName = error.getObjectName();
-        logger.warn("Validation failed - Object '{}': {}",
-            errorObjectName.substring(0, 1).toUpperCase() + errorObjectName.substring(1),
-            error.getDefaultMessage());
-      });
-      return true;
-    }
-    return false;
   }
 }

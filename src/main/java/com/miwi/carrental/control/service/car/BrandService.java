@@ -1,6 +1,6 @@
 package com.miwi.carrental.control.service.car;
 
-import com.miwi.carrental.domain.entity.Brand;
+import com.miwi.carrental.models.entity.Brand;
 import com.miwi.carrental.control.exception.MyResourceNotFoundException;
 import com.miwi.carrental.control.repository.BrandDao;
 import com.miwi.carrental.control.service.generic.GenericService;

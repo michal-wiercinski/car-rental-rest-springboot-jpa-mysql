@@ -2,7 +2,7 @@ package com.miwi.carrental.control.service.car;
 
 import com.miwi.carrental.control.dto.CarDto;
 import com.miwi.carrental.control.dto.CarParameterDto;
-import com.miwi.carrental.domain.entity.CarParameter;
+import com.miwi.carrental.models.entity.CarParameter;
 import com.miwi.carrental.control.mapper.dto.CarParameterDtoMapper;
 import com.miwi.carrental.control.repository.CarParameterDao;
 import com.miwi.carrental.control.service.generic.GenericService;

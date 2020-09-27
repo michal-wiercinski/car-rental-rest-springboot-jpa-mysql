@@ -1,7 +1,7 @@
 package com.miwi.carrental.control.mapper.dto;
 
 import com.miwi.carrental.control.dto.LocationDto;
-import com.miwi.carrental.domain.entity.Location;
+import com.miwi.carrental.models.entity.Location;
 import com.miwi.carrental.control.mapper.generic.GenericMapper;
 import com.miwi.carrental.control.service.location.AddressService;
 import javax.transaction.Transactional;
@@ -21,7 +21,7 @@ public class LocationDtoMapper extends GenericMapper<Location, LocationDto> {
     Location location = new Location();
 
     location.setName(locationDto.getName());
-    location.setAddress(addressService.getAddressFromCarParam(locationDto));
+    location.setAddress(addressService.getAddressFromCarLocation(locationDto));
    /*
     location.setLatitude(locationDto.getLatitude());
     location.setLongitude(locationDto.getLongitude());

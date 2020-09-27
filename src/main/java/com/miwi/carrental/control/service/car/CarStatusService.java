@@ -1,7 +1,7 @@
 package com.miwi.carrental.control.service.car;
 
-import com.miwi.carrental.domain.entity.CarStatus;
-import com.miwi.carrental.domain.enums.CarStatusType;
+import com.miwi.carrental.models.entity.CarStatus;
+import com.miwi.carrental.models.enums.CarStatusType;
 import com.miwi.carrental.control.exception.MyResourceNotFoundException;
 import com.miwi.carrental.control.repository.CarStatusDao;
 import com.miwi.carrental.control.service.generic.GenericService;

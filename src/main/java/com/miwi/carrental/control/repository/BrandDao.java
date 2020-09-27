@@ -1,6 +1,6 @@
 package com.miwi.carrental.control.repository;
 
-import com.miwi.carrental.domain.entity.Brand;
+import com.miwi.carrental.models.entity.Brand;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;

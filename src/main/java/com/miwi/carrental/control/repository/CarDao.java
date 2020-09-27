@@ -1,10 +1,10 @@
 package com.miwi.carrental.control.repository;
 
-import com.miwi.carrental.domain.entity.Car;
-import com.miwi.carrental.domain.entity.CarStatus;
-import com.miwi.carrental.domain.enums.BodyTypeName;
-import com.miwi.carrental.domain.enums.FuelType;
-import com.miwi.carrental.domain.enums.GearboxType;
+import com.miwi.carrental.models.entity.Car;
+import com.miwi.carrental.models.entity.CarStatus;
+import com.miwi.carrental.models.enums.BodyTypeName;
+import com.miwi.carrental.models.enums.FuelType;
+import com.miwi.carrental.models.enums.GearboxType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.query.Procedure;

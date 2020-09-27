@@ -1,8 +1,8 @@
 package com.miwi.carrental.control.service.car;
 
 import com.miwi.carrental.control.dto.CarParameterDto;
-import com.miwi.carrental.domain.entity.BodyType;
-import com.miwi.carrental.domain.enums.BodyTypeName;
+import com.miwi.carrental.models.entity.BodyType;
+import com.miwi.carrental.models.enums.BodyTypeName;
 import com.miwi.carrental.control.exception.MyResourceNotFoundException;
 import com.miwi.carrental.control.repository.BodyTypeDao;
 import com.miwi.carrental.control.service.generic.GenericService;

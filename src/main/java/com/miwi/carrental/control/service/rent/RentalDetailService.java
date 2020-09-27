@@ -1,6 +1,6 @@
 package com.miwi.carrental.control.service.rent;
 
-import com.miwi.carrental.domain.entity.RentalDetails;
+import com.miwi.carrental.models.entity.RentalDetails;
 import com.miwi.carrental.control.repository.RentalDetailsDao;
 import com.miwi.carrental.control.service.generic.GenericService;
 import org.springframework.stereotype.Service;

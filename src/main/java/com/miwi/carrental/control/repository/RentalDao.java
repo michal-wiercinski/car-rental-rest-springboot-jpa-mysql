@@ -1,6 +1,6 @@
 package com.miwi.carrental.control.repository;
 
-import com.miwi.carrental.domain.entity.Rental;
+import com.miwi.carrental.models.entity.Rental;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

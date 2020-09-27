@@ -1,6 +1,6 @@
 package com.miwi.carrental.control.service.rent;
 
-import com.miwi.carrental.domain.entity.RentalStatus;
+import com.miwi.carrental.models.entity.RentalStatus;
 import com.miwi.carrental.control.exception.MyResourceNotFoundException;
 import com.miwi.carrental.control.repository.RentalStatusDao;
 import com.miwi.carrental.control.service.generic.GenericService;

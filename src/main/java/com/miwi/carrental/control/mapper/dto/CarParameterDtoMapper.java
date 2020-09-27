@@ -1,7 +1,7 @@
 package com.miwi.carrental.control.mapper.dto;
 
 import com.miwi.carrental.control.dto.CarParameterDto;
-import com.miwi.carrental.domain.entity.CarParameter;
+import com.miwi.carrental.models.entity.CarParameter;
 import com.miwi.carrental.control.service.car.BodyTypeService;
 import com.miwi.carrental.control.service.car.DriveTrainService;
 import com.miwi.carrental.control.service.car.EngineService;

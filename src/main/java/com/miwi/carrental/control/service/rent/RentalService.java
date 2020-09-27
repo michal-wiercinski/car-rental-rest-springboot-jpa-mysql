@@ -8,7 +8,7 @@ import com.miwi.carrental.control.exception.MyResourceNotFoundException;
 import com.miwi.carrental.control.exception.RestPreconditions;
 import com.miwi.carrental.control.mapper.dto.RentalDtoMapper;
 import com.miwi.carrental.control.repository.RentalDao;
-import com.miwi.carrental.security.service.UserService;
+import com.miwi.carrental.control.service.UserService;
 import com.miwi.carrental.control.service.generic.GenericService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

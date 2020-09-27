@@ -1,7 +1,7 @@
 package com.miwi.carrental.control.repository;
 
-import com.miwi.carrental.domain.entity.BodyType;
-import com.miwi.carrental.domain.enums.BodyTypeName;
+import com.miwi.carrental.models.entity.BodyType;
+import com.miwi.carrental.models.enums.BodyTypeName;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;

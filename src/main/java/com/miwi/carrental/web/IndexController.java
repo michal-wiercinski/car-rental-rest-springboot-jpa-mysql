@@ -1,7 +1,7 @@
 package com.miwi.carrental.web;
 
 import com.miwi.carrental.control.service.car.CarService;
-import com.miwi.carrental.domain.entity.Car;
+import com.miwi.carrental.models.entity.Car;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
