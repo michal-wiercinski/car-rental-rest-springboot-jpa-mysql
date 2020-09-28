@@ -4,6 +4,7 @@ package com.miwi.carrental.security.userDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.miwi.carrental.models.entity.User;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,7 +31,7 @@ public class CustomUserDetails implements UserDetails {
     this.authorities = authorities;
   }
 
-  public static CustomUserDetails build(User user) {
+  public static UserDetails build(User user) {
     return new CustomUserDetails(
         user.getId(),
         user.getEmail(),
@@ -39,6 +40,24 @@ public class CustomUserDetails implements UserDetails {
             .map(role -> new SimpleGrantedAuthority(role.getName().name()))
             .collect(Collectors.toList()));
   }
+
+
+/*  private List<String> getPrivileges(Collection<Role> roles) {
+    List<String> rolesName = new ArrayList<>();
+
+    for (Role role : roles) {
+      rolesName.add(role.getName());
+    }
+    return rolesName;
+  }
+
+  private Collection<GrantedAuthority> getGrantedAuthorities(List<String> rolesName) {
+    List<GrantedAuthority> authorities = new ArrayList<>();
+    for (String roleName : rolesName) {
+      authorities.add(new SimpleGrantedAuthority(roleName));
+    }
+    return authorities;
+  }*/
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

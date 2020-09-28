@@ -12,7 +12,6 @@ import javax.persistence.Table;
 import lombok.Data;
 
 
-@Data
 @Table(name = "car_parameter")
 @Entity
 public class CarParameter {

@@ -15,7 +15,6 @@ import java.util.List;
         }
     )
 )
-@Data
 @Table(name = "car")
 @Entity
 public class Car implements Serializable {

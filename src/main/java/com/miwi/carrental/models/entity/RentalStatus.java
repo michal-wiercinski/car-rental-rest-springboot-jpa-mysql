@@ -11,7 +11,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
 
-@Data
 @Table(name = "rental_status")
 @Entity
 public class RentalStatus {

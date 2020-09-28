@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +25,7 @@ public class Role implements Serializable {
   @Column(name = "PK_role")
   private Long id;
 
-  @Convert(converter = RoleNameConverter.class)
+  @Enumerated(EnumType.STRING)
   @Column(name = "role_name")
   private RoleName name;
 

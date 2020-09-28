@@ -23,7 +23,6 @@ import lombok.Data;
         }
     )
 )
-@Data
 @Table(name = "rental")
 @Entity
 public class Rental {

@@ -25,7 +25,6 @@ import lombok.Data;
             @StoredProcedureParameter(mode = ParameterMode.OUT, name = "brd_name", type = String.class)
         })
 )
-@Data
 @Table(name = "brand")
 @Entity
 public class Brand implements Serializable {

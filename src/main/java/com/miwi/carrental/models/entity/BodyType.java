@@ -16,7 +16,6 @@ import javax.persistence.Table;
 import lombok.Data;
 
 
-@Data
 @Table(name = "body_type")
 @Entity
 public class BodyType implements Serializable {

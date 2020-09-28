@@ -24,7 +24,6 @@ import lombok.Data;
             + "OR a.street LIKE CONCAT('%',:param,'%')"
             + "OR a.zipCode LIKE CONCAT('%',:param,'%') ")
 })
-@Data
 @Table(name = "location")
 @Entity
 public class Location implements Serializable {

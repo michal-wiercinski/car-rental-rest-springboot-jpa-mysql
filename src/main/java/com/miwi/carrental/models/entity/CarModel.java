@@ -24,7 +24,6 @@ import lombok.Data;
             + "OR br.name LIKE concat('%', :param, '%') "
     )
 })
-@Data
 @Table(name = "car_model")
 @Entity
 public class CarModel implements Serializable {

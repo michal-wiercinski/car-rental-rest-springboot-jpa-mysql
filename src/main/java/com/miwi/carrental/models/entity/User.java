@@ -1,6 +1,7 @@
 package com.miwi.carrental.models.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
@@ -19,7 +20,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Table(name = "user")
 @Entity
 @Builder
@@ -55,7 +55,7 @@ public class User implements Serializable {
   @JoinTable(name = "user_roles",
       joinColumns = @JoinColumn(name = "FK_user", referencedColumnName = "PK_user"),
       inverseJoinColumns = @JoinColumn(name = "FK_role", referencedColumnName = "PK_role"))
-  private Set<Role> roles;
+  private Set<Role> roles = new HashSet<>();
 
   public Long getId() {
     return id;

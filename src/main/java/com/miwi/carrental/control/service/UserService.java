@@ -69,7 +69,7 @@ public class UserService extends GenericService<User> {
         .password(passwordEncoder.encode(regRequest.getPassword()))
         .email(regRequest.getEmail())
         .address(addressService.createAddressByUserDto(regRequest))
-        .roles(Set.of(roleService.findByRoleName(RoleName.USER)))
+        .roles(Set.of(roleService.findByRoleName(RoleName.ROLE_USER)))
         .build();
   }
 
@@ -117,8 +117,8 @@ public class UserService extends GenericService<User> {
         "proba", "Wrocław", "Warszawska", "33", "71-000");
 
     User user = registrationNewUser(adminUserDto);
-    user.setRoles(Set.of(roleService.findByRoleName(RoleName.ADMIN),
-        roleService.findByRoleName(RoleName.USER)));
+    user.setRoles(Set.of(roleService.findByRoleName(RoleName.ROLE_ADMIN),
+        roleService.findByRoleName(RoleName.ROLE_USER)));
     save(registrationNewUser(normalUserDto));
     save(user);
   }
