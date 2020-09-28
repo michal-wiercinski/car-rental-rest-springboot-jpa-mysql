@@ -1,8 +1,7 @@
 package com.miwi.carrental.control.dto;
 
 
-import com.miwi.carrental.security.validation.PasswordMatches;
-import com.miwi.carrental.security.validation.ValidEmail;
+import com.miwi.carrental.control.validation.ValidEmail;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;

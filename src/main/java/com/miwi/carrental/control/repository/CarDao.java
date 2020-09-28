@@ -2,9 +2,9 @@ package com.miwi.carrental.control.repository;
 
 import com.miwi.carrental.models.entity.Car;
 import com.miwi.carrental.models.entity.CarStatus;
-import com.miwi.carrental.models.enums.BodyTypeName;
-import com.miwi.carrental.models.enums.FuelType;
-import com.miwi.carrental.models.enums.GearboxType;
+import com.miwi.carrental.models.enums.EBodyType;
+import com.miwi.carrental.models.enums.EFuelType;
+import com.miwi.carrental.models.enums.EGearboxType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.query.Procedure;
@@ -21,9 +21,9 @@ public interface CarDao extends GenericDao<Car>, QuerydslPredicateExecutor<Car> 
 
   Page<Car> findAllByCarStatusLike(CarStatus carStatus, Pageable pageable);
 
-  Page<Car> findAllByCarParameter_BodyTypeTypeName(BodyTypeName bodyTypeName, Pageable pageable);
+  Page<Car> findAllByCarParameter_BodyTypeTypeName(EBodyType bodyTypeName, Pageable pageable);
 
-  Page<Car> findAllByCarParameter_DriveTrainGearboxType(GearboxType gearboxType, Pageable pageable);
+  Page<Car> findAllByCarParameter_DriveTrainGearboxType(EGearboxType gearboxType, Pageable pageable);
 
-  Page<Car> findAllByCarParameter_EngineFuelType(FuelType fuelType, Pageable pageable);
+  Page<Car> findAllByCarParameter_EngineFuelType(EFuelType fuelType, Pageable pageable);
 }

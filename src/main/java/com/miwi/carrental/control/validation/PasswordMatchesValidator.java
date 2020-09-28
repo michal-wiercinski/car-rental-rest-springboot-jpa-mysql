@@ -1,4 +1,4 @@
-package com.miwi.carrental.security.validation;
+package com.miwi.carrental.control.validation;
 
 
 import com.miwi.carrental.security.payload.request.RegistrationRequest;

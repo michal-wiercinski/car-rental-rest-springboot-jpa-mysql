@@ -2,7 +2,7 @@ package com.miwi.carrental.control.service.car;
 
 import com.miwi.carrental.control.dto.CarParameterDto;
 import com.miwi.carrental.models.entity.BodyType;
-import com.miwi.carrental.models.enums.BodyTypeName;
+import com.miwi.carrental.models.enums.EBodyType;
 import com.miwi.carrental.control.exception.MyResourceNotFoundException;
 import com.miwi.carrental.control.repository.BodyTypeDao;
 import com.miwi.carrental.control.service.generic.GenericService;
@@ -25,7 +25,7 @@ public class BodyTypeService extends GenericService<BodyType> {
     this.bodyTypeDao = bodyTypeDao;
   }
 
-  public Optional<BodyType> findByAllParameters(BodyTypeName bodyTypeName, Integer seats,
+  public Optional<BodyType> findByAllParameters(EBodyType bodyTypeName, Integer seats,
       Integer doors, Integer fuelTank, Integer luggage) {
     return bodyTypeDao
         .findByTypeNameAndNumberOfSeatsAndNumberOfDoorsAndFuelTankVolumeAndVolumeOfLuggage(
@@ -34,7 +34,7 @@ public class BodyTypeService extends GenericService<BodyType> {
 
   public BodyType getBodyTypeFromNewCarParam(CarParameterDto carParameterDto) {
     Optional<BodyType> bodyType = findByAllParameters(
-        BodyTypeName.valueOf(carParameterDto.getBodyTypeName()),
+        EBodyType.valueOf(carParameterDto.getBodyTypeName()),
         carParameterDto.getNumberOfSeats(),
         carParameterDto.getNumberOfDoors(), carParameterDto.getFuelTankVolume(),
         carParameterDto.getVolumeOfLuggage());
@@ -44,7 +44,7 @@ public class BodyTypeService extends GenericService<BodyType> {
     }
 
     BodyType newBodyType = new BodyType();
-    newBodyType.setTypeName(BodyTypeName.valueOf(carParameterDto.getBodyTypeName()));
+    newBodyType.setTypeName(EBodyType.valueOf(carParameterDto.getBodyTypeName()));
     newBodyType.setFuelTankVolume(carParameterDto.getFuelTankVolume());
     newBodyType.setNumberOfDoors(carParameterDto.getNumberOfDoors());
     newBodyType.setNumberOfSeats(carParameterDto.getNumberOfSeats());
@@ -56,13 +56,13 @@ public class BodyTypeService extends GenericService<BodyType> {
   public BodyType editBodyTypeByDto(CarParameterDto carParameterDto) {
     BodyType bodyType = new BodyType();
     Optional<BodyType> optBodyType = findByAllParameters(
-        BodyTypeName.valueOf(carParameterDto.getBodyTypeName().toUpperCase()),
+        EBodyType.valueOf(carParameterDto.getBodyTypeName().toUpperCase()),
         carParameterDto.getNumberOfSeats(), carParameterDto.getNumberOfDoors(),
         carParameterDto.getFuelTankVolume(), carParameterDto.getVolumeOfLuggage());
 
     if (optBodyType.isEmpty()) {
       if (carParameterDto.getBodyTypeName() != null) {
-        bodyType.setTypeName(BodyTypeName.valueOf(carParameterDto.getBodyTypeName().toUpperCase()));
+        bodyType.setTypeName(EBodyType.valueOf(carParameterDto.getBodyTypeName().toUpperCase()));
       }
       if (carParameterDto.getNumberOfSeats() != null) {
         bodyType.setNumberOfSeats(carParameterDto.getNumberOfSeats());

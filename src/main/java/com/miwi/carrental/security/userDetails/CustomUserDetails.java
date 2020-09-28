@@ -4,6 +4,7 @@ package com.miwi.carrental.security.userDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.miwi.carrental.models.entity.User;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,7 +31,7 @@ public class CustomUserDetails implements UserDetails {
     this.authorities = authorities;
   }
 
-  public static CustomUserDetails build(User user) {
+  public static UserDetails build(User user) {
     return new CustomUserDetails(
         user.getId(),
         user.getEmail(),

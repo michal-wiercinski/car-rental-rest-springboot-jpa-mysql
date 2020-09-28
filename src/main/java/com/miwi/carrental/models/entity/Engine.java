@@ -1,6 +1,6 @@
 package com.miwi.carrental.models.entity;
 
-import com.miwi.carrental.models.enums.FuelType;
+import com.miwi.carrental.models.enums.EFuelType;
 import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,7 +29,7 @@ public class Engine {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "fuel_type")
-  private FuelType fuelType;
+  private EFuelType fuelType;
 
   @Column(name = "fuel_consumption")
   private Double fuelConsumption;
@@ -61,11 +61,11 @@ public class Engine {
     this.capacity = capacity;
   }
 
-  public FuelType getFuelType() {
+  public EFuelType getFuelType() {
     return fuelType;
   }
 
-  public void setFuelType(FuelType fuelType) {
+  public void setFuelType(EFuelType fuelType) {
     this.fuelType = fuelType;
   }
 

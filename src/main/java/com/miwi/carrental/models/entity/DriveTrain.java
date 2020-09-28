@@ -1,7 +1,7 @@
 package com.miwi.carrental.models.entity;
 
-import com.miwi.carrental.models.enums.GearboxType;
-import com.miwi.carrental.models.enums.WheelDrive;
+import com.miwi.carrental.models.enums.EGearboxType;
+import com.miwi.carrental.models.enums.EWheelDrive;
 import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,11 +24,11 @@ public class DriveTrain {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "wheel_drive")
-  private WheelDrive wheelDrive;
+  private EWheelDrive wheelDrive;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "gearbox_type")
-  private GearboxType gearboxType;
+  private EGearboxType gearboxType;
 
   @Column(name = "number_of_gears")
   private Integer numberOfGears;
@@ -44,19 +44,19 @@ public class DriveTrain {
     this.id = id;
   }
 
-  public WheelDrive getWheelDrive() {
+  public EWheelDrive getWheelDrive() {
     return wheelDrive;
   }
 
-  public void setWheelDrive(WheelDrive wheelDrive) {
+  public void setWheelDrive(EWheelDrive wheelDrive) {
     this.wheelDrive = wheelDrive;
   }
 
-  public GearboxType getGearboxType() {
+  public EGearboxType getGearboxType() {
     return gearboxType;
   }
 
-  public void setGearboxType(GearboxType gearboxType) {
+  public void setGearboxType(EGearboxType gearboxType) {
     this.gearboxType = gearboxType;
   }
 

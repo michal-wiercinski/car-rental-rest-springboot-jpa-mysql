@@ -1,11 +1,11 @@
 package com.miwi.carrental.models.enums;
 
-public enum CarStatusType {
+public enum ECarStatus {
   AVAILABLE("Available"), UNAVAILABLE("Unavailable");
 
   private String type;
 
-  private CarStatusType(String type) {
+  private ECarStatus(String type) {
     this.type = type;
   }
 

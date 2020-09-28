@@ -1,6 +1,6 @@
 package com.miwi.carrental.models.entity;
 
-import com.miwi.carrental.models.enums.RentalStatusType;
+import com.miwi.carrental.models.enums.ERentalStatus;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,9 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import lombok.Data;
 
-@Data
 @Table(name = "rental_status")
 @Entity
 public class RentalStatus {
@@ -22,7 +20,7 @@ public class RentalStatus {
   private Long id;
 
   @Column(name = "status_desc")
-  private RentalStatusType rentalStatusType;
+  private ERentalStatus rentalStatusType;
 
   @OneToMany(mappedBy = "rentalStatus")
   private List<Rental> rentals;
@@ -35,11 +33,11 @@ public class RentalStatus {
     this.id = id;
   }
 
-  public RentalStatusType getRentalStatusType() {
+  public ERentalStatus getRentalStatusType() {
     return rentalStatusType;
   }
 
-  public void setRentalStatusType(RentalStatusType rentalStatusType) {
+  public void setRentalStatusType(ERentalStatus rentalStatusType) {
     this.rentalStatusType = rentalStatusType;
   }
 

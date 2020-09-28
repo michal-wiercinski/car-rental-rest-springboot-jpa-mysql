@@ -1,11 +1,11 @@
 package com.miwi.carrental.models.enums;
 
-public enum GearboxType {
-  MANUAL("Manual"), AUTOMATIC("Automatic");
+public enum EFuelType {
+  DIESEL("Diesel"), HYBRID("Hybrid"), PETROL("Petrol"), CNG("CNG");
 
   private final String type;
 
-  private GearboxType(String type) {
+  private EFuelType(String type) {
     this.type = type;
   }
 

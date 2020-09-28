@@ -6,9 +6,9 @@ import com.miwi.carrental.control.repository.UserDao;
 import com.miwi.carrental.control.service.generic.GenericService;
 import com.miwi.carrental.control.service.location.AddressService;
 import com.miwi.carrental.models.entity.User;
-import com.miwi.carrental.models.enums.RoleName;
+import com.miwi.carrental.models.enums.ERoleName;
 import com.miwi.carrental.security.payload.request.RegistrationRequest;
-import com.miwi.carrental.security.validation.EmailExistsException;
+import com.miwi.carrental.control.exception.EmailExistsException;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.PostConstruct;
@@ -69,7 +69,7 @@ public class UserService extends GenericService<User> {
         .password(passwordEncoder.encode(regRequest.getPassword()))
         .email(regRequest.getEmail())
         .address(addressService.createAddressByUserDto(regRequest))
-        .roles(Set.of(roleService.findByRoleName(RoleName.USER)))
+        .roles(Set.of(roleService.findByRoleName(ERoleName.ROLE_USER)))
         .build();
   }
 
@@ -117,8 +117,8 @@ public class UserService extends GenericService<User> {
         "proba", "Wrocław", "Warszawska", "33", "71-000");
 
     User user = registrationNewUser(adminUserDto);
-    user.setRoles(Set.of(roleService.findByRoleName(RoleName.ADMIN),
-        roleService.findByRoleName(RoleName.USER)));
+    user.setRoles(Set.of(roleService.findByRoleName(ERoleName.ROLE_ADMIN),
+        roleService.findByRoleName(ERoleName.ROLE_USER)));
     save(registrationNewUser(normalUserDto));
     save(user);
   }

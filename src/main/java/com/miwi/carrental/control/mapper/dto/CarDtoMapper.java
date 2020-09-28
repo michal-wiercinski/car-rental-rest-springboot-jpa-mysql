@@ -2,7 +2,7 @@ package com.miwi.carrental.control.mapper.dto;
 
 import com.miwi.carrental.control.dto.CarDto;
 import com.miwi.carrental.models.entity.Car;
-import com.miwi.carrental.models.enums.CarStatusType;
+import com.miwi.carrental.models.enums.ECarStatus;
 import com.miwi.carrental.control.mapper.generic.GenericMapper;
 import com.miwi.carrental.control.service.car.CarModelService;
 import com.miwi.carrental.control.service.car.CarStatusService;
@@ -45,7 +45,7 @@ public class CarDtoMapper extends GenericMapper<Car, CarDto> {
     car.setLocation(locationService.findById(dto.getLocationDto().getId()));
     car.setCarParameter(carParameterMapper.mapDtoToEntity(dto.getCarParameterDto()));
     car.setCarStatus(
-        carStatusService.findByCarStatusName(CarStatusType.valueOf(dto.getCarStatus())));
+        carStatusService.findByCarStatusName(ECarStatus.valueOf(dto.getCarStatus())));
 
     return car;
   }

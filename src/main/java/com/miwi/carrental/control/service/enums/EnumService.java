@@ -1,12 +1,12 @@
 package com.miwi.carrental.control.service.enums;
 
-import com.miwi.carrental.models.enums.BodyTypeName;
-import com.miwi.carrental.models.enums.CarStatusType;
-import com.miwi.carrental.models.enums.FuelType;
-import com.miwi.carrental.models.enums.GearboxType;
-import com.miwi.carrental.models.enums.RentalStatusType;
-import com.miwi.carrental.models.enums.RoleName;
-import com.miwi.carrental.models.enums.WheelDrive;
+import com.miwi.carrental.models.enums.EBodyType;
+import com.miwi.carrental.models.enums.ECarStatus;
+import com.miwi.carrental.models.enums.EFuelType;
+import com.miwi.carrental.models.enums.EGearboxType;
+import com.miwi.carrental.models.enums.ERentalStatus;
+import com.miwi.carrental.models.enums.ERoleName;
+import com.miwi.carrental.models.enums.EWheelDrive;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -20,14 +20,14 @@ public class EnumService {
 
 
   public Map<String, Set<Enum<?>>> getAllEnum() {
-    enumsMap.put("Car status", Set.of(CarStatusType.values()));
-    enumsMap.put("Body type", Set.of(BodyTypeName.values()));
-    enumsMap.put("Fuel type", Set.of(FuelType.values()));
-    enumsMap.put("Gearbox", Set.of(GearboxType.values()));
-    enumsMap.put("Rental status", Set.of(RentalStatusType.values()));
-    enumsMap.put("Role name", Set.of(RoleName.values()));
-    enumsMap.put("Wheel drive", Set.of(WheelDrive.values()));
-    enumsMap.put("Wheel drive type", Set.of(WheelDrive.values()));
+    enumsMap.put("Car status", Set.of(ECarStatus.values()));
+    enumsMap.put("Body type", Set.of(EBodyType.values()));
+    enumsMap.put("Fuel type", Set.of(EFuelType.values()));
+    enumsMap.put("Gearbox", Set.of(EGearboxType.values()));
+    enumsMap.put("Rental status", Set.of(ERentalStatus.values()));
+    enumsMap.put("Role name", Set.of(ERoleName.values()));
+    enumsMap.put("Wheel drive", Set.of(EWheelDrive.values()));
+    enumsMap.put("Wheel drive type", Set.of(EWheelDrive.values()));
 
     return enumsMap;
   }

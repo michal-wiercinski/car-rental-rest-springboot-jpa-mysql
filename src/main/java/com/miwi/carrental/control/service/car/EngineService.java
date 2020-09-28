@@ -2,7 +2,7 @@ package com.miwi.carrental.control.service.car;
 
 import com.miwi.carrental.control.dto.CarParameterDto;
 import com.miwi.carrental.models.entity.Engine;
-import com.miwi.carrental.models.enums.FuelType;
+import com.miwi.carrental.models.enums.EFuelType;
 import com.miwi.carrental.control.repository.EngineDao;
 import com.miwi.carrental.control.service.generic.GenericService;
 import java.util.Optional;
@@ -22,7 +22,7 @@ public class EngineService extends GenericService<Engine> {
   public Engine getEngineFromNewCarParam(CarParameterDto carParameterDto) {
     Optional<Engine> engine = findByAllParameters(carParameterDto.getEnginePower(),
         carParameterDto.getEngineCapacity(),
-        FuelType.valueOf(carParameterDto.getFuelType()),
+        EFuelType.valueOf(carParameterDto.getFuelType()),
         carParameterDto.getAverageFuelConsumption());
 
     if (engine.isPresent()) {
@@ -31,14 +31,14 @@ public class EngineService extends GenericService<Engine> {
     Engine newEngine = new Engine();
     newEngine.setPower(carParameterDto.getEnginePower());
     newEngine.setCapacity(carParameterDto.getEngineCapacity());
-    newEngine.setFuelType(FuelType.valueOf(carParameterDto.getFuelType()));
+    newEngine.setFuelType(EFuelType.valueOf(carParameterDto.getFuelType()));
     newEngine.setFuelConsumption(carParameterDto.getAverageFuelConsumption());
 
     return newEngine;
   }
 
   public Optional<Engine> findByAllParameters(Integer power,
-      Integer capacity, FuelType fuelType, Double fuelConsumption) {
+      Integer capacity, EFuelType fuelType, Double fuelConsumption) {
     return engineDao.findByPowerAndCapacityAndFuelTypeAndFuelConsumption(power, capacity, fuelType,
         fuelConsumption);
   }
@@ -47,7 +47,7 @@ public class EngineService extends GenericService<Engine> {
     Engine engine = new Engine();
     Optional<Engine> optEngine;
     optEngine = findByAllParameters(carParameterDto.getEnginePower(),
-        carParameterDto.getEngineCapacity(), FuelType.valueOf(carParameterDto.getFuelType().toUpperCase()),
+        carParameterDto.getEngineCapacity(), EFuelType.valueOf(carParameterDto.getFuelType().toUpperCase()),
         carParameterDto.getAverageFuelConsumption());
 
     if (optEngine.isEmpty()) {
@@ -58,7 +58,7 @@ public class EngineService extends GenericService<Engine> {
         engine.setCapacity(carParameterDto.getEngineCapacity());
       }
       if (carParameterDto.getFuelType() != null) {
-        engine.setFuelType(FuelType.valueOf(carParameterDto.getFuelType().toUpperCase()));
+        engine.setFuelType(EFuelType.valueOf(carParameterDto.getFuelType().toUpperCase()));
       }
       if (carParameterDto.getAverageFuelConsumption() != null) {
         engine.setFuelConsumption(carParameterDto.getAverageFuelConsumption());

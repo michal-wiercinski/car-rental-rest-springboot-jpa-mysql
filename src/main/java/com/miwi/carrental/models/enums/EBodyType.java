@@ -1,12 +1,12 @@
 package com.miwi.carrental.models.enums;
 
-public enum BodyTypeName {
+public enum EBodyType {
   HATCHBACK("Hatchback"), SEDAN("Sedan"), SUV("SUV"), COUPE("Coupe"),
   WAGON("Wagon"), VAN("VAN"), JEEP("Jeep");
 
   private String type;
 
-  BodyTypeName(String type) {
+  EBodyType(String type) {
     this.type = type;
   }
 

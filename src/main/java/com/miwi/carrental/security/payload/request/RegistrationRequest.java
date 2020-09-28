@@ -1,10 +1,7 @@
 package com.miwi.carrental.security.payload.request;
 
-import com.miwi.carrental.security.validation.PasswordMatches;
-import com.miwi.carrental.security.validation.ValidEmail;
-import java.util.Set;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import com.miwi.carrental.control.validation.PasswordMatches;
+import com.miwi.carrental.control.validation.ValidEmail;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;

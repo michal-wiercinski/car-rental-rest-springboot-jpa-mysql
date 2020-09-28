@@ -1,8 +1,6 @@
-package com.miwi.carrental.security.validation;
-
+package com.miwi.carrental.control.validation;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
-import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -13,13 +11,13 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-@Documented
-@Target({TYPE, FIELD, ANNOTATION_TYPE})
-@Constraint(validatedBy = PasswordMatchesValidator.class)
+@Target({TYPE, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-public @interface ValidPassword {
+@Constraint(validatedBy = PasswordMatchesValidator.class)
+@Documented
+public @interface PasswordMatches {
 
-  String message() default "Invalid Password";
+  String message() default "Passwords don't match";
 
   Class<?>[] groups() default {};
 

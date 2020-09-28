@@ -1,7 +1,7 @@
 package com.miwi.carrental.control.service.car;
 
 import com.miwi.carrental.models.entity.CarStatus;
-import com.miwi.carrental.models.enums.CarStatusType;
+import com.miwi.carrental.models.enums.ECarStatus;
 import com.miwi.carrental.control.exception.MyResourceNotFoundException;
 import com.miwi.carrental.control.repository.CarStatusDao;
 import com.miwi.carrental.control.service.generic.GenericService;
@@ -19,7 +19,7 @@ public class CarStatusService  extends GenericService<CarStatus> {
     this.carStatusDao = carStatusDao;
   }
 
-  public CarStatus findByCarStatusName(CarStatusType carStatusType) {
+  public CarStatus findByCarStatusName(ECarStatus carStatusType) {
     try {
       return checkFound(carStatusDao.findByCarStatusName(carStatusType));
     } catch (MyResourceNotFoundException ex) {

@@ -4,7 +4,7 @@ import com.miwi.carrental.control.exception.MyResourceNotFoundException;
 import com.miwi.carrental.control.repository.RoleDao;
 import com.miwi.carrental.control.service.generic.GenericService;
 import com.miwi.carrental.models.entity.Role;
-import com.miwi.carrental.models.enums.RoleName;
+import com.miwi.carrental.models.enums.ERoleName;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,7 +18,7 @@ public class RoleService extends GenericService<Role> {
     this.roleDao = roleDao;
   }
 
-  public Role findByRoleName(RoleName roleName) {
+  public Role findByRoleName(ERoleName roleName) {
     try {
       return checkFound(roleDao.findByName(roleName));
     } catch (MyResourceNotFoundException ex) {

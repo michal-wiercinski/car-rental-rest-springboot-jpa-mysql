@@ -1,24 +1,27 @@
 package com.miwi.carrental.web;
 
 import com.miwi.carrental.control.dto.UserDto;
-import com.miwi.carrental.models.entity.User;
-import com.miwi.carrental.security.userDetails.CustomUserDetails;
-import com.miwi.carrental.security.jwt.JwtTokenService;
 import com.miwi.carrental.control.mapper.dto.UserDtoMapper;
+import com.miwi.carrental.control.service.UserService;
+import com.miwi.carrental.models.entity.User;
+import com.miwi.carrental.security.jwt.JwtTokenService;
 import com.miwi.carrental.security.payload.request.LoginRequest;
 import com.miwi.carrental.security.payload.request.RegistrationRequest;
 import com.miwi.carrental.security.payload.response.JwtResponse;
-import com.miwi.carrental.control.service.UserService;
+import com.miwi.carrental.security.userDetails.CustomUserDetails;
+import com.miwi.carrental.security.userDetails.CustomUserDetailsService;
 import com.miwi.carrental.web.utils.CheckerOfRequest;
 import java.net.URI;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -43,6 +46,9 @@ public class UserController {
   private final JwtTokenService jwtTokenService;
   private final AuthenticationManager authenticationManager;
   private final UserDtoMapper userDtoMapper;
+
+  @Autowired
+  CustomUserDetailsService customUserDetailsService;
 
   public UserController(final UserService userService,
       final JwtTokenService jwtTokenService,
@@ -96,4 +102,5 @@ public class UserController {
   public ResponseEntity<List<UserDto>> getAll() {
     return ResponseEntity.ok().body(userDtoMapper.mapEntityListToListDto(userService.findAll()));
   }
+
 }

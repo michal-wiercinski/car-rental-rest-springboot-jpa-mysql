@@ -1,6 +1,6 @@
 package com.miwi.carrental.models.entity;
 
-import com.miwi.carrental.models.enums.CarStatusType;
+import com.miwi.carrental.models.enums.ECarStatus;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,9 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import lombok.Data;
 
-@Data
 @Entity
 @Table(name = "car_status")
 public class CarStatus {
@@ -25,7 +23,7 @@ public class CarStatus {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "status_description")
-  private CarStatusType carStatusName;
+  private ECarStatus carStatusName;
 
   @OneToMany(mappedBy = "carStatus")
   private List<Car> cars;
@@ -38,11 +36,11 @@ public class CarStatus {
     this.statusCode = statusCode;
   }
 
-  public CarStatusType getCarStatusName() {
+  public ECarStatus getCarStatusName() {
     return carStatusName;
   }
 
-  public void setCarStatusName(CarStatusType carStatusName) {
+  public void setCarStatusName(ECarStatus carStatusName) {
     this.carStatusName = carStatusName;
   }
 }

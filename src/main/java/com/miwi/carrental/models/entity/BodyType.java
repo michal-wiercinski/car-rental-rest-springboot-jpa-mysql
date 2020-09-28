@@ -1,6 +1,6 @@
 package com.miwi.carrental.models.entity;
 
-import com.miwi.carrental.models.enums.BodyTypeName;
+import com.miwi.carrental.models.enums.EBodyType;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -13,10 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import lombok.Data;
 
 
-@Data
 @Table(name = "body_type")
 @Entity
 public class BodyType implements Serializable {
@@ -28,7 +26,7 @@ public class BodyType implements Serializable {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "type_name")
-  private BodyTypeName typeName;
+  private EBodyType typeName;
 
   @Column(name = "number_of_seats")
   private Integer numberOfSeats;
@@ -54,11 +52,11 @@ public class BodyType implements Serializable {
     this.id = id;
   }
 
-  public BodyTypeName getTypeName() {
+  public EBodyType getTypeName() {
     return typeName;
   }
 
-  public void setTypeName(BodyTypeName typeName) {
+  public void setTypeName(EBodyType typeName) {
     this.typeName = typeName;
   }
 

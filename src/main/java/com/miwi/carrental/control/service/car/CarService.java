@@ -8,10 +8,10 @@ import com.miwi.carrental.control.service.generic.GenericService;
 import com.miwi.carrental.control.service.location.LocationService;
 import com.miwi.carrental.models.entity.Car;
 import com.miwi.carrental.models.entity.CarStatus;
-import com.miwi.carrental.models.enums.BodyTypeName;
-import com.miwi.carrental.models.enums.CarStatusType;
-import com.miwi.carrental.models.enums.FuelType;
-import com.miwi.carrental.models.enums.GearboxType;
+import com.miwi.carrental.models.enums.EBodyType;
+import com.miwi.carrental.models.enums.ECarStatus;
+import com.miwi.carrental.models.enums.EFuelType;
+import com.miwi.carrental.models.enums.EGearboxType;
 import com.querydsl.core.types.Predicate;
 import java.util.List;
 import org.slf4j.Logger;
@@ -64,7 +64,7 @@ public class CarService extends GenericService<Car> {
   public Page<Car> findByBodyTypeName(String typeNameParam, Pageable pageable) {
     try {
       return checkFound(carDao
-          .findAllByCarParameter_BodyTypeTypeName(BodyTypeName.valueOf(typeNameParam), pageable));
+          .findAllByCarParameter_BodyTypeTypeName(EBodyType.valueOf(typeNameParam), pageable));
     } catch (MyResourceNotFoundException ex) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND,
           "No cars found for body type name: " + typeNameParam);
@@ -74,7 +74,7 @@ public class CarService extends GenericService<Car> {
   public Page<Car> findByGearboxType(String typeNameParam, Pageable pageable) {
     try {
       return checkFound(carDao
-          .findAllByCarParameter_DriveTrainGearboxType(GearboxType.valueOf(typeNameParam),
+          .findAllByCarParameter_DriveTrainGearboxType(EGearboxType.valueOf(typeNameParam),
               pageable));
     } catch (MyResourceNotFoundException ex) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -85,7 +85,7 @@ public class CarService extends GenericService<Car> {
   public Page<Car> findByFuelType(String typeNameParam, Pageable pageable) {
     try {
       return checkFound(carDao
-          .findAllByCarParameter_EngineFuelType(FuelType.valueOf(typeNameParam), pageable));
+          .findAllByCarParameter_EngineFuelType(EFuelType.valueOf(typeNameParam), pageable));
     } catch (MyResourceNotFoundException ex) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND,
           "No cars found for fuel type name: " + typeNameParam);
@@ -99,7 +99,7 @@ public class CarService extends GenericService<Car> {
     }
     try {
       CarStatus carStatus = carStatusService
-          .findByCarStatusName(CarStatusType.valueOf(availabilityParameter));
+          .findByCarStatusName(ECarStatus.valueOf(availabilityParameter));
       return checkFound(carDao.findAllByCarStatusLike(carStatus, pageable));
     } catch (MyResourceNotFoundException ex) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -128,7 +128,7 @@ public class CarService extends GenericService<Car> {
     }
     if (carDto.getCarStatus() != null) {
       car.setCarStatus(carStatusService
-          .findByCarStatusName(CarStatusType.valueOf(carDto.getCarStatus().toUpperCase())));
+          .findByCarStatusName(ECarStatus.valueOf(carDto.getCarStatus().toUpperCase())));
     }
     if (carDto.getLocationDto().getId() != null) {
       car.setLocation(locationService.findById(carDto.getLocationDto().getId()));
@@ -176,7 +176,7 @@ public class CarService extends GenericService<Car> {
     if (param.isEmpty()) {
       return false;
     }
-    return param.equals(CarStatusType.AVAILABLE.getType()) ||
-        param.equals(CarStatusType.UNAVAILABLE.getType());
+    return param.equals(ECarStatus.AVAILABLE.getType()) ||
+        param.equals(ECarStatus.UNAVAILABLE.getType());
   }
 }

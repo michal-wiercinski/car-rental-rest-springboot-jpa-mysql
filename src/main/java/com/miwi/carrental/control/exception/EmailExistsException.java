@@ -1,4 +1,4 @@
-package com.miwi.carrental.security.validation;
+package com.miwi.carrental.control.exception;
 
 
 import org.springframework.http.HttpStatus;

@@ -1,5 +1,5 @@
 package com.miwi.carrental.models.enums;
 
-public enum RentalStatusType {
+public enum ERentalStatus {
   COMPLETED, CANCELED, RENTED
 }
