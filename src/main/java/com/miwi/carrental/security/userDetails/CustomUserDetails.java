@@ -41,6 +41,24 @@ public class CustomUserDetails implements UserDetails {
             .collect(Collectors.toList()));
   }
 
+
+/*  private List<String> getPrivileges(Collection<Role> roles) {
+    List<String> rolesName = new ArrayList<>();
+
+    for (Role role : roles) {
+      rolesName.add(role.getName());
+    }
+    return rolesName;
+  }
+
+  private Collection<GrantedAuthority> getGrantedAuthorities(List<String> rolesName) {
+    List<GrantedAuthority> authorities = new ArrayList<>();
+    for (String roleName : rolesName) {
+      authorities.add(new SimpleGrantedAuthority(roleName));
+    }
+    return authorities;
+  }*/
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return authorities;
