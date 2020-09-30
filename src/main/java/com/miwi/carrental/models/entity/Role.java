@@ -1,6 +1,5 @@
 package com.miwi.carrental.models.entity;
 
-import com.miwi.carrental.control.converter.RoleNameConverter;
 import com.miwi.carrental.models.enums.ERoleName;
 import java.io.Serializable;
 import java.util.List;
