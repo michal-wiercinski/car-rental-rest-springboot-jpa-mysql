@@ -1,10 +1,9 @@
-/*
 package com.miwi.carrental.control.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.miwi.carrental.domain.enums.RentalStatusType;
+import com.miwi.carrental.models.enums.ERentalStatus;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
@@ -19,11 +18,12 @@ public class RentalDto extends RepresentationModel<RentalDto> {
   @JsonProperty(value = "user")
   private UserDto userDto;
 
-  private RentalStatusType rentalStatusType;
-  private Timestamp startDate;
-  private Timestamp endDate;
+  private String rentalStatus;
+  private LocalDateTime startDate;
+  private LocalDateTime endDate;
   private BigDecimal rentalCost;
   private Integer distance;
+  private Boolean isLimitedTime;
 
   public Long getId() {
     return id;
@@ -49,27 +49,27 @@ public class RentalDto extends RepresentationModel<RentalDto> {
     this.userDto = userDto;
   }
 
-  public RentalStatusType getRentalStatusType() {
-    return rentalStatusType;
+  public String getRentalStatus() {
+    return rentalStatus;
   }
 
-  public void setRentalStatusType(RentalStatusType rentalStatusType) {
-    this.rentalStatusType = rentalStatusType;
+  public void setRentalStatus(String rentalStatus) {
+    this.rentalStatus = rentalStatus;
   }
 
-  public Timestamp getStartDate() {
+  public LocalDateTime getStartDate() {
     return startDate;
   }
 
-  public void setStartDate(Timestamp startDate) {
+  public void setStartDate(LocalDateTime startDate) {
     this.startDate = startDate;
   }
 
-  public Timestamp getEndDate() {
+  public LocalDateTime getEndDate() {
     return endDate;
   }
 
-  public void setEndDate(Timestamp endDate) {
+  public void setEndDate(LocalDateTime endDate) {
     this.endDate = endDate;
   }
 
@@ -88,5 +88,12 @@ public class RentalDto extends RepresentationModel<RentalDto> {
   public void setDistance(Integer distance) {
     this.distance = distance;
   }
+
+  public Boolean getLimitedTime() {
+    return isLimitedTime;
+  }
+
+  public void setLimitedTime(Boolean limitedTime) {
+    isLimitedTime = limitedTime;
+  }
 }
-*/

@@ -1,29 +1,22 @@
-/*
-package com.miwi.carrental.control.service;
+package com.miwi.carrental.control.service.rent;
 
 import com.miwi.carrental.control.dto.RentalDto;
-import com.miwi.carrental.domain.entity.Rental;
-import com.miwi.carrental.domain.entity.RentalDetails;
 import com.miwi.carrental.control.exception.MyResourceNotFoundException;
-import com.miwi.carrental.control.exception.RestPreconditions;
 import com.miwi.carrental.control.mapper.dto.RentalDtoMapper;
 import com.miwi.carrental.control.repository.RentalDao;
 import com.miwi.carrental.control.service.UserService;
+import com.miwi.carrental.control.service.car.CarService;
 import com.miwi.carrental.control.service.generic.GenericService;
+import com.miwi.carrental.models.entity.Rental;
+import com.miwi.carrental.models.enums.ERentalStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.HttpClientErrorException.Unauthorized;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -34,30 +27,29 @@ public class RentalService extends GenericService<Rental> {
 
   private final RentalDao rentalDao;
   private final CarService carService;
-  private final RentalDetailService rentalDetailService;
   private final UserService userService;
   private final RentalDtoMapper rentalDtoMapper;
+  private final RentalStatusService rentalStatusService;
 
   public RentalService(final RentalDao rentalDao,
       final CarService carService,
-      final RentalDetailService rentalDetailService,
-      UserService userService, RentalDtoMapper rentalDtoMapper) {
+      final UserService userService,
+      final RentalDtoMapper rentalDtoMapper,
+      RentalStatusService rentalStatusService) {
     this.rentalDao = rentalDao;
     this.carService = carService;
-    this.rentalDetailService = rentalDetailService;
     this.userService = userService;
     this.rentalDtoMapper = rentalDtoMapper;
+    this.rentalStatusService = rentalStatusService;
   }
 
-  public void createRental(Rental rental, Long carId, String email) {
-    try {
-      rental.setCar(carService.findById(carId));
-      rental.setUser(userService.findByEmail(email));
-      rental.setRentalDetails(rentalDetailService.save(new RentalDetails()));
-      save(rental);
-    } catch (UsernameNotFoundException u) {
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found", u);
-    }
+  public Rental createRental(RentalDto rentalDto, Long carId, String email) {
+    Rental rental = rentalDtoMapper.mapDtoToEntity(rentalDto);
+    rental.setCar(carService.findById(carId));
+    rental.setUser(userService.findByEmail(email));
+    rental.setRentalStatus(rentalStatusService.findByStatus(ERentalStatus.RENTED));
+
+    return save(rental);
   }
 
   @PreAuthorize("hasAnyRole('ROLE_SUPER_ADMIN','ROLE_ADMIN')")
@@ -112,4 +104,4 @@ public class RentalService extends GenericService<Rental> {
   public void deleteById(Long id) {
     delete(findById(id));
   }
-}*/
+}

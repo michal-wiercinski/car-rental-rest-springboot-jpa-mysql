@@ -84,7 +84,7 @@ BEGIN
     SET NEW.FK_status = 2;
 END ^;
 
-
+/*
 CREATE TRIGGER set_a_start_date_for_a_new_rental
     BEFORE INSERT
     ON
@@ -93,7 +93,7 @@ CREATE TRIGGER set_a_start_date_for_a_new_rental
 BEGIN
     SET NEW.start_date = CURRENT_TIMESTAMP;
 END ^;
-
+*/
 CREATE TRIGGER change_car_status_to_unavailable
     AFTER INSERT
     ON rental

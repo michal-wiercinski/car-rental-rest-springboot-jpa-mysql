@@ -4,6 +4,8 @@ import com.miwi.carrental.models.enums.ERentalStatus;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +21,7 @@ public class RentalStatus {
   @Column(name = "PK_status")
   private Long id;
 
+  @Enumerated(EnumType.STRING)
   @Column(name = "status_desc")
   private ERentalStatus rentalStatusType;
 

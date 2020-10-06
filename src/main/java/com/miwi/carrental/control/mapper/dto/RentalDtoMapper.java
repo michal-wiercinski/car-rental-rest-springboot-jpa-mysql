@@ -1,10 +1,12 @@
-/*
 package com.miwi.carrental.control.mapper.dto;
 
 import com.miwi.carrental.control.dto.RentalDto;
-import com.miwi.carrental.domain.entity.Rental;
 import com.miwi.carrental.control.mapper.generic.GenericMapper;
-import com.miwi.carrental.security.mapper.UserDtoMapper;
+import com.miwi.carrental.control.service.UserService;
+import com.miwi.carrental.control.service.rent.RentalDetailsService;
+import com.miwi.carrental.control.service.rent.RentalStatusService;
+import com.miwi.carrental.models.entity.Rental;
+import com.miwi.carrental.models.enums.ERentalStatus;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,11 +14,28 @@ public class RentalDtoMapper extends GenericMapper<Rental, RentalDto> {
 
   private final CarDtoMapper carDtoMapper;
   private final UserDtoMapper userDtoMapper;
+  private final RentalDetailsService rentalDetailsService;
+  private final RentalStatusService rentalStatusService;
 
-  public RentalDtoMapper(CarDtoMapper carDtoMapper,
-      UserDtoMapper userDtoMapper) {
+  public RentalDtoMapper(final CarDtoMapper carDtoMapper,
+      final UserDtoMapper userDtoMapper,
+      final RentalDetailsService rentalDetailsService,
+      final RentalStatusService rentalStatusService) {
+    this.rentalDetailsService = rentalDetailsService;
     this.carDtoMapper = carDtoMapper;
     this.userDtoMapper = userDtoMapper;
+    this.rentalStatusService = rentalStatusService;
+  }
+
+  @Override
+  public Rental mapDtoToEntity(RentalDto dto) {
+    Rental rental = new Rental();
+
+    rental.setRentalDetails(rentalDetailsService.createRentalDetails(dto));
+    /*rental.setRentalStatus(
+        rentalStatusService.findByStatus(ERentalStatus.valueOf(dto.getRentalStatus())));
+*/
+    return rental;
   }
 
   @Override
@@ -28,10 +47,10 @@ public class RentalDtoMapper extends GenericMapper<Rental, RentalDto> {
     rentalDto.setRentalCost(entity.getRentalDetails().getRentalCost());
     rentalDto.setStartDate(entity.getRentalDetails().getStartDate());
     rentalDto.setEndDate(entity.getRentalDetails().getEndDate());
-    rentalDto.setRentalStatusType(entity.getRentalStatus().getRentalStatusType());
+    rentalDto.setRentalStatus(entity.getRentalStatus().getRentalStatusType().name());
     rentalDto.setUserDto(userDtoMapper.mapEntityToDto(entity.getUser()));
+    rentalDto.setLimitedTime(entity.getRentalDetails().getIndefiniteTime());
 
     return rentalDto;
   }
 }
-*/

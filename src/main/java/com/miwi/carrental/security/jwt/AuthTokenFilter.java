@@ -17,7 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class AuthTokenFilter extends OncePerRequestFilter {
 
   @Autowired
-  private  JwtTokenService jwtTokenService;
+  private JwtTokenService jwtTokenService;
 
   @Autowired
   private CustomUserDetailsService userDetailsService;
@@ -29,10 +29,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     try {
       String jwt = parseJwt(httpServletRequest);
       if (jwt != null && jwtTokenService.validateJwtToken(jwt)) {
-        String username  = jwtTokenService.getUsernameFromToken(jwt);
-        System.out.println(username);
+        String username = jwtTokenService.getUsernameFromToken(jwt);
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        System.out.println(userDetails.getUsername());
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
             userDetails, null, userDetails.getAuthorities());
         authentication

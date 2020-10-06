@@ -1,7 +1,7 @@
 package com.miwi.carrental.models.entity;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +12,6 @@ import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
-import lombok.Data;
 
 @NamedStoredProcedureQueries(
     @NamedStoredProcedureQuery(name = "RentalDetail.UpdateEndTime",
@@ -32,16 +31,19 @@ public class RentalDetails {
   private Long id;
 
   @Column(name = "start_date")
-  private Timestamp startDate;
+  private LocalDateTime startDate;
 
   @Column(name = "end_date")
-  private Timestamp endDate;
+  private LocalDateTime endDate;
 
   @Column(name = "rental_cost")
   private BigDecimal rentalCost;
 
   @Column(name = "distance")
   private Integer distance;
+
+  @Column(name  = "is_indefinite_time")
+  private  Boolean isIndefiniteTime;
 
   public Long getId() {
     return id;
@@ -51,20 +53,28 @@ public class RentalDetails {
     this.id = id;
   }
 
-  public Timestamp getStartDate() {
+  public LocalDateTime getStartDate() {
     return startDate;
   }
 
-  public void setStartDate(Timestamp dateFrom) {
-    this.startDate = dateFrom;
+  public void setStartDate(LocalDateTime startDate) {
+    this.startDate = startDate;
   }
 
-  public Timestamp getEndDate() {
+  public LocalDateTime getEndDate() {
     return endDate;
   }
 
-  public void setEndDate(Timestamp dateEnd) {
-    this.endDate = dateEnd;
+  public void setEndDate(LocalDateTime endDate) {
+    this.endDate = endDate;
+  }
+
+  public BigDecimal getRentalCost() {
+    return rentalCost;
+  }
+
+  public void setRentalCost(BigDecimal rentalCost) {
+    this.rentalCost = rentalCost;
   }
 
   public Integer getDistance() {
@@ -75,11 +85,12 @@ public class RentalDetails {
     this.distance = distance;
   }
 
-  public BigDecimal getRentalCost() {
-    return rentalCost;
+
+  public Boolean getIndefiniteTime() {
+    return isIndefiniteTime;
   }
 
-  public void setRentalCost(BigDecimal rentalCost) {
-    this.rentalCost = rentalCost;
+  public void setIndefiniteTime(Boolean indefiniteTime) {
+    isIndefiniteTime = indefiniteTime;
   }
 }

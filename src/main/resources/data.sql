@@ -55,8 +55,8 @@ VALUES ('Gdynia', 'Władysława IV', '100', '00-000'),
 
 INSERT
 INTO rental_status (PK_status, status_desc)
-VALUES (1, 'Canceled'),
-       (2, 'Rented') ^;
+VALUES (1, 'CANCELED'),
+       (2, 'RENTED') ^;
 
 INSERT INTO car_status (PK_status_code, status_description)
 VALUES ('AVI', 'Available'),

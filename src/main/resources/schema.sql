@@ -132,12 +132,12 @@ CREATE TABLE role
 
 CREATE TABLE user
 (
-    PK_user         BIGINT AUTO_INCREMENT PRIMARY KEY,
-    first_name      VARCHAR(30)   NOT NULL,
-    last_name       VARCHAR(30)   NOT NULL,
-    password        VARCHAR(255)  NOT NULL,
-    email           VARCHAR(50)   NOT NULL,
-    FK_address      BIGINT NOT NULL,
+    PK_user    BIGINT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(30)  NOT NULL,
+    last_name  VARCHAR(30)  NOT NULL,
+    password   VARCHAR(255) NOT NULL,
+    email      VARCHAR(50)  NOT NULL,
+    FK_address BIGINT       NOT NULL,
     FOREIGN KEY (FK_address) REFERENCES address (PK_address)
 ) ^;
 
@@ -145,10 +145,11 @@ CREATE TABLE user
 CREATE TABLE rental_details
 (
     PK_rental_details BIGINT AUTO_INCREMENT PRIMARY KEY,
-    start_date        TIMESTAMP                   NULL,
-    end_date          TIMESTAMP                   NULL,
+    start_date        DATETIME                    NULL,
+    end_date          DATETIME                    NULL,
     rental_cost       DECIMAL(10, 2) DEFAULT 0.00 NULL,
-    distance          INT            DEFAULT 0    NULL
+    distance          INT            DEFAULT 0    NULL,
+    is_indefinite_time   BOOLEAN                     NULL
 ) ^;
 
 CREATE TABLE rental

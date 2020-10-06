@@ -1,17 +1,16 @@
-/*
-package com.miwi.carrental.controller;
+package com.miwi.carrental.web;
 
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import com.miwi.carrental.control.dto.RentalDto;
-import com.miwi.carrental.domain.entity.Rental;
-import com.miwi.carrental.domain.entity.RentalDetails;
 import com.miwi.carrental.control.mapper.dto.RentalDtoMapper;
 import com.miwi.carrental.control.service.UserService;
-import com.miwi.carrental.control.service.RentalDetailService;
-import com.miwi.carrental.control.service.RentalService;
+import com.miwi.carrental.control.service.rent.RentalDetailsService;
+import com.miwi.carrental.control.service.rent.RentalService;
+import com.miwi.carrental.models.entity.Rental;
+import com.miwi.carrental.models.entity.RentalDetails;
 import java.net.URI;
 import java.security.Principal;
 import javax.servlet.http.HttpServletRequest;
@@ -33,26 +32,30 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-@RequestMapping(value = "/rent-car", produces = MediaTypes.HAL_JSON_VALUE)
+@RequestMapping(value = "/rentals", produces = MediaTypes.HAL_JSON_VALUE)
 @CrossOrigin(origins = "*")
 public class RentalController {
 
   private final RentalService rentalService;
-  private final RentalDetailService rentalDetailService;
+  private final RentalDetailsService rentalDetailService;
   private final RentalDtoMapper rentalDtoMapper;
   private final UserService userService;
   private PagedResourcesAssembler<RentalDto> pagedDtoAssembler;
 
   public RentalController(
       final RentalService rentalService,
-      final RentalDetailService rentalDetailService,
-      RentalDtoMapper rentalDtoMapper, final UserService userService) {
+      final RentalDetailsService rentalDetailService,
+      final RentalDtoMapper rentalDtoMapper,
+      final UserService userService,
+      final PagedResourcesAssembler<RentalDto> pagedDtoAssembler) {
     this.rentalService = rentalService;
     this.rentalDetailService = rentalDetailService;
     this.rentalDtoMapper = rentalDtoMapper;
     this.userService = userService;
+    this.pagedDtoAssembler = pagedDtoAssembler;
   }
 
   @GetMapping("/my-rent")
@@ -81,7 +84,7 @@ public class RentalController {
 
   @GetMapping("/all-rent")
   public ResponseEntity<Page<RentalDto>> getAllRental(
-      Pageable pageable, Sort sort, HttpServletRequest httpServletRequest) {
+      Pageable pageable, Sort sort) {
 
     Page<Rental> rentals = rentalService
         .getAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort));
@@ -90,8 +93,8 @@ public class RentalController {
     return ResponseEntity.ok().body(rentalsDto);
   }
 
-  @PostMapping(path = "create/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Rental> rentFormById(@RequestBody Rental rental,
+  @PostMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Rental> rentFormByCarId(@RequestBody RentalDto rentalDto,
       @PathVariable("id") Long carId,
       HttpServletRequest servletRequest) {
 
@@ -100,9 +103,15 @@ public class RentalController {
     }
 
     Principal principal = servletRequest.getUserPrincipal();
-    rentalService.createRental(rental, carId, principal.getName());
+    Rental rental = rentalService.createRental(rentalDto, carId, principal.getName());
 
-    return ResponseEntity.created(URI.create("/my-rent/")).build();
+    URI location = ServletUriComponentsBuilder
+        .fromCurrentRequest()
+        .path("/{id}")
+        .buildAndExpand(rental.getId())
+        .toUri();
+
+    return ResponseEntity.created(location).build();
   }
 
   @PatchMapping(path = "/cancel/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -130,4 +139,4 @@ public class RentalController {
 
     return rentalDtoPagedModel;
   }
-}*/
+}
