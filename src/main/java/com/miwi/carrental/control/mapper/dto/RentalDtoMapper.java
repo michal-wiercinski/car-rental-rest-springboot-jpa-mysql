@@ -2,11 +2,9 @@ package com.miwi.carrental.control.mapper.dto;
 
 import com.miwi.carrental.control.dto.RentalDto;
 import com.miwi.carrental.control.mapper.generic.GenericMapper;
-import com.miwi.carrental.control.service.UserService;
 import com.miwi.carrental.control.service.rent.RentalDetailsService;
 import com.miwi.carrental.control.service.rent.RentalStatusService;
 import com.miwi.carrental.models.entity.Rental;
-import com.miwi.carrental.models.enums.ERentalStatus;
 import org.springframework.stereotype.Component;
 
 @Component

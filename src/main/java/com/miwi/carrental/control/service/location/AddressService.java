@@ -1,6 +1,7 @@
 package com.miwi.carrental.control.service.location;
 
 import com.miwi.carrental.control.dto.LocationDto;
+import com.miwi.carrental.control.dto.UserDto;
 import com.miwi.carrental.control.repository.AddressDao;
 import com.miwi.carrental.control.service.generic.GenericService;
 import com.miwi.carrental.models.entity.Address;
@@ -36,17 +37,47 @@ public class AddressService extends GenericService<Address> {
   }
 
   @Transactional
-  public Address createAddressByUserDto(RegistrationRequest regRequest) {
+  public Address createAddressByUser(RegistrationRequest regRequest) {
+    return getAddress(regRequest.getCity(), regRequest.getZipCode(), regRequest.getStreet(),
+        regRequest.getHouseNumber());
+  }
+
+  @Transactional
+  public Address createAddressByUser(UserDto userDto) {
+    return getAddress(userDto.getCity(), userDto.getZipCode(), userDto.getStreet(),
+        userDto.getHouseNumber());
+  }
+
+
+  @Transactional
+  public Address editAddressByUser(UserDto userDto){
+    System.out.println(userDto.getAddressId());
+    Address address = addressDao.getOne(userDto.getAddressId());
+      address.setCity(userDto.getCity());
+ //   }
+  //  if(userDto.getStreet() != null) {
+      address.setStreet(userDto.getStreet());
+ //   }
+  //  if(userDto.getHouseNumber() != null){
+      address.setHouseNumber(userDto.getHouseNumber());
+  //  }
+   // if(userDto.getZipCode() != null){
+      address.setZipCode(userDto.getZipCode());
+   // }
+    return address;
+  }
+
+  private Address getAddress(String city, String zipCode, String street, String houseNumber) {
     Optional<Address> address;
-    if (regRequest.getCity() != null && regRequest.getZipCode() != null) {
+    if (city != null && zipCode != null) {
       address = addressDao
-          .findByCityAndStreetAndHouseNumber(regRequest.getCity(), regRequest.getStreet(),
-              regRequest.getHouseNumber());
+          .findByCityAndStreetAndHouseNumber(city, street,
+              houseNumber);
       return address.orElseGet(() -> save(new Address(
-          regRequest.getCity(),
-          regRequest.getStreet(),
-          regRequest.getHouseNumber(),
-          regRequest.getZipCode()
+          city,
+          street,
+          houseNumber,
+          zipCode
       )));
     }
     return new Address();

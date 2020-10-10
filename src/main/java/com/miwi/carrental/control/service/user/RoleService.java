@@ -1,4 +1,4 @@
-package com.miwi.carrental.control.service;
+package com.miwi.carrental.control.service.user;
 
 import com.miwi.carrental.control.exception.MyResourceNotFoundException;
 import com.miwi.carrental.control.repository.RoleDao;

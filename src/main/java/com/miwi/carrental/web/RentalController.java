@@ -6,7 +6,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import com.miwi.carrental.control.dto.RentalDto;
 import com.miwi.carrental.control.mapper.dto.RentalDtoMapper;
-import com.miwi.carrental.control.service.UserService;
+import com.miwi.carrental.control.service.user.UserService;
 import com.miwi.carrental.control.service.rent.RentalDetailsService;
 import com.miwi.carrental.control.service.rent.RentalService;
 import com.miwi.carrental.models.entity.Rental;

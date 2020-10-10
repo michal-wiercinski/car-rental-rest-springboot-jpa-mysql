@@ -1,6 +1,6 @@
 package com.miwi.carrental.security.userDetails;
 
-import com.miwi.carrental.control.service.UserService;
+import com.miwi.carrental.control.service.user.UserService;
 import com.miwi.carrental.models.entity.User;
 import javax.transaction.Transactional;
 import org.springframework.security.core.userdetails.UserDetails;

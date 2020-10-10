@@ -4,11 +4,12 @@ import com.miwi.carrental.control.dto.RentalDto;
 import com.miwi.carrental.control.exception.MyResourceNotFoundException;
 import com.miwi.carrental.control.mapper.dto.RentalDtoMapper;
 import com.miwi.carrental.control.repository.RentalDao;
-import com.miwi.carrental.control.service.UserService;
+import com.miwi.carrental.control.service.user.UserService;
 import com.miwi.carrental.control.service.car.CarService;
 import com.miwi.carrental.control.service.generic.GenericService;
 import com.miwi.carrental.models.entity.Rental;
 import com.miwi.carrental.models.enums.ERentalStatus;
+import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -43,6 +44,7 @@ public class RentalService extends GenericService<Rental> {
     this.rentalStatusService = rentalStatusService;
   }
 
+  @Transactional
   public Rental createRental(RentalDto rentalDto, Long carId, String email) {
     Rental rental = rentalDtoMapper.mapDtoToEntity(rentalDto);
     rental.setCar(carService.findById(carId));

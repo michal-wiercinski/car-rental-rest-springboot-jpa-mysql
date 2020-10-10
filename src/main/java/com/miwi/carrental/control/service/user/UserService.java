@@ -1,17 +1,20 @@
-package com.miwi.carrental.control.service;
+package com.miwi.carrental.control.service.user;
 
 
+import com.miwi.carrental.control.dto.UserDto;
+import com.miwi.carrental.control.exception.EmailExistsException;
 import com.miwi.carrental.control.exception.MyResourceNotFoundException;
+import com.miwi.carrental.control.mapper.dto.UserDtoMapper;
 import com.miwi.carrental.control.repository.UserDao;
 import com.miwi.carrental.control.service.generic.GenericService;
 import com.miwi.carrental.control.service.location.AddressService;
 import com.miwi.carrental.models.entity.User;
 import com.miwi.carrental.models.enums.ERoleName;
 import com.miwi.carrental.security.payload.request.RegistrationRequest;
-import com.miwi.carrental.control.exception.EmailExistsException;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,16 +25,18 @@ public class UserService extends GenericService<User> {
 
   private final UserDao userDao;
   private final AddressService addressService;
-
+  private final UserDtoMapper userDtoMapper;
   private final PasswordEncoder passwordEncoder;
   private final RoleService roleService;
 
   public UserService(final UserDao userDao,
       final AddressService addressService,
+      UserDtoMapper userDtoMapper,
       final PasswordEncoder passwordEncoder,
       final RoleService roleService) {
     this.userDao = userDao;
     this.addressService = addressService;
+    this.userDtoMapper = userDtoMapper;
     this.passwordEncoder = passwordEncoder;
     this.roleService = roleService;
   }
@@ -68,9 +73,21 @@ public class UserService extends GenericService<User> {
         .lastName(regRequest.getLastName())
         .password(passwordEncoder.encode(regRequest.getPassword()))
         .email(regRequest.getEmail())
-        .address(addressService.createAddressByUserDto(regRequest))
+        .address(addressService.createAddressByUser(regRequest))
         .roles(Set.of(roleService.findByRoleName(ERoleName.ROLE_USER)))
         .build();
+  }
+
+  @Transactional
+  public void editUser(Long id, UserDto userDto) {
+    User user = userDao.getOne(id);
+
+    user.setFirstName(userDto.getFirstName());
+    user.setLastName(userDto.getLastName());
+    user.setEmail(userDto.getEmail());
+    user.setAddress(addressService.editAddressByUser(userDto));
+
+    save(user);
   }
 
   private boolean emailExist(String email) {
