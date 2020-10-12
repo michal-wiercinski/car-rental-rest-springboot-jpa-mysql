@@ -1,13 +1,11 @@
 package com.miwi.carrental.security.jwt;
 
-import com.miwi.carrental.security.userDetails.CustomUserDetails;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
-import java.io.Serializable;
 import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

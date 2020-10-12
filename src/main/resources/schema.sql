@@ -144,12 +144,12 @@ CREATE TABLE user
 
 CREATE TABLE rental_details
 (
-    PK_rental_details BIGINT AUTO_INCREMENT PRIMARY KEY,
-    start_date        DATETIME                    NULL,
-    end_date          DATETIME                    NULL,
-    rental_cost       DECIMAL(10, 2) DEFAULT 0.00 NULL,
-    distance          INT            DEFAULT 0    NULL,
-    is_indefinite_time   BOOLEAN                     NULL
+    PK_rental_details  BIGINT AUTO_INCREMENT PRIMARY KEY,
+    start_date         DATETIME                    NULL,
+    end_date           DATETIME                    NULL,
+    rental_cost        DECIMAL(10, 2) DEFAULT 0.00 NULL,
+    distance           INT            DEFAULT 0    NULL,
+    is_indefinite_time BOOLEAN                     NULL
 ) ^;
 
 CREATE TABLE rental
@@ -174,3 +174,12 @@ CREATE TABLE user_roles
     FOREIGN KEY (FK_role) REFERENCES role (PK_role),
     UNIQUE (FK_user, FK_role)
 ) ^;
+
+CREATE TABLE password_reset_token
+(
+    PK_password_reset_token BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    token                   VARCHAR(255)                      NOT NULL,
+    expiry_date             DATE                              NOT NULL,
+    FK_user                 BIGINT                            NOT NULL,
+    FOREIGN KEY (FK_user) REFERENCES user (PK_user)
+)

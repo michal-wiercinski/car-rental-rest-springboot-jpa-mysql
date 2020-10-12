@@ -60,6 +60,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.GET,"/carModel/**").permitAll()
         .antMatchers(HttpMethod.GET, "/location/**").permitAll()
         .antMatchers(HttpMethod.GET, "/cars/search/**").permitAll()
+        .antMatchers(HttpMethod.POST, "/users/reset-password/**").permitAll()
+        .antMatchers(HttpMethod.PATCH, "/users/change-password/**").permitAll()
         .antMatchers("/cars").permitAll()
 /*        .antMatchers(HttpMethod.POST, "/cars/*").access("hasAnyRole('ROLE_ADMIN')")
         .antMatchers(HttpMethod.PATCH, "/cars/**").access("hasAnyRole('ROLE_ADMIN')")

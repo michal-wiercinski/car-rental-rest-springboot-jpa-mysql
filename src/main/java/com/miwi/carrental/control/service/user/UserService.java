@@ -12,6 +12,7 @@ import com.miwi.carrental.models.entity.User;
 import com.miwi.carrental.models.enums.ERoleName;
 import com.miwi.carrental.security.payload.request.RegistrationRequest;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
@@ -28,17 +29,20 @@ public class UserService extends GenericService<User> {
   private final UserDtoMapper userDtoMapper;
   private final PasswordEncoder passwordEncoder;
   private final RoleService roleService;
+  private final PasswordResetTokenService passwordResetTokenService;
 
   public UserService(final UserDao userDao,
       final AddressService addressService,
       UserDtoMapper userDtoMapper,
       final PasswordEncoder passwordEncoder,
-      final RoleService roleService) {
+      final RoleService roleService,
+      PasswordResetTokenService passwordResetTokenService) {
     this.userDao = userDao;
     this.addressService = addressService;
     this.userDtoMapper = userDtoMapper;
     this.passwordEncoder = passwordEncoder;
     this.roleService = roleService;
+    this.passwordResetTokenService = passwordResetTokenService;
   }
 
   public User findByEmail(String email) {
@@ -51,7 +55,7 @@ public class UserService extends GenericService<User> {
     }
   }
 
-
+  @Transactional
   public User registrationNewUser(RegistrationRequest reqRequest) {
     try {
       User user = createUser(reqRequest);
@@ -77,6 +81,17 @@ public class UserService extends GenericService<User> {
         .roles(Set.of(roleService.findByRoleName(ERoleName.ROLE_USER)))
         .build();
   }
+
+  public Optional<User> getUserByPasswordResetToken(final String token) {
+    return Optional.ofNullable(passwordResetTokenService.findByToken(token).getUser());
+  }
+
+  public void changeUserPassword(User user, String password) {
+    System.out.println(user.getEmail() + user.getEmail() + user.getEmail());
+    user.setPassword(passwordEncoder.encode(password));
+    userDao.save(user);
+  }
+
 
   @Transactional
   public void editUser(Long id, UserDto userDto) {
@@ -130,7 +145,7 @@ public class UserService extends GenericService<User> {
         "andrzej@andrzej.pl", "proba",
         "proba", "Wrocław", "Warszawska", "34", "71-000");
     RegistrationRequest adminUserDto = new RegistrationRequest("Michał", "Michał",
-        "michal@michal.pl", "proba",
+        "michal.wiercinski.81@gmail.com", "proba",
         "proba", "Wrocław", "Warszawska", "33", "71-000");
 
     User user = registrationNewUser(adminUserDto);

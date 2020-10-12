@@ -49,9 +49,6 @@ public class UserDtoMapper extends GenericMapper<User, UserDto> {
     return user;
   }
 
-  public
-
-
   @Override
   public List<UserDto> mapEntityListToListDto(List<User> entityList) {
     return super.mapEntityListToListDto(entityList);

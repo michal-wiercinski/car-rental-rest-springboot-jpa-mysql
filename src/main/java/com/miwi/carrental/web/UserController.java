@@ -1,23 +1,30 @@
 package com.miwi.carrental.web;
 
+import com.miwi.carrental.control.dto.PasswordDto;
 import com.miwi.carrental.control.dto.UserDto;
 import com.miwi.carrental.control.mapper.dto.UserDtoMapper;
+import com.miwi.carrental.control.service.EmailService;
+import com.miwi.carrental.control.service.user.PasswordResetTokenService;
 import com.miwi.carrental.control.service.user.UserService;
 import com.miwi.carrental.models.entity.User;
 import com.miwi.carrental.security.jwt.JwtTokenService;
 import com.miwi.carrental.security.payload.request.LoginRequest;
 import com.miwi.carrental.security.payload.request.RegistrationRequest;
 import com.miwi.carrental.security.payload.response.JwtResponse;
+import com.miwi.carrental.security.payload.response.MessageResponse;
 import com.miwi.carrental.security.userDetails.CustomUserDetails;
 import com.miwi.carrental.web.utils.CheckerOfRequest;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +35,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -45,16 +53,24 @@ public class UserController {
   private final JwtTokenService jwtTokenService;
   private final AuthenticationManager authenticationManager;
   private final UserDtoMapper userDtoMapper;
+  private final EmailService emailService;
+  private final MessageSource messageSource;
+  private final PasswordResetTokenService passwordResetTokenService;
 
 
   public UserController(final UserService userService,
       final JwtTokenService jwtTokenService,
       final AuthenticationManager authenticationManager,
-      UserDtoMapper userDtoMapper) {
+      final UserDtoMapper userDtoMapper,
+      final EmailService emailService, MessageSource messageSource,
+      PasswordResetTokenService passwordResetTokenService) {
     this.userService = userService;
     this.jwtTokenService = jwtTokenService;
     this.authenticationManager = authenticationManager;
     this.userDtoMapper = userDtoMapper;
+    this.emailService = emailService;
+    this.messageSource = messageSource;
+    this.passwordResetTokenService = passwordResetTokenService;
   }
 
   @PostMapping(path = "/registration")
@@ -117,5 +133,44 @@ public class UserController {
     }
     userService.editUser(id, userDto);
     return ResponseEntity.ok().body(userDto);
+  }
+
+  @PostMapping(path = "/reset-password")
+  public ResponseEntity<?> resetPassword(HttpServletRequest request,
+      @RequestBody String email) {
+    User user = userService.findByEmail(email);
+
+    String token = UUID.randomUUID().toString();
+    passwordResetTokenService.createPasswordResetTokenForUser(user, token);
+    sendResetTokenEmail(token, user);
+
+    return ResponseEntity.ok()
+        .body(new MessageResponse("You should receive an Password Reset Email shortly"));
+  }
+
+  @PatchMapping("/change-password/{token}")
+  public ResponseEntity<?> showChangePasswordPage(@PathVariable("token") final String token,
+      @RequestBody
+          PasswordDto passwordDto) {
+    System.out.println(passwordDto.getToken());
+    final String result = passwordResetTokenService
+        .validatePasswordResetToken(token, passwordDto.getToken());
+
+    final Optional<User> user = userService.getUserByPasswordResetToken(token);
+    if (result == null && user.isPresent()) {
+      userService.changeUserPassword(user.get(), passwordDto.getNewPassword());
+      return ResponseEntity.ok()
+          .body(new MessageResponse("Password changed for the user: " + user.get().getEmail()));
+    } else {
+      return ResponseEntity.badRequest()
+          .body(new MessageResponse("Password change failed: " + result));
+    }
+  }
+
+  private void sendResetTokenEmail(final String token, final User user) {
+    final String url = "http://localhost:4200/change-password/" + token;
+    final String body = "Reset your password\r\n" + url;
+
+    emailService.sendMail(user.getEmail(), "Reset password", body);
   }
 }
