@@ -1,7 +1,8 @@
 package com.miwi.carrental.web;
 
-import com.miwi.carrental.control.dto.PasswordDto;
 import com.miwi.carrental.control.dto.UserDto;
+import com.miwi.carrental.control.dto.password.PasswordChangeDto;
+import com.miwi.carrental.control.dto.password.PasswordResetDto;
 import com.miwi.carrental.control.mapper.dto.UserDtoMapper;
 import com.miwi.carrental.control.service.EmailService;
 import com.miwi.carrental.control.service.user.PasswordResetTokenService;
@@ -74,10 +75,11 @@ public class UserController {
   }
 
   @PostMapping(path = "/registration")
-  public ResponseEntity<User> registration(
+  public ResponseEntity<?> registration(
       @Valid @RequestBody RegistrationRequest request, BindingResult bindingResult) {
-    if (CheckerOfRequest.checkErrors(bindingResult)) {
-      return ResponseEntity.badRequest().build();
+    if (bindingResult.hasErrors()) {
+
+      return ResponseEntity.badRequest().body(CheckerOfRequest.checkErrors(bindingResult));
     }
     final User user = userService.registrationNewUser(request);
 
@@ -87,14 +89,15 @@ public class UserController {
         .buildAndExpand(user.getId())
         .toUri();
 
-    return ResponseEntity.created(location).build();
+    return ResponseEntity.created(location)
+        .body(new MessageResponse(String.format("User: %s has been created", user.getEmail())));
   }
 
   @PostMapping(path = "/login")
   public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request,
       BindingResult bindingResult) {
-    if (CheckerOfRequest.checkErrors(bindingResult)) {
-      return ResponseEntity.badRequest().build();
+    if (bindingResult.hasErrors()) {
+      return ResponseEntity.badRequest().body(CheckerOfRequest.checkErrors(bindingResult));
     }
 
     Authentication authentication = authenticationManager.authenticate(
@@ -126,18 +129,36 @@ public class UserController {
   }
 
   @PutMapping(path = "/{id}")
-  public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto,
+  public ResponseEntity<?> updateUser(@Valid @RequestBody UserDto userDto,
       @PathVariable("id") Long id, BindingResult bindingResult) {
-    if (CheckerOfRequest.checkErrors(bindingResult)) {
-      return ResponseEntity.badRequest().build();
+    if (bindingResult.hasErrors()) {
+      return ResponseEntity.badRequest().body(CheckerOfRequest.checkErrors(bindingResult));
     }
     userService.editUser(id, userDto);
-    return ResponseEntity.ok().body(userDto);
+    return ResponseEntity.ok()
+        .body(new MessageResponse(String.format("User: %s has been created", userDto.getEmail())));
+  }
+
+  @PatchMapping(path = "/update-password")
+  public ResponseEntity<?> updatePassword(@Valid @RequestBody PasswordChangeDto passwordChangerDto,
+      BindingResult bindingResult) {
+    if (bindingResult.hasErrors()) {
+      return ResponseEntity.badRequest().body(CheckerOfRequest.checkErrors(bindingResult));
+    }
+    User user = userService
+        .findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+
+    if (!userService.checkIfValidOldPassword(user, passwordChangerDto.getOldPassword())) {
+      return ResponseEntity.badRequest()
+          .body(new MessageResponse("The old password entered differs from the real one"));
+    }
+
+    userService.changeUserPassword(user, passwordChangerDto.getNewPassword());
+    return ResponseEntity.ok().body(new MessageResponse(("Password has been changed")));
   }
 
   @PostMapping(path = "/reset-password")
-  public ResponseEntity<?> resetPassword(HttpServletRequest request,
-      @RequestBody String email) {
+  public ResponseEntity<?> resetPassword(@RequestBody String email) {
     User user = userService.findByEmail(email);
 
     String token = UUID.randomUUID().toString();
@@ -149,16 +170,18 @@ public class UserController {
   }
 
   @PatchMapping("/change-password/{token}")
-  public ResponseEntity<?> showChangePasswordPage(@PathVariable("token") final String token,
-      @RequestBody
-          PasswordDto passwordDto) {
-    System.out.println(passwordDto.getToken());
+  public ResponseEntity<?> changePassword(@PathVariable("token") final String token,
+      @Valid @RequestBody PasswordResetDto passwordResetDto, BindingResult bindingResult) {
     final String result = passwordResetTokenService
-        .validatePasswordResetToken(token, passwordDto.getToken());
+        .validatePasswordResetToken(token, passwordResetDto.getToken());
+
+    if (bindingResult.hasErrors()) {
+      return ResponseEntity.badRequest().body(CheckerOfRequest.checkErrors(bindingResult));
+    }
 
     final Optional<User> user = userService.getUserByPasswordResetToken(token);
     if (result == null && user.isPresent()) {
-      userService.changeUserPassword(user.get(), passwordDto.getNewPassword());
+      userService.changeUserPassword(user.get(), passwordResetDto.getNewPassword());
       return ResponseEntity.ok()
           .body(new MessageResponse("Password changed for the user: " + user.get().getEmail()));
     } else {

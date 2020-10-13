@@ -1,24 +1,23 @@
-/*
-package com.miwi.carrental.security.validation;
+package com.miwi.carrental.control.validation;
 
+import java.io.InputStream;
 import java.util.Arrays;
-
+import java.util.List;
+import java.util.Properties;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-
-import org.passay.AlphabeticalSequenceRule;
-import org.passay.DigitCharacterRule;
+import lombok.SneakyThrows;
+import org.passay.CharacterRule;
+import org.passay.EnglishCharacterData;
+import org.passay.EnglishSequenceData;
+import org.passay.IllegalSequenceRule;
 import org.passay.LengthRule;
-import org.passay.NumericalSequenceRule;
+import org.passay.MessageResolver;
 import org.passay.PasswordData;
 import org.passay.PasswordValidator;
-import org.passay.QwertySequenceRule;
+import org.passay.PropertiesMessageResolver;
 import org.passay.RuleResult;
-import org.passay.SpecialCharacterRule;
-import org.passay.UppercaseCharacterRule;
 import org.passay.WhitespaceRule;
-
-import com.google.common.base.Joiner;
 
 public class PasswordConstraintValidator implements ConstraintValidator<ValidPassword, String> {
 
@@ -27,26 +26,40 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
 
   }
 
+
+  @SneakyThrows
   @Override
-  public boolean isValid(final String password, final ConstraintValidatorContext context) {
-    // @formatter:off
-    final PasswordValidator validator = new PasswordValidator(Arrays.asList(
-        new LengthRule(8, 30),
-        new UppercaseCharacterRule(1),
-        new DigitCharacterRule(1),
-        new SpecialCharacterRule(1),
-        new NumericalSequenceRule(3,false),
-        new AlphabeticalSequenceRule(3,false),
-        new QwertySequenceRule(3,false),
-        new WhitespaceRule()));
-    final RuleResult result = validator.validate(new PasswordData(password));
+  public boolean isValid(String password, ConstraintValidatorContext context) {
+
+    Properties props = new Properties();
+    InputStream inputStream = getClass()
+        .getClassLoader().getResourceAsStream("password.properties");
+    props.load(inputStream);
+    MessageResolver resolver = new PropertiesMessageResolver(props);
+
+    PasswordValidator validator = new PasswordValidator(resolver, Arrays.asList(
+
+        new LengthRule(8, 16),
+        new CharacterRule(EnglishCharacterData.UpperCase, 1),
+        new CharacterRule(EnglishCharacterData.LowerCase, 1),
+        new CharacterRule(EnglishCharacterData.Digit, 1),
+        new CharacterRule(EnglishCharacterData.Special, 1),
+        new WhitespaceRule(),
+        new IllegalSequenceRule(EnglishSequenceData.Alphabetical, 5, false),
+        new IllegalSequenceRule(EnglishSequenceData.Numerical, 5, false)
+    ));
+
+    RuleResult result = validator.validate(new PasswordData(password));
+
     if (result.isValid()) {
       return true;
     }
-    context.disableDefaultConstraintViolation();
-    context.buildConstraintViolationWithTemplate(Joiner.on(",").join(validator.getMessages(result))).addConstraintViolation();
+
+    List<String> messages = validator.getMessages(result);
+    String messageTemplate = String.join(",", messages);
+    context.buildConstraintViolationWithTemplate(messageTemplate)
+        .addConstraintViolation()
+        .disableDefaultConstraintViolation();
     return false;
   }
-
 }
-*/

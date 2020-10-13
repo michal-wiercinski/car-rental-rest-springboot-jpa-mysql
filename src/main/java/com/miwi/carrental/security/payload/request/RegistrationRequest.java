@@ -1,14 +1,17 @@
 package com.miwi.carrental.security.payload.request;
 
-import com.miwi.carrental.control.validation.PasswordMatches;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.miwi.carrental.control.dto.password.PasswordDto;
 import com.miwi.carrental.control.validation.ValidEmail;
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-@PasswordMatches(message = "Password and confirm password is not match")
+
 public class RegistrationRequest {
+
   @NotNull(message = "The first name can't be null")
   @NotEmpty(message = "The first name can't be empty")
   @Size(min = 5, max = 20, message = "The first name must have a minimum of 5 and a maximum of 15 letters")
@@ -24,13 +27,9 @@ public class RegistrationRequest {
   @NotEmpty(message = "The email can't be empty")
   private String email;
 
-  @NotNull(message = "The password can't be null")
-  @NotEmpty(message = "The password can't be empty")
-  private String password;
-
-  @NotNull(message = "The confirm password can't be null")
-  @NotEmpty(message = "The confirm password can't be empty")
-  private String confirmPassword;
+  @Valid
+  @JsonProperty(value = "password")
+  private PasswordDto passwordDto;
 
   @NotNull(message = "The city can't be null")
   @NotEmpty(message = "The city name can't be empty")
@@ -49,15 +48,14 @@ public class RegistrationRequest {
   @Pattern(regexp = "^\\d{2}[- ]{0,1}\\d{3}$", message = "The zip code must be in the format XX-XXX")
   private String zipCode;
 
-  public RegistrationRequest() {
+  private RegistrationRequest() {
   }
 
   public RegistrationRequest(
       @NotNull(message = "The first name can't be null") @NotEmpty(message = "The first name can't be empty") @Size(min = 5, max = 20, message = "The first name must have a minimum of 5 and a maximum of 15 letters") String firstName,
       @NotNull(message = "The last name can't be null") @NotEmpty(message = "The last name can't be empty") @Size(min = 3, max = 30, message = "The last name have a minimum of 5 and a maximum of 15 letters") String lastName,
       @NotNull(message = "The email can't be null") @NotEmpty(message = "The email can't be empty") String email,
-      @NotNull(message = "The password can't be null") @NotEmpty(message = "The password can't be empty") String password,
-      @NotNull(message = "The confirm password can't be null") @NotEmpty(message = "The confirm password can't be empty") String confirmPassword,
+      PasswordDto passwordDto,
       @NotNull(message = "The city can't be null") @NotEmpty(message = "The city name can't be empty") String city,
       @NotNull(message = "The street name can't be null") @NotEmpty(message = "The street name can't be empty") String street,
       @NotNull(message = "The house number can't be null") @NotEmpty(message = "The house number can't be empty") String houseNumber,
@@ -65,8 +63,7 @@ public class RegistrationRequest {
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
-    this.password = password;
-    this.confirmPassword = confirmPassword;
+    this.passwordDto = passwordDto;
     this.city = city;
     this.street = street;
     this.houseNumber = houseNumber;
@@ -97,20 +94,12 @@ public class RegistrationRequest {
     this.email = email;
   }
 
-  public String getPassword() {
-    return password;
+  public PasswordDto getPasswordDto() {
+    return passwordDto;
   }
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public String getConfirmPassword() {
-    return confirmPassword;
-  }
-
-  public void setConfirmPassword(String confirmPassword) {
-    this.confirmPassword = confirmPassword;
+  public void setPasswordDto(PasswordDto passwordDto) {
+    this.passwordDto = passwordDto;
   }
 
   public String getCity() {

@@ -2,6 +2,7 @@ package com.miwi.carrental.control.service.user;
 
 
 import com.miwi.carrental.control.dto.UserDto;
+import com.miwi.carrental.control.dto.password.PasswordDto;
 import com.miwi.carrental.control.exception.EmailExistsException;
 import com.miwi.carrental.control.exception.MyResourceNotFoundException;
 import com.miwi.carrental.control.mapper.dto.UserDtoMapper;
@@ -75,7 +76,7 @@ public class UserService extends GenericService<User> {
     return User.builder()
         .firstName(regRequest.getFirstName())
         .lastName(regRequest.getLastName())
-        .password(passwordEncoder.encode(regRequest.getPassword()))
+        .password(passwordEncoder.encode(regRequest.getPasswordDto().getNewPassword()))
         .email(regRequest.getEmail())
         .address(addressService.createAddressByUser(regRequest))
         .roles(Set.of(roleService.findByRoleName(ERoleName.ROLE_USER)))
@@ -103,6 +104,10 @@ public class UserService extends GenericService<User> {
     user.setAddress(addressService.editAddressByUser(userDto));
 
     save(user);
+  }
+
+  public boolean checkIfValidOldPassword(User user, String oldPassword) {
+    return passwordEncoder.matches(oldPassword, user.getPassword());
   }
 
   private boolean emailExist(String email) {
@@ -141,12 +146,13 @@ public class UserService extends GenericService<User> {
 
   @PostConstruct
   public void createSomeUser() {
+    PasswordDto passwordDto = new PasswordDto();
+    passwordDto.setNewPassword("proba");
+    passwordDto.setConfirmPassword("proba");
     RegistrationRequest normalUserDto = new RegistrationRequest("Andrzej", "Andrzej",
-        "andrzej@andrzej.pl", "proba",
-        "proba", "Wrocław", "Warszawska", "34", "71-000");
+        "andrzej@andrzej.pl", passwordDto, "Wrocław", "Warszawska", "34", "71-000");
     RegistrationRequest adminUserDto = new RegistrationRequest("Michał", "Michał",
-        "michal.wiercinski.81@gmail.com", "proba",
-        "proba", "Wrocław", "Warszawska", "33", "71-000");
+        "michal.wiercinski.81@gmail.com", passwordDto, "Wrocław", "Warszawska", "33", "71-000");
 
     User user = registrationNewUser(adminUserDto);
     user.setRoles(Set.of(roleService.findByRoleName(ERoleName.ROLE_ADMIN),

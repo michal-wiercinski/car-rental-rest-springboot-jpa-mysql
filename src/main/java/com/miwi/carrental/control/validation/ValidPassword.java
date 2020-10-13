@@ -15,7 +15,7 @@ import javax.validation.Payload;
 
 @Documented
 @Target({TYPE, FIELD, ANNOTATION_TYPE})
-@Constraint(validatedBy = PasswordMatchesValidator.class)
+@Constraint(validatedBy = PasswordConstraintValidator.class)
 @Retention(RUNTIME)
 public @interface ValidPassword {
 

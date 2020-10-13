@@ -24,7 +24,6 @@ import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,7 +34,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -70,10 +68,10 @@ public class CarController {
   }
 
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Car> createCar(@Valid @RequestBody CarDto car,
+  public ResponseEntity<?> createCar(@Valid @RequestBody CarDto car,
       BindingResult bindingResult) {
-    if (CheckerOfRequest.checkErrors(bindingResult)) {
-      return ResponseEntity.badRequest().build();
+    if (bindingResult.hasErrors()) {
+      return ResponseEntity.badRequest().body(CheckerOfRequest.checkErrors(bindingResult));
     }
 
     Car newCar = carService.createNewCar(car);
@@ -107,11 +105,11 @@ public class CarController {
   }
 
   @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<CarDto> updateCar(@Valid @RequestBody CarDto carDto,
+  public ResponseEntity<?> updateCar(@Valid @RequestBody CarDto carDto,
       @PathVariable("id") Long id,
       BindingResult bindingResult) {
-    if (CheckerOfRequest.checkErrors(bindingResult)) {
-      return ResponseEntity.badRequest().build();
+    if (bindingResult.hasErrors()) {
+      return ResponseEntity.badRequest().body(CheckerOfRequest.checkErrors(bindingResult));
     }
     carService.editCar(id, carDto);
     return ResponseEntity.ok().body(carDto);
