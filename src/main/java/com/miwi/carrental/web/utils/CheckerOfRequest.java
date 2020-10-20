@@ -26,6 +26,6 @@ public class CheckerOfRequest {
           }
       );
     }
-    return new MessageResponse(errors, "VALIDATION_FAILED");
+    return new MessageResponse(errors, "VALIDATION_FAILED", true);
   }
 }
