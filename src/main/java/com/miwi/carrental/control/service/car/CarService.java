@@ -57,9 +57,11 @@ public class CarService extends GenericService<Car> {
     }
   }
 
+/*
   public void changeToAvailable(Long carId, String carStatus) {
     carDao.changeToAvailable(carId, carStatus);
   }
+*/
 
   public Page<Car> findByBodyTypeName(String typeNameParam, Pageable pageable) {
     try {

@@ -124,7 +124,7 @@ public class CarController {
     return ResponseEntity.notFound().build();
   }
 
-  @PatchMapping(path = "/make-availability/{carId}/{status}", consumes = MediaType.APPLICATION_JSON_VALUE)
+  /*@PatchMapping(path = "/make-availability/{carId}/{status}", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<CarDto> makeAvailability(@PathVariable("carId") Long carId,
       @PathVariable("status") String carStatus) {
     if (carId == null || carStatus.isEmpty()) {
@@ -134,7 +134,7 @@ public class CarController {
     carService.changeToAvailable(carId, carStatus);
     CarDto carDto = carDtoMapper.mapEntityToDto(car);
     return ResponseEntity.ok().body(carDto);
-  }
+  }*/
 
   private ResponseEntity<PagedModel<EntityModel<CarDto>>> getPagedModelResponseEntity(
       Page<Car> carPage) {

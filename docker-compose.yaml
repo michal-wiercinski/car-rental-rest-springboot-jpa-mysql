@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: db-root-password
+      MYSQL_USER: my-user
+      MYSQL_PASSWORD: db-password
+      MYSQL_DATABASE: carRental
+  car-rental:
+    image: miwi94/car-rental:0.0.1-SNAPSHOT
+    ports:
+      - "5000:5000"
+    restart: always
+    depends_on:
+      - mysql
+    environment:
+      RDS_HOSTNAME: mysql
+      RDS_PORT: 3306
+      RDS_DB_NAME: carRental
+      RDS_USERNAME: my-user
+      RDS_PASSWORD: db-password

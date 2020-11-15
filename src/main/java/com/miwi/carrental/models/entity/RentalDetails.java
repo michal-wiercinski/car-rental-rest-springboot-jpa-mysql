@@ -13,14 +13,14 @@ import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 
-@NamedStoredProcedureQueries(
+/*@NamedStoredProcedureQueries(
     @NamedStoredProcedureQuery(name = "RentalDetail.UpdateEndTime",
         procedureName = "update_end_date_by_pk",
         parameters = {
             @StoredProcedureParameter(name = "p_pk_rental_detail", mode = ParameterMode.IN, type = Long.class)
         }
     )
-)
+)*/
 @Table(name = "rental_details")
 @Entity
 public class RentalDetails {

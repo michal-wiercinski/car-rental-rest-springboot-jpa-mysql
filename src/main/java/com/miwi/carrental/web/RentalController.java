@@ -114,7 +114,7 @@ public class RentalController {
     return ResponseEntity.created(location).build();
   }
 
-  @PatchMapping(path = "/cancel/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+ /* @PatchMapping(path = "/cancel/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Rental> cancelRent(@PathVariable("id") Long rentalId) {
     if (rentalId == null || rentalId < 0) {
       return ResponseEntity.badRequest().build();
@@ -127,7 +127,7 @@ public class RentalController {
 
     return ResponseEntity.ok().body(rental);
   }
-
+*/
   private PagedModel<EntityModel<RentalDto>> getPagedModelByDto(Page<RentalDto> rentalsDto) {
     PagedModel<EntityModel<RentalDto>> rentalDtoPagedModel = pagedDtoAssembler
         .toModel(rentalsDto);

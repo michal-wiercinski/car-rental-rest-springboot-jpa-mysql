@@ -17,14 +17,14 @@ import javax.persistence.Table;
 import lombok.Data;
 
 
-@NamedStoredProcedureQueries(
+/*@NamedStoredProcedureQueries(
     @NamedStoredProcedureQuery(name = "Brand.NamedQuery_BrandName",
         procedureName = "get_brand_name",
         parameters = {
             @StoredProcedureParameter(mode = ParameterMode.IN, name = "in_id", type = Long.class),
             @StoredProcedureParameter(mode = ParameterMode.OUT, name = "brd_name", type = String.class)
         })
-)
+)*/
 @Table(name = "brand")
 @Entity
 public class Brand implements Serializable {

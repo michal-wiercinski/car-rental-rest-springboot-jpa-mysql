@@ -17,9 +17,9 @@ public class RentalDetailsService extends GenericService<RentalDetails> {
     this.rentalDetailsDao = rentalDetailsDao;
   }
 
-  public void updateDate(Long id) {
+/*  public void updateDate(Long id) {
     rentalDetailsDao.updateEndDateById(id);
-  }
+  }*/
 
   public RentalDetails createRentalDetails(RentalDto rentalDto){
     RentalDetails rentalDetails = new RentalDetails();

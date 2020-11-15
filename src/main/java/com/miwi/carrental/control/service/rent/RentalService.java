@@ -76,9 +76,9 @@ public class RentalService extends GenericService<Rental> {
     }
   }
 
-  public void updateStatus(Long id) {
+/*  public void updateStatus(Long id) {
     rentalDao.updateStatusById(id);
-  }
+  }*/
 
   @Override
   public Rental save(Rental entity) {

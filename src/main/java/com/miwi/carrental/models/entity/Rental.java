@@ -15,14 +15,14 @@ import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import lombok.Data;
 
-@NamedStoredProcedureQueries(
+/*@NamedStoredProcedureQueries(
     @NamedStoredProcedureQuery(name = "Rental.UpdateStatus",
         procedureName = "update_rental_status_by_pk",
         parameters = {
             @StoredProcedureParameter(name = "p_pk_rental", mode = ParameterMode.IN, type = Long.class)
         }
     )
-)
+)*/
 @Table(name = "rental")
 @Entity
 public class Rental {

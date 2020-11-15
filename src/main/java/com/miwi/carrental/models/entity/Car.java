@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@NamedStoredProcedureQueries(
+/*@NamedStoredProcedureQueries(
     @NamedStoredProcedureQuery(name = "Car.changeToAvailable",
         procedureName = "change_to_available_if_not_rented",
         parameters = {
@@ -14,7 +14,7 @@ import java.util.List;
             @StoredProcedureParameter(name = "p_pk_car_status", mode = ParameterMode.IN, type = String.class)
         }
     )
-)
+)*/
 @Table(name = "car")
 @Entity
 public class Car implements Serializable {

@@ -15,9 +15,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CarDao extends GenericDao<Car>, QuerydslPredicateExecutor<Car> {
 
-  @Procedure(procedureName = "change_to_available_if_not_rented")
+/*  @Procedure(procedureName = "change_to_available_if_not_rented")
   void changeToAvailable(@Param("p_pk_car") Long carId,
-      @Param("p_pk_car_status") String carStatusId);
+      @Param("p_pk_car_status") String carStatusId);*/
 
   Page<Car> findAllByCarStatusLike(CarStatus carStatus, Pageable pageable);
 
