@@ -6,11 +6,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import com.miwi.carrental.control.dto.RentalDto;
 import com.miwi.carrental.control.mapper.dto.RentalDtoMapper;
-import com.miwi.carrental.control.service.user.UserService;
 import com.miwi.carrental.control.service.rent.RentalDetailsService;
 import com.miwi.carrental.control.service.rent.RentalService;
+import com.miwi.carrental.control.service.user.UserService;
 import com.miwi.carrental.models.entity.Rental;
-import com.miwi.carrental.models.entity.RentalDetails;
 import java.net.URI;
 import java.security.Principal;
 import javax.servlet.http.HttpServletRequest;
@@ -114,20 +113,26 @@ public class RentalController {
     return ResponseEntity.created(location).build();
   }
 
- /* @PatchMapping(path = "/cancel/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Rental> cancelRent(@PathVariable("id") Long rentalId) {
+  @PatchMapping(path = "/finish-rent/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> finishRent(@PathVariable("id") Long rentalId) {
     if (rentalId == null || rentalId < 0) {
       return ResponseEntity.badRequest().build();
     }
-    Rental rental = rentalService.findById(rentalId);
-    RentalDetails rentalDetails = rental.getRentalDetails();
+    rentalService.finishRental(rentalId);
 
-    rentalDetailService.updateDate(rentalDetails.getId());
-    rentalService.updateStatus(rentalId);
-
-    return ResponseEntity.ok().body(rental);
+    return ResponseEntity.ok().build();
   }
-*/
+
+  @PatchMapping(path = "/cancel-rent/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> cancelRent(@PathVariable("id") Long rentalId) {
+    if (rentalId == null || rentalId < 0) {
+      return ResponseEntity.badRequest().build();
+    }
+    rentalService.cancelRent(rentalId);
+
+    return ResponseEntity.ok().build();
+  }
+
   private PagedModel<EntityModel<RentalDto>> getPagedModelByDto(Page<RentalDto> rentalsDto) {
     PagedModel<EntityModel<RentalDto>> rentalDtoPagedModel = pagedDtoAssembler
         .toModel(rentalsDto);

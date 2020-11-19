@@ -7,6 +7,7 @@ import com.miwi.carrental.control.dto.CarDto;
 import com.miwi.carrental.control.mapper.dto.CarDtoMapper;
 import com.miwi.carrental.control.service.car.CarService;
 import com.miwi.carrental.models.entity.Car;
+import com.miwi.carrental.models.enums.ECarStatus;
 import com.miwi.carrental.web.utils.CheckerOfRequest;
 import com.querydsl.core.types.Predicate;
 import java.net.URI;
@@ -124,17 +125,20 @@ public class CarController {
     return ResponseEntity.notFound().build();
   }
 
-  /*@PatchMapping(path = "/make-availability/{carId}/{status}", consumes = MediaType.APPLICATION_JSON_VALUE)
+  @PatchMapping(path = "/make-availability/{carId}/{status}", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<CarDto> makeAvailability(@PathVariable("carId") Long carId,
       @PathVariable("status") String carStatus) {
     if (carId == null || carStatus.isEmpty()) {
       return ResponseEntity.badRequest().build();
     }
-    Car car = carService.findById(carId);
-    carService.changeToAvailable(carId, carStatus);
-    CarDto carDto = carDtoMapper.mapEntityToDto(car);
+    if (!carService.checkIfRented(carId)) {
+      return ResponseEntity.notFound().build();
+    }
+    CarDto carDto = carDtoMapper
+        .mapEntityToDto(carService.changeToAvailable(carId, ECarStatus.valueOf(carStatus)));
+
     return ResponseEntity.ok().body(carDto);
-  }*/
+  }
 
   private ResponseEntity<PagedModel<EntityModel<CarDto>>> getPagedModelResponseEntity(
       Page<Car> carPage) {

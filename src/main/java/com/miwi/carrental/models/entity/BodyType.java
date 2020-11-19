@@ -14,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
 @Table(name = "body_type")
 @Entity
 public class BodyType implements Serializable {

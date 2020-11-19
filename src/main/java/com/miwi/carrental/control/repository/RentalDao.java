@@ -11,8 +11,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RentalDao extends JpaRepository<Rental, Long> {
 
- /* @Procedure(procedureName = "update_rental_status_by_pk")
-  void updateStatusById(@Param("p_pk_rental") Long id);*/
-
   Page<Rental> findAllByUser_Email(String email, Pageable pageable);
 }

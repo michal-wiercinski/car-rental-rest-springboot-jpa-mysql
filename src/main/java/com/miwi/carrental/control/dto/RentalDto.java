@@ -21,6 +21,7 @@ public class RentalDto extends RepresentationModel<RentalDto> {
   private String rentalStatus;
   private LocalDateTime startDate;
   private LocalDateTime endDate;
+  private Double dailyRate;
   private BigDecimal rentalCost;
   private Integer distance;
   private Boolean isLimitedTime;
@@ -71,6 +72,14 @@ public class RentalDto extends RepresentationModel<RentalDto> {
 
   public void setEndDate(LocalDateTime endDate) {
     this.endDate = endDate;
+  }
+
+  public Double getDailyRate() {
+    return dailyRate;
+  }
+
+  public void setDailyRate(Double dailyRate) {
+    this.dailyRate = dailyRate;
   }
 
   public BigDecimal getRentalCost() {

@@ -147,6 +147,7 @@ CREATE TABLE rental_details
     PK_rental_details  BIGINT AUTO_INCREMENT PRIMARY KEY,
     start_date         DATETIME                    NULL,
     end_date           DATETIME                    NULL,
+    daily_rate         DOUBLE                      NOT NULL,
     rental_cost        DECIMAL(10, 2) DEFAULT 0.00 NULL,
     distance           INT            DEFAULT 0    NULL,
     is_indefinite_time BOOLEAN                     NULL

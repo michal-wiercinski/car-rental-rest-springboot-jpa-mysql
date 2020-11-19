@@ -1,20 +1,26 @@
 package com.miwi.carrental.models.entity;
 
-import lombok.Data;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
-/*@NamedStoredProcedureQueries(
-    @NamedStoredProcedureQuery(name = "Car.changeToAvailable",
-        procedureName = "change_to_available_if_not_rented",
-        parameters = {
-            @StoredProcedureParameter(name = "p_pk_car", mode = ParameterMode.IN, type = Long.class),
-            @StoredProcedureParameter(name = "p_pk_car_status", mode = ParameterMode.IN, type = String.class)
-        }
-    )
-)*/
+@NamedQueries({
+    @NamedQuery(name = "Car.findRentedCarByCarId",
+        query = "SELECT c.id FROM Car c JOIN Rental r ON c.id = r.car.id "
+            + "WHERE c.id = :carId AND r.rentalStatus.rentalStatusType = :rentalStatus")
+})
 @Table(name = "car")
 @Entity
 public class Car implements Serializable {

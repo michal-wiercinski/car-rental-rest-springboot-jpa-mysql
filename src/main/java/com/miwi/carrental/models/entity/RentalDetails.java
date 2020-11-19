@@ -7,20 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedStoredProcedureQueries;
-import javax.persistence.NamedStoredProcedureQuery;
-import javax.persistence.ParameterMode;
-import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 
-/*@NamedStoredProcedureQueries(
-    @NamedStoredProcedureQuery(name = "RentalDetail.UpdateEndTime",
-        procedureName = "update_end_date_by_pk",
-        parameters = {
-            @StoredProcedureParameter(name = "p_pk_rental_detail", mode = ParameterMode.IN, type = Long.class)
-        }
-    )
-)*/
 @Table(name = "rental_details")
 @Entity
 public class RentalDetails {
@@ -36,14 +24,17 @@ public class RentalDetails {
   @Column(name = "end_date")
   private LocalDateTime endDate;
 
+  @Column(name = "daily_rate")
+  private Double dailyRate;
+
   @Column(name = "rental_cost")
   private BigDecimal rentalCost;
 
   @Column(name = "distance")
   private Integer distance;
 
-  @Column(name  = "is_indefinite_time")
-  private  Boolean isIndefiniteTime;
+  @Column(name = "is_indefinite_time")
+  private Boolean isIndefiniteTime;
 
   public Long getId() {
     return id;
@@ -67,6 +58,14 @@ public class RentalDetails {
 
   public void setEndDate(LocalDateTime endDate) {
     this.endDate = endDate;
+  }
+
+  public Double getDailyRate() {
+    return dailyRate;
+  }
+
+  public void setDailyRate(Double dailyRate) {
+    this.dailyRate = dailyRate;
   }
 
   public BigDecimal getRentalCost() {

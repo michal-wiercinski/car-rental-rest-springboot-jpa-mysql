@@ -8,10 +8,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import lombok.Data;
 
-
+@NamedQueries({
+    @NamedQuery(name = "CarParameter.findCarParametersByRentalDetailsId",
+        query = "SELECT cp.dailyRate FROM CarParameter cp "
+            + "JOIN Car c ON cp.id = c.carParameter.id "
+            + "JOIN Rental r ON c.id = r.car.id "
+            + "JOIN RentalDetails rd ON rd.id = r.rentalDetails.id "
+            + "WHERE rd.id = :param")
+})
 @Table(name = "car_parameter")
 @Entity
 public class CarParameter {

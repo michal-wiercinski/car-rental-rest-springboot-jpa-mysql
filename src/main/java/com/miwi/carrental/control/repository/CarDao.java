@@ -19,6 +19,7 @@ public interface CarDao extends GenericDao<Car>, QuerydslPredicateExecutor<Car> 
   void changeToAvailable(@Param("p_pk_car") Long carId,
       @Param("p_pk_car_status") String carStatusId);*/
 
+
   Page<Car> findAllByCarStatusLike(CarStatus carStatus, Pageable pageable);
 
   Page<Car> findAllByCarParameter_BodyTypeTypeName(EBodyType bodyTypeName, Pageable pageable);

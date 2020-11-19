@@ -1,12 +1,15 @@
 package com.miwi.carrental.control.service.car;
 
-import com.miwi.carrental.control.dto.CarDto;
 import com.miwi.carrental.control.dto.CarParameterDto;
-import com.miwi.carrental.models.entity.CarParameter;
+import com.miwi.carrental.control.exception.MyResourceNotFoundException;
 import com.miwi.carrental.control.mapper.dto.CarParameterDtoMapper;
 import com.miwi.carrental.control.repository.CarParameterDao;
+import com.miwi.carrental.control.repository.CarParameterDaoImpl;
 import com.miwi.carrental.control.service.generic.GenericService;
+import com.miwi.carrental.models.entity.CarParameter;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class CarParameterService extends GenericService<CarParameter> {
@@ -16,21 +19,20 @@ public class CarParameterService extends GenericService<CarParameter> {
   private final CarParameterDtoMapper carParameterDtoMapper;
   private final EngineService engineService;
   private final DriveTrainService driveTrainService;
+  private final CarParameterDaoImpl carParameterDaoImpl;
 
   public CarParameterService(final CarParameterDao carParameterDao,
       final BodyTypeService bodyTypeService,
       final CarParameterDtoMapper carParameterDtoMapper,
-      EngineService engineService,
-      DriveTrainService driveTrainService) {
+      final EngineService engineService,
+      final DriveTrainService driveTrainService,
+      final CarParameterDaoImpl carParameterDaoImpl) {
     this.carParameterDao = carParameterDao;
     this.bodyTypeService = bodyTypeService;
     this.carParameterDtoMapper = carParameterDtoMapper;
     this.engineService = engineService;
     this.driveTrainService = driveTrainService;
-  }
-
-  public CarParameter createNewParameter(CarDto carDto) {
-    return carParameterDtoMapper.mapDtoToEntity(carDto.getCarParameterDto());
+    this.carParameterDaoImpl = carParameterDaoImpl;
   }
 
   public CarParameter editCarParameterByCarDto(CarParameterDto carParameterDto) {
@@ -54,6 +56,23 @@ public class CarParameterService extends GenericService<CarParameter> {
     carParameter.setDriveTrain(driveTrainService.editDriveTrainByDto(carParameterDto));
 
     return carParameter;
+  }
+
+  public void addDistanceToMileage(Long id, Integer distance){
+    CarParameter carParameter = getByRentalDetailsId(id);
+    int newMileage = carParameter.getCurrentMileage() + distance;
+    carParameter.setCurrentMileage(newMileage);
+
+    save(carParameter);
+  }
+
+  public CarParameter getByRentalDetailsId(Long id) {
+    try {
+      return checkFound(carParameterDaoImpl.findByRentalDetailsId(id));
+    } catch (MyResourceNotFoundException ex) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+          "The car parameter with rentalDetails id: " + id + " was not found");
+    }
   }
 
   @Override
