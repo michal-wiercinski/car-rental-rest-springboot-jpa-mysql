@@ -18,6 +18,7 @@
   <properties>
     <apt-maven-plugin.version>1.1.3</apt-maven-plugin.version>
     <java.version>11</java.version>
+    <docker.image.prefix>miwi94</docker.image.prefix>
   </properties>
 
   <dependencies>
@@ -123,6 +124,27 @@
       <artifactId>passay</artifactId>
       <version>1.6.0</version>
     </dependency>
+
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <version>2.3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+      <version>2.3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jaxb</groupId>
+      <artifactId>jaxb-runtime</artifactId>
+      <version>2.3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.activation</groupId>
+      <artifactId>activation</artifactId>
+      <version>1.1.1</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -160,9 +182,12 @@
           </execution>
         </executions>
         <configuration>
-          <repository>miwi94/${project.artifactId}</repository>
+          <repository>${docker.image.prefix}/${project.artifactId}</repository>
           <tag>${project.version}</tag>
           <skipDockerInfo>false</skipDockerInfo>
+          <buildArgs>
+            <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+          </buildArgs>
         </configuration>
       </plugin>
     </plugins>
